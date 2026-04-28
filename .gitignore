@@ -1,0 +1,22 @@
+node_modules/
+.DS_Store
+*.log
+out/
+dist/
+.env
+.env.local
+
+# Vendored reference repos are large and belong upstream.
+# Keep our own work tracked; ignore the clones.
+vendor/remotion/
+vendor/superpowers/
+vendor/impeccable/
+vendor/huashu-design/
+
+# CapTech brand assets — licensed material, stays local.
+# Referenced at build time to pull colors, logos, and fonts into slides/motion.
+brand-assets/
+
+# Remotion render outputs
+motion/out/
+motion/*.mp4

@@ -1,0 +1,66 @@
+<section class="slide section-divider" data-section="35:00 — Subagents + hooks">
+  <span class="label">35:00 — 40:00</span>
+  <h1>Subagents + hooks</h1>
+  <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); max-width: 50ch;">Aware-only. Two powerful primitives. Brief tour.</p>
+</section>
+
+<section class="slide" data-section="35:00 — Subagents">
+  <span class="label">Primitive 1</span>
+  <h2>Subagents</h2>
+  <ul class="clean">
+    <li>A focused helper agent you spawn mid-session.</li>
+    <li>Owns its own context window.</li>
+    <li>Reports back summarized.</li>
+  </ul>
+  <p style="margin-top: 1rem;">Anthropic frames them as parallelism. The community framing is stronger: subagents are a <strong>quality gate</strong>. A fresh subagent per task, plus a spec-compliance reviewer and a code-quality reviewer.</p>
+  <p class="caption">Token-expensive. Only worth it for larger tasks.</p>
+  <div class="stamp client-ready"><span class="dot"></span>Inherits your permissions</div>
+  <aside class="notes"><p>2.5 minutes. Don't demo; describe. The quality-gate framing is what you want them to remember.</p></aside>
+</section>
+
+<section class="slide" data-section="36:30 — Subagent example">
+  <span class="label">One concrete example</span>
+  <h2>Spawn a code reviewer.</h2>
+<pre>&gt; Spawn a code reviewer subagent on these 3 files:
+  graph/resolver.go
+  loader/product.go
+  graph/schema.graphqls
+
+Criteria:
+  - does it follow the "never edit generated" rule from CLAUDE.md?
+  - are resolvers using dataloaders where available?
+  - cite file:line for any issue</pre>
+  <p class="caption" style="margin-top: 1rem;">Result comes back summarized. Don't trust the summary. Inspect the diff.</p>
+  <aside class="notes"><p>Say: "Don't trust the summary. Inspect the diff." Emphasize verification even on helpful output.</p></aside>
+</section>
+
+<section class="slide" data-section="37:30 — Hooks">
+  <span class="label">Primitive 2</span>
+  <h2>Hooks</h2>
+  <ul class="clean">
+    <li>Shell commands that run in response to tool-call events.</li>
+    <li>Events: <code>PreToolUse</code>, <code>PostToolUse</code>, <code>TeammateIdle</code>, <code>TaskCompleted</code>.</li>
+    <li>Exit code 2 sends feedback to Claude and keeps it working.</li>
+  </ul>
+  <p class="caption" style="margin-top: 1rem;">The mechanical enforcement layer for CLAUDE.md rules.</p>
+  <aside class="notes"><p>2.5 minutes. Hooks are the "how I make Claude physically unable to do X" primitive.</p></aside>
+</section>
+
+<section class="slide" data-section="38:30 — Hook example">
+  <span class="label">One concrete example</span>
+  <h2>Block <code>git push --force</code>.</h2>
+  <div class="code-header">.claude/settings.json — PreToolUse hook</div>
+<pre>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "command": "bash -c 'if echo \"$CLAUDE_TOOL_INPUT\" | grep -qE \"git push .*--force(-with-lease)?\"; then echo \"force push blocked by CLAUDE.md policy\" &gt;&amp;2; exit 2; fi'"
+      }
+    ]
+  }
+}</pre>
+  <p style="margin-top: 1rem;">Enforces the CLAUDE.md rule mechanically. The model cannot bypass it by forgetting.</p>
+  <div class="stamp client-ready"><span class="dot"></span>Client-ready — audit the commands</div>
+  <aside class="notes"><p>Hook commands run with your shell. Audit them. Don't install arbitrary hooks from the internet.</p></aside>
+</section>

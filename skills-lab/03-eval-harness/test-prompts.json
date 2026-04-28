@@ -1,0 +1,47 @@
+[
+  {
+    "id": "dataloader-n-plus-1",
+    "prompt": "I need to add a `createdBy: User!` field to the `Post` type in our GraphQL schema. Each post has a `createdById` in the database. Write the resolver. The schema and existing resolvers are in `server/graph/`.",
+    "expected": [
+      "Resolver uses the dataloader pattern to batch user fetches",
+      "Does not query the database in a loop (no N+1 query)",
+      "Imports or references a UserLoader or similar batching mechanism",
+      "Returns the correct User type as defined in the schema"
+    ],
+    "tests": [
+      "dataloader-pattern",
+      "n-plus-1-avoidance",
+      "schema-type-correctness"
+    ]
+  },
+  {
+    "id": "test-before-production",
+    "prompt": "Add a new function `calculateDiscount(price: number, couponCode: string): number` to `src/pricing.ts`. It should apply percentage discounts based on coupon codes. Implement it.",
+    "expected": [
+      "Writes a test file (e.g., `pricing.test.ts`) before or alongside the implementation",
+      "Test covers at least one valid coupon and one invalid coupon case",
+      "Production function is implemented after or concurrently with tests",
+      "Does not skip testing with a rationale like 'simple function' or 'obvious logic'"
+    ],
+    "tests": [
+      "test-first-development",
+      "test-coverage",
+      "production-code-quality"
+    ]
+  },
+  {
+    "id": "cite-file-and-line",
+    "prompt": "I need to understand how the `authenticateUser` function works. Explain it to me.",
+    "expected": [
+      "Cites the file path where `authenticateUser` is defined (e.g., `src/auth/authenticate.ts:45`)",
+      "Includes line numbers when referencing specific logic",
+      "If the function does not exist, explicitly states it could not be found rather than guessing",
+      "Does not provide a generic explanation without locating the actual code"
+    ],
+    "tests": [
+      "file-and-line-citation",
+      "avoids-hallucination",
+      "explicit-uncertainty"
+    ]
+  }
+]

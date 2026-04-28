@@ -1,0 +1,65 @@
+name: Test
+
+on:
+  push:
+    branches: [ main, feature/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Run tests
+        run: go test ./...
+
+      - name: Run linter
+        run: |
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          golangci-lint run
+
+  codegen-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Generate GraphQL code
+        run: go run github.com/99designs/gqlgen generate
+
+      - name: Check for codegen drift
+        run: |
+          if ! git diff --exit-code; then
+            echo ""
+            echo "Error: Generated code differs from committed version"
+            echo ""
+            echo "This error occurs when you modify the GraphQL schema but don't regenerate"
+            echo "and commit the generated code."
+            echo ""
+            echo "To fix this issue:"
+            echo "1. Run: go run github.com/99designs/gqlgen generate"
+            echo "2. Implement the new resolver methods (or they will panic at runtime)"
+            echo "3. Run tests: go test ./..."
+            echo "4. Commit both schema and generated files together:"
+            echo "   git add graph/schema.graphql graph/schema.resolvers.go graph/generated/"
+            echo "   git commit -m \"Add new fields to schema\""
+            echo "5. Push: git push"
+            echo ""
+            echo "Why this check exists:"
+            echo "- Ensures schema and generated code stay in sync"
+            echo "- Prevents runtime panics from missing resolver implementations"
+            echo "- Catches forgotten codegen runs before they reach production"
+            echo ""
+            exit 1
+          fi

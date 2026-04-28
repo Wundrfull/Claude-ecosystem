@@ -1,0 +1,98 @@
+<section class="slide section-divider" data-section="14:00 — Skills">
+  <span class="label">14:00 — 22:00</span>
+  <h1>Skills<br>Writing and evaluating them</h1>
+  <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); max-width: 50ch;">Two halves: how to write one, and how to know it works.</p>
+</section>
+
+<section class="slide" data-section="14:00 — Skill anatomy">
+  <span class="label">Part A · What a skill is</span>
+  <h2>Frontmatter plus markdown</h2>
+  <ul class="clean">
+    <li>Lives in <code>~/.claude/skills/&lt;name&gt;.md</code> (user) or <code>.claude/skills/</code> (project).</li>
+    <li>Invoked by slash command (explicit) or matched by description (implicit).</li>
+    <li>Body is a plain markdown document. No DSL, no sandbox.</li>
+  </ul>
+  <div class="code-header">skills-lab/01-minimal/SKILL.md</div>
+<pre>---
+name: commit-message
+description: Use when the user asks for a commit message for staged changes. Reads git diff --cached and produces a short conventional-commits summary.
+---
+
+Read the staged diff. Summarize in one line using conventional commits.
+Body stays under 200 lines. Reference the diff directly; do not restate it.</pre>
+  <div class="stamp sandbox"><span class="dot"></span>Authoring happens CapTech-side</div>
+  <aside class="notes"><p>90 seconds. Point out: frontmatter + body. That's all a skill is.</p></aside>
+</section>
+
+<section class="slide" data-section="15:30 — The surprising rule">
+  <span class="label">Part B · The counterintuitive rule</span>
+  <h2>The <code>description</code> is a behavior lever, not metadata.</h2>
+  <p style="margin-top: 1rem;">If the description summarizes the <em>workflow</em>, Claude follows the description and skips the skill body entirely.</p>
+  <div class="quote" style="margin-top: 1.5rem;">
+    Superpowers proved this empirically. A description reading "code review between tasks" caused Claude to do one review despite the body mandating two.
+    <cite>obra/superpowers, writing-skills findings</cite>
+  </div>
+  <aside class="notes"><p>This is the surprising bit that gets people talking. Slow down. Let the quote land.</p></aside>
+</section>
+
+<section class="slide" data-section="16:30 — The rule">
+  <span class="label">The rule</span>
+  <div class="rulebox" style="margin-top: 2rem;">
+    <p><strong>Descriptions describe <span style="color: var(--captech-blue);">when to use</span> the skill.</strong></p>
+    <p>Third-person triggers. Symptoms. "Use when..." sentences.</p>
+    <p><strong>Never <span style="color: var(--dark-grey);">what the skill does</span>.</strong></p>
+    <p>The body does that.</p>
+  </div>
+  <aside class="notes"><p>Read the rule twice. Once fast, once slow.</p></aside>
+</section>
+
+<section class="slide" data-section="17:30 — Evaluating skills">
+  <span class="label">Part C · How to know a skill works</span>
+  <h2>The community has no formal framework. Here is a minimal one.</h2>
+  <ol class="clean" style="margin-top: 1rem;">
+    <li>Write three golden tasks with plain-English expected-behavior bullets <em>before</em> writing the skill.</li>
+    <li>Run them without the skill in a fresh session. Capture transcripts. RED baseline.</li>
+    <li>Write the skill to target the baseline failures.</li>
+    <li>Re-run the golden tasks. Require GREEN on the previously-failing bullets.</li>
+    <li>Pressure-test: run each golden task 3 times to check for nondeterminism.</li>
+  </ol>
+  <aside class="notes">
+    <p>3 minutes on this slide. This is the part people came for.</p>
+    <p>Mention promptfoo as adjacent — runs a skill body as a regression harness, but cannot test whether Claude <em>chooses</em> to load the skill.</p>
+  </aside>
+</section>
+
+<section class="slide" data-section="19:30 — Eval harness">
+  <span class="label">What the harness looks like on disk</span>
+  <h2>skills-lab/03-eval-harness/</h2>
+  <div class="code-header">test-prompts.json</div>
+<pre>{
+  "id": "commit-message-01",
+  "prompt": "Write a commit message for the staged changes.",
+  "expected": "one-line conventional commit, type prefix, under 72 chars",
+  "tests": [
+    { "contains_regex": "^(feat|fix|chore|refactor|docs|test)(\\([^)]+\\))?: " },
+    { "max_length_first_line": 72 }
+  ]
+}</pre>
+  <p class="caption">Four fields: id, prompt, expected, tests. Modeled on huashu-design's pattern.</p>
+  <aside class="notes"><p>Do not deep-dive. Point out the shape, move on.</p></aside>
+</section>
+
+<section class="slide" data-section="20:30 — A real skill we use">
+  <span class="label">Part D · A working example</span>
+  <h2>The chunked-write pattern</h2>
+  <div class="code-header">~/.claude/skills/graphqlstagereport.md</div>
+<pre>---
+name: graphqlstagereport
+description: Use when producing a long staged report whose total length
+  risks hitting the 4096 output-token cap mid-response. Symptoms:
+  truncation, "..." endings, or files cut off.
+---
+
+Produce each section as its own Write call. Stop between sections.
+Never combine sections in a single output. Cap each file at ~2500 tokens.</pre>
+  <p style="margin-top: 1rem;">Community-evolved. Not in Anthropic's docs. Dodges the <code>CLAUDE_CODE_MAX_OUTPUT_TOKENS=4096</code> cap.</p>
+  <div class="stamp client-ready"><span class="dot"></span>Validated skills travel</div>
+  <aside class="notes"><p>60 seconds. Point out: this is the same pattern that built this slide deck. Chunked writes.</p></aside>
+</section>

@@ -1,0 +1,33 @@
+<section class="slide section-divider" data-section="52:00 — Scenario D">
+  <span class="label">52:00 — 55:00 · Pre-recorded screencast</span>
+  <h1>Scenario D<br>CI / PR triage</h1>
+  <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); max-width: 50ch;"><code>/autofix-pr</code> and <code>/ultrareview</code>, without risking live failures.</p>
+</section>
+
+<section class="slide" data-section="52:00 — Setup">
+  <span class="label">Setup</span>
+  <h2>Same subgraph. A PR was opened. CI is failing with a codegen-drift error.</h2>
+  <p class="caption" style="margin-top: 1rem;">Watch Claude take it from red to green without us in the loop.</p>
+  <aside class="notes"><p>20 seconds. Hit play.</p></aside>
+</section>
+
+<section class="slide dark" data-section="52:30 — The screencast">
+  <div class="motion-placeholder" data-clip="scenario-d">[Screencast: 2min, from demos/synthetic-subgraph/DEMO-SCRIPT-D.md — autofix-pr then ultrareview]</div>
+  <p style="margin-top: 2rem; font-size: 1.5rem; max-width: 50ch;">CI log → <code>/autofix-pr</code> → regen commit → green CI → <code>/ultrareview</code> → cited findings.</p>
+  <aside class="notes">
+    <p>2 minutes. Let the screencast run. End on the ultrareview finding with the cited line.</p>
+    <p>Tie back: "This is cite-the-line, automated."</p>
+  </aside>
+</section>
+
+<section class="slide" data-section="54:30 — Caveats">
+  <span class="label">The caveats</span>
+  <h2>What you saw is research-preview.</h2>
+  <ul class="clean">
+    <li><code>/autofix-pr</code> is a research preview. Behavior will change.</li>
+    <li><code>/ultrareview</code> requires claude.ai auth. <strong>Does not work on Bedrock.</strong> CapTech-sandbox-only today.</li>
+    <li>Both commands can trigger comment-based automation (Atlantis, Terraform Cloud). Approve per-client before using.</li>
+  </ul>
+  <div class="stamp sandbox"><span class="dot"></span>Sandbox-only today</div>
+  <aside class="notes"><p>30 seconds. The stamp matters. Do not let anyone walk out thinking this runs on Bedrock.</p></aside>
+</section>

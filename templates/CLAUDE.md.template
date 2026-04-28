@@ -1,0 +1,191 @@
+# Project Documentation for Claude Code
+
+This file defines how Claude Code operates in this codebase. It is a behavior contract, not a readme. Every instruction here takes precedence over Claude's default behavior and other documentation.
+
+## Project Overview
+
+**Project type**: <<PLACEHOLDER: e.g., GraphQL API with gqlgen, TypeScript React app, Python FastAPI service>>
+
+**Primary technologies**: <<PLACEHOLDER: list key frameworks, libraries, languages>>
+
+**Code generation tools**: <<PLACEHOLDER: e.g., gqlgen, graphql-codegen, protoc, sqlc - or "none">>
+
+**Entry points**: <<PLACEHOLDER: main files/directories>>
+
+**Architecture notes**: <<PLACEHOLDER: brief description of how the major pieces fit together>>
+
+## Core Rules
+
+These rules are non-negotiable. Violating them is a blocker.
+
+### Planning and Communication
+
+- Before writing code, state the plan in writing. Wait for approval before implementing.
+- When unsure about a decision, ask one specific question rather than guessing.
+- If you encounter something unexpected (failing test, missing file, API mismatch), stop and report it. Do not work around silently.
+
+### Version Control
+
+- Never run `git push --force` without explicit confirmation.
+- Never work directly on main or master branches. Always work on a feature branch.
+- If a test was passing and now fails after your change, stop and ask before modifying the test. The test may be correct.
+- Never amend commits unless explicitly asked. Create new commits.
+
+### Code Quality and Testing
+
+- Run the verification command before claiming a task is complete. Quote the output in your response.
+- Never skip tests. If a feature is not testable in the current architecture, raise that as a finding.
+- When you reference a function, type, field, or import, cite the file and line number where it is defined. If you cannot cite it, you may be guessing.
+
+### Dependencies and Configuration
+
+- Do not add dependencies (npm/pip/go packages) without asking first.
+- Do not modify CI/CD configuration files without explicit approval.
+- Do not change linter or formatter configuration to make your code pass. Fix the code instead.
+
+## Project-Specific Conventions
+
+### Build and Test Commands
+
+**Install dependencies**: <<PLACEHOLDER: e.g., npm install, go mod download, pip install -r requirements.txt>>
+
+**Build command**: <<PLACEHOLDER: e.g., npm run build, go build ./..., make>>
+
+**Test command**: <<PLACEHOLDER: e.g., npm test, go test ./..., pytest>>
+
+**Lint command**: <<PLACEHOLDER: e.g., npm run lint, golangci-lint run, black --check .>>
+
+**Code generation command**: <<PLACEHOLDER: e.g., go run github.com/99designs/gqlgen generate - or "N/A">>
+
+Run the code generation command whenever schema or interface definitions change. Never edit generated files by hand.
+
+### File Organization
+
+**Generated files** (do not edit): <<PLACEHOLDER: list patterns like graph/generated.go, src/generated/, *.pb.go - or "N/A">>
+
+**Test file conventions**: <<PLACEHOLDER: e.g., *_test.go in the same directory, tests/ directory with mirrors, *.test.ts>>
+
+**Configuration files**: <<PLACEHOLDER: key config files and what they control>>
+
+### Code Patterns
+
+**Error handling**: <<PLACEHOLDER: project conventions - e.g., return errors, use error wrapping, log and continue>>
+
+**Logging**: <<PLACEHOLDER: logger to use, log levels, structured logging patterns>>
+
+**Null/nil handling**: <<PLACEHOLDER: e.g., GraphQL nullability matches Go pointers, always validate nil>>
+
+**Async patterns**: <<PLACEHOLDER: e.g., use dataloaders for N+1, Promises over callbacks, goroutines with errgroup>>
+
+## GraphQL-Specific Guidance (if applicable)
+
+Remove this section if the project does not use GraphQL.
+
+**Schema location**: <<PLACEHOLDER: e.g., graph/schema.graphqls, schema/*.graphql>>
+
+**Resolver conventions**: <<PLACEHOLDER: e.g., each resolver in its own file, grouped by domain, one file per type>>
+
+**Dataloader usage**: <<PLACEHOLDER: when to use dataloaders, how they are structured>>
+
+**Query complexity**: <<PLACEHOLDER: any limits or guidelines>>
+
+Before proposing a GraphQL query or mutation, confirm that every field and argument exists in the schema. Cite the schema file and line.
+
+## API and External Integration Guidance
+
+**API authentication**: <<PLACEHOLDER: how auth works - bearer tokens, API keys, OAuth, etc.>>
+
+**External services**: <<PLACEHOLDER: list key services this project calls - databases, APIs, message queues>>
+
+**Secrets management**: <<PLACEHOLDER: .env files, secret manager, vault - and how to reference secrets symbolically>>
+
+Never paste real API keys, OAuth secrets, database passwords, or bearer tokens into prompts. Use placeholders like `${API_KEY}` or `<redacted>`.
+
+## Verification and Quality Gates
+
+### Before Claiming Completion
+
+Run this command and include the output in your response:
+
+<<PLACEHOLDER: e.g., npm test && npm run lint, make test, go test ./... && golangci-lint run>>
+
+If any verification step fails, the task is not complete.
+
+### Before Opening a Pull Request
+
+1. All tests pass locally
+2. Linter reports no new warnings
+3. <<PLACEHOLDER: any additional checks - e.g., schema validation, type generation, manual smoke test>>
+4. Git diff reviewed for accidental changes (debug logs, commented code, secrets)
+
+Run `/security-review` before any PR that touches authentication, authorization, data access, or secret handling.
+
+## Pull Request Conventions
+
+**Title format**: <<PLACEHOLDER: e.g., conventional commits style, Jira ticket prefix, free-form>>
+
+**Description requirements**: <<PLACEHOLDER: e.g., link to ticket, summary of changes, testing notes>>
+
+**Review process**: <<PLACEHOLDER: e.g., requires 2 approvals, auto-merge on approval, manual merge only>>
+
+**CI requirements**: <<PLACEHOLDER: which checks must pass, any manual gates>>
+
+## Common Pitfalls and Mistakes
+
+These are mistakes that have caused problems in the past:
+
+<<PLACEHOLDER: list 3-5 project-specific gotchas. Examples:
+- Forgetting to run gqlgen after schema changes causes drift errors in CI
+- The User model has a soft-delete flag; always filter on deleted_at IS NULL
+- Apollo cache updates must happen in the mutation resolver, not the component
+- Python datetime objects must be UTC-aware; use timezone.now() not datetime.now()
+- Goroutines must be cleaned up; always use errgroup or context cancellation
+>>
+
+## Context and Token Hygiene
+
+Claude Code operates with a 1M token context window, but accuracy degrades as context fills.
+
+- Load only the files you need for the current task. Do not read entire directories.
+- Use `/context` to check token usage before starting a large task.
+- Use `/compact` when staying in the same task but context is filling. Use `/clear` when switching to an unrelated task.
+- Cache project context (schema files, main README, this CLAUDE.md) for faster repeat access.
+
+## Responsible Use
+
+This project may involve client data or proprietary code.
+
+- Do not let Claude read files it does not need. Use narrow file scopes.
+- Review every outbound network call (curl, API fetch, webhooks) before allowing it.
+- Treat the Claude Code transcript as auditable. Anything in the session may be exported or logged.
+- Scrub logs and error traces before pasting them into prompts. They often contain hostnames, IPs, and session tokens.
+
+## Instruction Precedence
+
+When guidance conflicts, this is the precedence order:
+
+1. Explicit user instructions in the current conversation
+2. This CLAUDE.md file
+3. Installed skills
+4. Claude's training and system instructions
+
+If you encounter a conflict between this file and a skill, follow this file.
+
+## Skills Enabled
+
+<<PLACEHOLDER: list skills the team has agreed to use, if any. Examples:
+- test-driven-development: enforce red-green-refactor on new features
+- systematic-debugging: use four-phase protocol on bugs (root cause, pattern, hypothesis, fix)
+- verification-before-completion: run verification command in-turn before claiming done
+- using-git-worktrees: isolate parallel work in worktrees
+>>
+
+## Notes and Maintenance
+
+This CLAUDE.md is a living document. When Claude makes a mistake or you discover a new convention:
+
+1. Update this file with the correction
+2. Commit the change with a clear message
+3. The change applies to future Claude Code sessions
+
+Last updated: <<PLACEHOLDER: date>>

@@ -1,0 +1,37 @@
+# gqlgen configuration
+# See https://gqlgen.com/config/ for full documentation
+
+schema:
+  - graph/schema.graphql
+
+exec:
+  filename: graph/generated/generated.go
+  package: generated
+
+model:
+  filename: graph/model/models_gen.go
+  package: model
+
+resolver:
+  layout: follow-schema
+  dir: graph
+  package: graph
+  filename_template: "{name}.resolvers.go"
+
+# Uncomment to enable automatic binding to existing Go models
+# autobind:
+#   - "demo-graphql-subgraph/internal/models"
+
+# Skip generating models for these types (map to existing types)
+# models:
+#   ID:
+#     model:
+#       - github.com/99designs/gqlgen/graphql.ID
+#   Int:
+#     model:
+#       - github.com/99designs/gqlgen/graphql.Int
+
+# Directives
+# directives:
+#   auth:
+#     skip_runtime: true

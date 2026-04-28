@@ -1,0 +1,72 @@
+<section class="slide section-divider" data-section="45:00 — Scenario B">
+  <span class="label">45:00 — 52:00 · Live demo</span>
+  <h1>Scenario B<br>Consumer field addition</h1>
+  <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); max-width: 50ch;">Claude Code doing the exact work the team will do on the client.</p>
+</section>
+
+<section class="slide" data-section="45:00 — Setup">
+  <span class="label">Setup</span>
+  <h2>The synthetic gqlgen subgraph.</h2>
+  <p>Located at <code>demos/synthetic-subgraph/</code>. Mirrors the real client's structure.</p>
+  <div class="quote" style="font-size: 1.7rem; margin-top: 1.5rem;">
+    Consumer team just requested two new fields on the <code>Product</code> type:<br>
+    <code>skuCode: String!</code> and <code>inventoryCount: Int!</code>
+  </div>
+  <aside class="notes"><p>30 seconds. Get to the live demo. Do not linger on setup.</p></aside>
+</section>
+
+<section class="slide" data-section="45:30 — The prompt">
+  <span class="label">The demo prompt · DEMO-SCRIPT-B.md</span>
+  <div class="code-header">paste into Claude Code</div>
+<pre>A consumer team needs two new fields on the Product type:
+  skuCode: String!
+  inventoryCount: Int!
+
+Read the CLAUDE.md and schema. Then propose a plan
+before making any changes.</pre>
+  <p class="caption" style="margin-top: 1rem;">Do <code>/context</code> first. Show it mostly empty. Then paste this.</p>
+  <aside class="notes">
+    <p>Open Claude Code in the demo repo. Show /context — mostly empty. Then this prompt.</p>
+  </aside>
+</section>
+
+<section class="slide" data-section="46:00 — The five steps">
+  <span class="label">What happens · live</span>
+  <h2>Five steps in sequence.</h2>
+  <ol class="clean" style="margin-top: 1rem;">
+    <li>Claude reads CLAUDE.md and schema.</li>
+    <li>Proposes a plan: schema edit → regen → resolver update → test.</li>
+    <li>You approve. Claude edits schema, runs gqlgen, updates resolver, writes test.</li>
+    <li>Run the test. It passes.</li>
+    <li>Review the diff. Claude respected the "never edit generated files" rule. Only touched handwritten files.</li>
+  </ol>
+  <div class="stamp client-ready"><span class="dot"></span>Client-ready pattern</div>
+  <aside class="notes">
+    <p>5 minutes live. Narrate while it runs. Do not rush.</p>
+  </aside>
+</section>
+
+<section class="slide" data-section="50:00 — Narration beats">
+  <span class="label">Say these during the demo</span>
+  <h2>Three call-outs.</h2>
+  <ul class="clean" style="font-size: 1.4rem;">
+    <li>"Watch how it reads the CLAUDE.md first. That is the three levers in action."</li>
+    <li>"Notice it is citing file paths when it describes the plan. That is the cite-the-line rule."</li>
+    <li>"If it tried to edit <code>generated.go</code>, CLAUDE.md would have caught it."</li>
+  </ul>
+  <aside class="notes"><p>You have these memorized. Each one maps back to a point from earlier in the talk.</p></aside>
+</section>
+
+<section class="slide" data-section="51:00 — Fallback">
+  <span class="label">If anything breaks · fallback plan</span>
+  <h2>Pre-captured screenshots in <code>demos/synthetic-subgraph/fallback/</code>.</h2>
+  <img class="demo-fallback" data-for="scenario-b-step-3" src="../demos/synthetic-subgraph/fallback/TODO.png">
+  <p style="margin-top: 1rem;">If Claude misses the dataloader pattern live, say:</p>
+  <div class="quote" style="font-size: 1.5rem;">
+    "It missed the dataloader pattern — here's where we would catch it in <code>/ultrareview</code>."
+    <cite>Then show the screenshot.</cite>
+  </div>
+  <aside class="notes">
+    <p>Do not panic if live demo fails. Pivot to the ultrareview framing. That is itself a teaching moment.</p>
+  </aside>
+</section>

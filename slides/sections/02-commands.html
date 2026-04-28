@@ -1,0 +1,76 @@
+<section class="slide section-divider" data-section="9:00 — Command tour">
+  <span class="label">9:00 — 14:00</span>
+  <h1>The April 2026<br>command tour</h1>
+  <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); max-width: 50ch;">Commands the Claude Code team shipped in the last 90 days. Post-everyone's January knowledge cutoff.</p>
+</section>
+
+<section class="slide" data-section="9:00 — /ultrareview">
+  <span class="label">Headline 1 of 4</span>
+  <h2><code>/ultrareview</code></h2>
+  <p>Multi-agent cloud review with independent verification. Runs 5–10 minutes in a cloud sandbox.</p>
+  <div class="rulebox" style="margin-top: 1rem;">
+    <p><strong>Pricing:</strong> $5–$20 after 3 free runs. Free tier expires May 5.</p>
+    <p><strong>Auth:</strong> Requires claude.ai login. Not available on Bedrock, Vertex, or Foundry.</p>
+  </div>
+  <div class="stamp client-no"><span class="dot"></span>Client: No</div>
+  <p class="caption" style="margin-top: 1rem;">Use on CapTech side only for now.</p>
+  <aside class="notes"><p>75 seconds. Land the stamp: claude.ai auth is the disqualifier for client use today.</p></aside>
+</section>
+
+<section class="slide" data-section="10:15 — /ultraplan">
+  <span class="label">Headline 2 of 4</span>
+  <h2><code>/ultraplan</code></h2>
+  <p>Draft a plan in the cloud. Review in a browser with inline comments.</p>
+  <ul class="clean" style="margin-top: 1rem;">
+    <li>Choose whether to execute in the cloud (opens a PR).</li>
+    <li>Or teleport back to the terminal and execute locally.</li>
+    <li>Plan lives in a shared URL your team can comment on.</li>
+  </ul>
+  <div class="stamp sandbox"><span class="dot"></span>Sandbox</div>
+  <aside class="notes"><p>75 seconds. Emphasize: planning in the cloud is a team collaboration pattern, not a solo one.</p></aside>
+</section>
+
+<section class="slide" data-section="11:30 — /autofix-pr">
+  <span class="label">Headline 3 of 4</span>
+  <h2><code>/autofix-pr</code></h2>
+  <p>Spawn a cloud session that watches a PR. Auto-fixes CI failures and review comments. Replies on your behalf.</p>
+  <div class="rulebox" style="background: rgba(253, 218, 36, 0.15); border-color: var(--yellow); margin-top: 1rem;">
+    <p><strong>Warning:</strong> Can trigger Atlantis or Terraform Cloud comment-based automation.</p>
+  </div>
+  <div class="stamp client-ready"><span class="dot"></span>With approval only</div>
+  <p class="caption">Client-ready stamp requires explicit per-client approval.</p>
+  <aside class="notes"><p>75 seconds. The scary part is comment-triggered infra automation. Say "Atlantis" out loud.</p></aside>
+</section>
+
+<section class="slide" data-section="12:45 — /context">
+  <span class="label">Headline 4 of 4</span>
+  <h2><code>/context</code></h2>
+  <p>Visualizes context usage as a colored grid.</p>
+  <ul class="clean" style="margin-top: 1rem;">
+    <li>No-op read. Safe to run anytime.</li>
+    <li>Shows where your tokens are going.</li>
+    <li>Sets up the context-hygiene decision rule 20 minutes from now.</li>
+  </ul>
+  <div class="stamp client-ready"><span class="dot"></span>Client-ready</div>
+  <aside class="notes"><p>Say: "Get in the habit of running /context before anything real. Cheapest diagnostic in the kit."</p></aside>
+</section>
+
+<section class="slide" data-section="13:30 — Also worth knowing">
+  <span class="label">Also worth a sentence each</span>
+  <h2>The rest of the new-ish surface</h2>
+  <div class="two-col" style="margin-top: 1rem;">
+    <div>
+      <h3><code>/effort</code></h3>
+      <p>New <code>xhigh</code> default as of April 2026. Breaking change. Everyone is burning more tokens per turn than they did in March. Turn it down for routine work.</p>
+      <h3 style="margin-top: 1.5rem;"><code>/rewind</code></h3>
+      <p>Checkpoint revert. Undo the last N turns cleanly.</p>
+    </div>
+    <div>
+      <h3><code>/branch</code></h3>
+      <p>Fork the current conversation. Try two approaches without losing the first.</p>
+      <h3 style="margin-top: 1.5rem;"><code>/init</code></h3>
+      <p>Generate a starter CLAUDE.md from the current repo. Good first step on any new project.</p>
+    </div>
+  </div>
+  <aside class="notes"><p>Speed through. One breath per command. The xhigh default is the one worth slowing for.</p></aside>
+</section>

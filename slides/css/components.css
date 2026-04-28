@@ -1,0 +1,174 @@
+/* Reusable components: stamps, three-levers, code, callouts */
+
+/* CapTech to client stamp */
+.stamp {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.9rem;
+  border-radius: 2px;
+  z-index: 10;
+}
+.stamp.sandbox {
+  background: var(--yellow);
+  color: var(--dark-grey);
+}
+.stamp.client-ready {
+  background: var(--captech-blue);
+  color: #fff;
+}
+.stamp.client-no {
+  background: var(--dark-grey);
+  color: var(--yellow);
+}
+.stamp .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+/* Three-levers visual callback */
+.three-levers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin: 2rem 0;
+}
+.lever {
+  padding: 1.5rem;
+  border-top: 4px solid;
+  background: rgba(0,0,0,0.02);
+}
+.lever.context { border-color: var(--captech-blue); }
+.lever.context .lever-icon { color: var(--captech-blue); }
+.lever.capability { border-color: var(--yellow); }
+.lever.capability .lever-icon { color: var(--yellow); }
+.lever.verification { border-color: var(--sky-blue); }
+.lever.verification .lever-icon { color: var(--sky-blue); }
+.slide.dark .lever { background: rgba(255,255,255,0.05); }
+
+.lever-icon {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.lever-title {
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin: 0.25rem 0 0.5rem 0;
+}
+.lever p { font-size: 1.05rem; margin: 0; }
+
+/* Code blocks */
+pre, code {
+  font-family: var(--font-mono);
+}
+pre {
+  background: #F4F4F2;
+  border-left: 4px solid var(--captech-blue);
+  padding: 1.25rem 1.5rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  margin: 1rem 0;
+  color: var(--dark-grey);
+}
+pre.dark {
+  background: #1E252B;
+  color: #E6E6E6;
+}
+.code-header {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--medium-grey);
+  background: #E8E8E5;
+  padding: 0.4rem 1rem;
+  border-left: 4px solid var(--captech-blue);
+  margin-bottom: 0;
+}
+.code-header + pre { margin-top: 0; }
+
+/* Callouts and quotes */
+.quote {
+  border-left: 6px solid var(--captech-blue);
+  padding: 1rem 0 1rem 2rem;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 2rem;
+  line-height: 1.3;
+  font-style: italic;
+  color: var(--dark-grey);
+  margin: 1.5rem 0;
+}
+.slide.dark .quote { color: #fff; border-color: var(--sky-blue); }
+.quote cite {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--medium-grey);
+}
+
+/* Decision rule / rulebox */
+.rulebox {
+  background: var(--light-grey);
+  padding: 1.5rem 2rem;
+  border-left: 6px solid var(--captech-blue);
+  margin: 1rem 0;
+}
+.rulebox p { margin: 0.4rem 0; font-size: 1.35rem; }
+
+/* Lists */
+ul.clean, ol.clean {
+  list-style: none;
+  padding-left: 0;
+}
+ul.clean li, ol.clean li {
+  padding: 0.4rem 0 0.4rem 1.5rem;
+  position: relative;
+}
+ul.clean li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 1.05rem;
+  width: 0.55rem;
+  height: 2px;
+  background: var(--captech-blue);
+}
+ol.clean { counter-reset: step; }
+ol.clean li { counter-increment: step; }
+ol.clean li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: 0.4rem;
+  color: var(--captech-blue);
+  font-weight: 600;
+}
+
+/* Section divider slides */
+.slide.section-divider {
+  background: var(--bg-dark);
+  color: #fff;
+  justify-content: center;
+  align-items: flex-start;
+}
+.slide.section-divider h1 {
+  color: #fff;
+  font-size: 6rem;
+}
+.slide.section-divider .label { color: var(--yellow); }

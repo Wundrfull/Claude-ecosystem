@@ -1,0 +1,29 @@
+{
+  "name": "motion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Motion graphics clips for the Claude Code Team Primer (April 29-30 2026).",
+  "scripts": {
+    "start": "remotion studio",
+    "build": "remotion bundle",
+    "render": "remotion render",
+    "render:intro": "remotion render intro out/intro.mp4",
+    "render:agentic-loop": "remotion render agentic-loop out/agentic-loop.mp4",
+    "render:context-rot": "remotion render context-rot out/context-rot.mp4",
+    "render:captech-stamp": "remotion render captech-stamp out/captech-stamp.mp4",
+    "render:all": "npm run render:intro && npm run render:agentic-loop && npm run render:context-rot && npm run render:captech-stamp",
+    "upgrade": "remotion upgrade"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.453",
+    "@remotion/fonts": "4.0.453",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.453"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.4.5"
+  }
+}

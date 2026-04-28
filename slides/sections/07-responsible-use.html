@@ -1,0 +1,84 @@
+<section class="slide section-divider" data-section="40:00 — Responsible use">
+  <span class="label">40:00 — 45:00</span>
+  <h1>Responsible use<br>and the CapTech-to-client stamp</h1>
+  <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); max-width: 50ch;">The one-slide policy you take with you.</p>
+</section>
+
+<section class="slide" data-section="40:00 — Three levers reprise">
+  <span class="label">Three levers · second appearance</span>
+  <h2>Everything in this next block is <span style="color: var(--sky-blue); font-weight: 500;">verification</span>.</h2>
+  <div class="three-levers">
+    <div class="lever context">
+      <div class="lever-icon">01 · Context</div>
+      <div class="lever-title">What you put in front of it</div>
+      <p>Files, CLAUDE.md, memory, skills.</p>
+    </div>
+    <div class="lever capability">
+      <div class="lever-icon">02 · Capability</div>
+      <div class="lever-title">What you let it do</div>
+      <p>Permissions, hooks, tools.</p>
+    </div>
+    <div class="lever verification" style="box-shadow: 0 0 0 4px rgba(0, 165, 223, 0.3);">
+      <div class="lever-icon">03 · Verification</div>
+      <div class="lever-title">How you check its work</div>
+      <p>Tests, review, security, cite the line.</p>
+    </div>
+  </div>
+  <aside class="notes"><p>The callback. Highlight the Verification lever. The next slides are all about this column.</p></aside>
+</section>
+
+<section class="slide" data-section="40:30 — Data policy">
+  <span class="label">Anthropic's data policy · verbatim</span>
+  <div class="quote">
+    "By default, we will not use your inputs or outputs from our commercial products to train our models."
+    <cite>privacy.claude.com/en/articles/7996868</cite>
+  </div>
+  <p style="margin-top: 1rem;"><strong>The exception:</strong> thumbs-up / thumbs-down feedback buttons.</p>
+  <div class="rulebox" style="background: rgba(253, 218, 36, 0.15); border-color: var(--yellow); margin-top: 1rem;">
+    <p><strong>Action (Team/Enterprise admins):</strong> Organization settings → Data and Privacy → "Rate chats" → disable.</p>
+    <p>Do this once, org-wide, before touching client data.</p>
+  </div>
+  <aside class="notes"><p>60 seconds. The feedback-off toggle is the single most important admin action before a client engagement.</p></aside>
+</section>
+
+<section class="slide" data-section="41:30 — Secret hygiene">
+  <span class="label">API-key and secret hygiene · checklist</span>
+  <h2>Six rules.</h2>
+  <ol class="clean" style="font-size: 1.15rem; margin-top: 0.5rem;">
+    <li>Never paste real API keys, OAuth secrets, or bearer tokens into prompts. Use placeholders.</li>
+    <li>Never commit <code>.env</code>, <code>credentials.json</code>, or anything under <code>~/.aws/</code>. Explicit filenames only. Never <code>git add -A</code>.</li>
+    <li>Scrub logs before pasting. Error traces leak hostnames, IPs, session IDs.</li>
+    <li>Scope the bash allowlist so Claude cannot curl internal endpoints.</li>
+    <li>Treat <code>/export</code> transcripts as client deliverables.</li>
+    <li>Run <code>/security-review</code> before every PR that touches auth or data flow.</li>
+  </ol>
+  <div class="stamp client-ready"><span class="dot"></span>Client-ready checklist</div>
+  <aside class="notes"><p>90 seconds. Read the list. Don't dwell.</p></aside>
+</section>
+
+<section class="slide dark" data-section="43:00 — The stamp, in motion">
+  <div class="motion-placeholder" data-clip="captech-stamp">[Remotion: captech-stamp 20s — sandbox loose, client strict, stamp animates in]</div>
+  <p style="margin-top: 2rem; font-size: 1.75rem; max-width: 50ch;">The stricter policy applies on the <span style="color: var(--sky-blue);">client-billed side</span>, always.</p>
+  <aside class="notes"><p>20 second clip. One sentence after. Do not add more.</p></aside>
+</section>
+
+<section class="slide" data-section="43:30 — Cite the line">
+  <span class="label">The single highest-ROI habit</span>
+  <h2 style="font-size: 5rem;">"Cite the file and line."</h2>
+  <p style="margin-top: 1rem; font-size: 1.4rem;">Whenever Claude references a function, type, or GraphQL field, require a path and line number.</p>
+  <p style="margin-top: 1rem; font-size: 1.4rem;"><strong>If it cannot cite, it is guessing.</strong></p>
+  <p class="caption" style="margin-top: 1.5rem;">Put it in CLAUDE.md. Cheapest insurance against shipping a hallucinated Apollo hook or phantom schema field.</p>
+  <aside class="notes">
+    <p>60 seconds. This lands. Slow down. This is the line that walks out of the room with them.</p>
+  </aside>
+</section>
+
+<section class="slide" data-section="44:30 — ZDR">
+  <span class="label">ZDR note</span>
+  <h2>Zero Data Retention</h2>
+  <ul class="clean">
+    <li>Available as a separate arrangement. Negotiate it before code if the client requires it.</li>
+    <li><strong>Caveat:</strong> ZDR disables <code>/ultrareview</code> and <code>/ultraplan</code>.</li>
+  </ul>
+  <aside class="notes"><p>30 seconds. Name ZDR so they recognize the term in client contracts.</p></aside>
+</section>

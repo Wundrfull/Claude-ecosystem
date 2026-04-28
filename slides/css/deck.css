@@ -1,0 +1,106 @@
+/* Deck layout and slide transitions */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--dark-grey);
+  background: var(--bg-light);
+}
+
+#deck {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 6vh 8vw;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--bg-light);
+  color: var(--dark-grey);
+}
+
+.slide.active { display: flex; }
+
+.slide.dark {
+  background: var(--bg-dark);
+  color: #fff;
+}
+.slide.dark h1, .slide.dark h2, .slide.dark h3 { color: #fff; }
+.slide.dark .big-number { color: var(--sky-blue); }
+
+/* Typography hierarchy */
+h1 {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 5rem;
+  line-height: 1.05;
+  margin: 0 0 1.5rem 0;
+  color: var(--dark-grey);
+  letter-spacing: -0.02em;
+}
+h2 {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 3.25rem;
+  line-height: 1.1;
+  margin: 0 0 1rem 0;
+  color: var(--captech-blue);
+}
+h3 {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 1.75rem;
+  margin: 0 0 0.75rem 0;
+  color: var(--dark-grey);
+}
+p, li {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.45;
+}
+.label {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--medium-grey);
+}
+.caption {
+  font-style: italic;
+  color: var(--medium-grey);
+  font-size: 1.1rem;
+}
+
+/* Big numbers */
+.big-number {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 10rem;
+  line-height: 1;
+  color: var(--captech-blue);
+  letter-spacing: -0.04em;
+}
+.big-number.small { font-size: 7rem; }
+
+.number-pair {
+  display: flex;
+  gap: 4rem;
+  align-items: baseline;
+  margin: 2rem 0;
+}
+.number-pair .big-number { font-size: 7rem; }
