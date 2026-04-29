@@ -1,40 +1,121 @@
+<style>
+  /* Section-scoped tweaks for 10-wrap. Keep under 40 lines.
+     Fixes hierarchy on the three-levers slide: eyebrow + small title,
+     THEN the big lever names as the dominant element. Swaps the yellow
+     accent on "Capability" for light-teal (higher contrast on white). */
+  .wrap-levers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .wrap-lever {
+    padding: 1.75rem 1.5rem 1.5rem;
+    border-top: 4px solid;
+    background: rgba(0, 0, 0, 0.025);
+  }
+  .wrap-lever .num {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    color: var(--medium-grey);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .wrap-lever .name {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 2.75rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.6rem;
+  }
+  .wrap-lever .sub {
+    font-size: 1.1rem;
+    color: var(--medium-grey);
+    margin: 0 0 0.9rem;
+    font-style: italic;
+  }
+  .wrap-lever p.body { font-size: 1.05rem; line-height: 1.45; margin: 0; }
+  .wrap-lever p.body code { color: var(--captech-blue); font-size: 0.95rem; }
+  .wrap-lever.l-context    { border-color: var(--captech-blue); }
+  .wrap-lever.l-context .name { color: var(--captech-blue); }
+  .wrap-lever.l-capability { border-color: var(--light-teal); }
+  .wrap-lever.l-capability .name { color: #1B8EA3; }
+  .wrap-lever.l-verification { border-color: var(--sky-blue); }
+  .wrap-lever.l-verification .name { color: var(--sky-blue); }
+
+  .qa-hero { text-align: left; }
+  .qa-hero h1 {
+    font-size: clamp(5rem, 10vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+  .qa-hero .q-mark { color: var(--sky-blue); font-weight: 500; }
+  .qa-meta {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .qa-meta span strong { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
+</style>
+
 <section class="slide" data-section="25:00 — Three levers, final">
-  <span class="label">Three levers &middot; final appearance</span>
+  <span class="eyebrow">three levers &middot; final callback</span>
   <h2>The whole talk on one slide.</h2>
-  <div class="three-levers">
-    <div class="lever context">
-      <div class="lever-icon">01 &middot; Context</div>
-      <div class="lever-title">What you put in front of it</div>
-      <p>CLAUDE.md. Auto memory. Skills. <code>/clear</code> vs <code>/compact</code>.</p>
+  <div class="wrap-levers">
+    <div class="wrap-lever l-context">
+      <span class="num">01</span>
+      <p class="name">Context</p>
+      <p class="sub">What you put in front of it.</p>
+      <p class="body">CLAUDE.md. Auto memory. Skills. <code>/clear</code> and <code>/compact</code>.</p>
     </div>
-    <div class="lever capability">
-      <div class="lever-icon">02 &middot; Capability</div>
-      <div class="lever-title">What you let it do</div>
-      <p>Plan Mode. <code>/permissions</code>. Tool allowlists. Per-client approval.</p>
+    <div class="wrap-lever l-capability">
+      <span class="num">02</span>
+      <p class="name">Capability</p>
+      <p class="sub">What you let it do.</p>
+      <p class="body">Plan Mode. <code>/permissions</code>. Tool allowlists. Per-client approval.</p>
     </div>
-    <div class="lever verification">
-      <div class="lever-icon">03 &middot; Verification</div>
-      <div class="lever-title">How you check its work</div>
-      <p>Tests. <code>/review</code>, <code>/security-review</code>. Cite the line.</p>
+    <div class="wrap-lever l-verification">
+      <span class="num">03</span>
+      <p class="name">Verification</p>
+      <p class="sub">How you check its work.</p>
+      <p class="body">Tests. <code>/review</code>, <code>/security-review</code>. Cite the line.</p>
     </div>
   </div>
   <aside class="notes">
-    <p>45 seconds. Third and final callback. The thesis of the whole talk in three columns. Land it, then move to Q&amp;A.</p>
+    <p>45 seconds. Third and final callback. Name the three in order: context, capability, verification. Point at each column as you say it.</p>
+    <p>Then: &ldquo;Everything we covered fits one of these three. If a practice does not fit one of these three, be suspicious of it.&rdquo; Land it, then move to Q&amp;A.</p>
   </aside>
 </section>
 
 <section class="slide dark" data-section="25:45 — Q&amp;A">
-  <span class="label">The reference index</span>
-  <h1>Questions?</h1>
-  <p class="caption mt-xl">Repo with slides, notes, and research lives in the team GitHub org. Claude Code Team Primer &middot; CapTech Consulting &middot; April 29-30 2026.</p>
+  <span class="label">the reference index</span>
+  <div class="qa-hero">
+    <h1>Questions<span class="q-mark">?</span></h1>
+  </div>
+  <p class="body-dark mt-lg" style="max-width: 56ch;">
+    Slides, notes, and research live in the team GitHub org. Repo stays open after this talk; PRs welcome.
+  </p>
+  <div class="qa-meta">
+    <span><strong>Claude Code Team Primer</strong></span>
+    <span>CapTech Consulting</span>
+    <span>April 29 &mdash; 30, 2026</span>
+  </div>
   <aside class="notes">
-    <p>Q&amp;A for ~10 minutes. Seeded questions:</p>
+    <p>Q&amp;A runs about 10 minutes. Seeded prompts if the room is quiet:</p>
     <ul>
-      <li>What if the client won&rsquo;t install Claude Code org-wide?</li>
-      <li>How is it different from Copilot / Cursor in practice?</li>
+      <li>What if the client will not install Claude Code org-wide?</li>
+      <li>How is it different from Copilot or Cursor in practice?</li>
       <li>Can we version CLAUDE.md in the client repo?</li>
-      <li>Won&rsquo;t Claude hallucinate the gqlgen config?</li>
-      <li>How do we pick between Opus 4.7 and Sonnet 4.6 per task?</li>
+      <li>Will Claude hallucinate the gqlgen config?</li>
+      <li>How do we pick Opus 4.7 vs Sonnet 4.6 per task?</li>
     </ul>
+    <p>Close by pointing them at the repo and the two scenario walkthroughs in <code>demos/</code>. Tell them to run the scenarios in sandbox before touching the client repo.</p>
   </aside>
 </section>

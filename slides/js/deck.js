@@ -27,6 +27,13 @@ async function loadSections() {
       const html = await resp.text();
       const tmp = document.createElement("div");
       tmp.innerHTML = html;
+      // Lift any <style> tags out of the section file and into <head>.
+      // Section files are rendered as loose HTML fragments, so scoped
+      // styles authored at the top of a section file would otherwise be
+      // thrown away when we only append the <section.slide> elements.
+      tmp.querySelectorAll("style").forEach((styleEl) => {
+        document.head.appendChild(styleEl);
+      });
       const sections = tmp.querySelectorAll("section.slide");
       sections.forEach((s) => deck.appendChild(s));
     } catch (err) {
@@ -49,7 +56,51 @@ async function loadSections() {
       if (state.overview) goTo(i);
     });
   });
+  populateCtxGrids();
   goTo(0);
+}
+
+// Populate .ctx-real__grid elements from their data-fill attribute.
+// Format: "category:count,category:count,..." — total should equal data-cells.
+// Mirror of the helper in kit.html; lives here so slides can declare grids
+// with data-fill and have the cells auto-generated at load time.
+function populateCtxGrids() {
+  document.querySelectorAll('.ctx-real__grid').forEach(grid => {
+    if (grid.children.length > 0) return; // already populated
+    const total = parseInt(grid.dataset.cells || '200', 10);
+    const spec = grid.dataset.fill || '';
+    if (!spec) return;
+    const segments = spec.split(',').map(s => {
+      const [cat, count] = s.split(':');
+      return { cat: cat.trim(), count: parseInt(count, 10) };
+    });
+    const root = grid.closest('.ctx-real');
+    const isCompact = root && root.classList.contains('ctx-compact-real');
+    const summaryCount = parseInt(grid.dataset.summaryCount || '12', 10);
+
+    const frag = document.createDocumentFragment();
+    let placed = 0;
+    for (const seg of segments) {
+      for (let i = 0; i < seg.count && placed < total; i++, placed++) {
+        const c = document.createElement('div');
+        c.className = 'cell ' + seg.cat;
+        c.style.setProperty('--i', placed);
+        c.style.setProperty('--mi', i);
+        if (isCompact && seg.cat === 'messages' && i < summaryCount) {
+          c.classList.add('is-summary');
+        }
+        frag.appendChild(c);
+      }
+    }
+    while (placed < total) {
+      const c = document.createElement('div');
+      c.className = 'cell free';
+      c.style.setProperty('--i', placed);
+      frag.appendChild(c);
+      placed++;
+    }
+    grid.appendChild(frag);
+  });
 }
 
 function goTo(i) {

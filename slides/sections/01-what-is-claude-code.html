@@ -1,102 +1,169 @@
 <style>
-  /* Scoped layout for the Copilot vs Claude Code comparison slide. */
-  .compare-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
-    margin-top: 1.5rem;
+  /* Section-local tweaks. Shared styles live in kit.css / sections.css. */
+  .whatis-hero {
     max-width: 980px;
   }
-  .compare-col {
-    padding: 1.5rem 1.75rem;
-    border-radius: 6px;
-    border-top: 4px solid;
-    background: rgba(0, 0, 0, 0.03);
+  .whatis-hero .display-xxl {
+    margin: 1rem 0 1.25rem;
   }
-  .compare-col.copilot {
-    border-color: var(--medium-grey);
+  .whatis-hero .sub {
+    color: rgba(255,255,255,0.75);
+    font-size: 1.3rem;
+    max-width: 52ch;
+    line-height: 1.45;
   }
-  .compare-col.claude {
-    border-color: var(--captech-blue);
-    background: rgba(0, 94, 184, 0.06);
+
+  .compare-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    max-width: 1100px;
   }
-  .compare-col h3 {
-    margin: 0 0 0.3rem 0;
-    font-size: 1.75rem;
+  .compare-split .col-label {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
     font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--medium-grey);
+    margin: 0 0 0.5rem;
   }
-  .compare-col.copilot h3 { color: var(--medium-grey); }
-  .compare-col.claude h3 { color: var(--captech-blue); }
-  .compare-col .lede {
-    margin: 0 0 1rem 0;
-    font-size: 1.1rem;
-    color: var(--dark-grey);
-    font-style: italic;
-  }
-  .compare-col ul.clean li {
-    font-size: 1.15rem;
-    padding: 0.25rem 0 0.25rem 1.5rem;
-  }
+  .compare-split .col-label.claude { color: var(--captech-blue); }
   .compare-shift {
-    margin-top: 1.75rem;
+    margin-top: 1.5rem;
     font-family: var(--font-mono);
-    font-size: 1.15rem;
+    font-size: 1.3rem;
     color: var(--dark-grey);
     letter-spacing: 0.02em;
   }
   .compare-shift .from { color: var(--medium-grey); }
   .compare-shift .to   { color: var(--captech-blue); font-weight: 600; }
-  .compare-shift .arrow {
-    color: var(--sky-blue);
-    margin: 0 0.75rem;
-    font-weight: 600;
+  .compare-shift .arrow { color: var(--sky-blue); margin: 0 0.75rem; font-weight: 600; }
+
+  /* Three levers with clearer hierarchy: title on top, the three
+     LEVER NAMES are the next dominant layer, descriptions below them. */
+  .levers-hero {
+    margin-top: 1rem;
+  }
+  .levers-hero .lever-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .levers-hero .lever-item {
+    border-top: 3px solid;
+    padding-top: 1rem;
+  }
+  .levers-hero .lever-item.context { border-color: var(--captech-blue); }
+  .levers-hero .lever-item.capability { border-color: var(--sky-blue); }
+  .levers-hero .lever-item.verification { border-color: var(--dark-blue); }
+  .levers-hero .lever-number {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--medium-grey);
+    letter-spacing: 0.14em;
+    margin-bottom: 0.25rem;
+  }
+  .levers-hero .lever-name {
+    font-family: var(--font-sans);
+    font-size: 2.75rem;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.6rem;
+  }
+  .levers-hero .lever-item.context .lever-name { color: var(--captech-blue); }
+  .levers-hero .lever-item.capability .lever-name { color: var(--sky-blue); }
+  .levers-hero .lever-item.verification .lever-name { color: var(--dark-blue); }
+  .levers-hero .lever-desc {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    color: var(--medium-grey);
+    line-height: 1.45;
+    margin: 0;
+  }
+  .levers-hero .lever-desc strong {
+    color: var(--dark-grey);
+    font-weight: 500;
   }
 </style>
 
 <section class="slide section-divider" data-section="1:30 — What Claude Code is">
-  <span class="label">1:30 — 4:30</span>
-  <h1>What Claude Code is<br>(and isn't)</h1>
-  <p class="lede">
-    Reset the mental model from inline completion to agentic loop. The single most important concept shift for this room.
-  </p>
+  <div class="whatis-hero">
+    <span class="eyebrow" style="color: var(--yellow);">1:30 &mdash; 4:30 &middot; section two</span>
+    <p class="display-xxl" style="color: #fff;">Not autocomplete.<br><span class="accent" style="color: var(--sky-blue); font-weight: 500;">An agent.</span></p>
+    <p class="sub">Copilot writes the next line. Claude Code writes the next pull request.</p>
+  </div>
 </section>
 
 <section class="slide" data-section="1:45 — Copilot vs Claude Code">
   <span class="label">The mental-model shift</span>
-  <h2>Copilot is not the model</h2>
-  <div class="compare-grid">
-    <div class="compare-col copilot">
-      <h3>Copilot</h3>
-      <p class="lede">A very fast tab-complete with taste.</p>
-      <ul class="clean">
-        <li>You type. Ghost text appears.</li>
-        <li>Accept or reject, one buffer.</li>
-        <li>No state beyond the visible window.</li>
-      </ul>
+  <h2>Copilot is not the model.</h2>
+
+  <div class="compare-split">
+    <div>
+      <p class="col-label">Copilot</p>
+      <div class="term term-sm" style="background: #1E252B;">
+        <div class="term-chrome">
+          <span></span><span></span><span></span>
+          <span class="term-title">auth.ts</span>
+        </div>
+        <div class="term-body" style="padding: 1rem 1.15rem;">
+          <div style="color: #8A949E;">function refreshToken(user) {</div>
+          <div style="color: #8A949E;">&nbsp;&nbsp;return fetch(</div>
+          <div style="color: var(--sky-blue); background: rgba(0,165,223,0.08); border-radius: 3px; padding: 0.15rem 0.3rem; margin-left: 2ch;">'/api/auth/refresh', {&hellip;}</div>
+          <div style="color: #8A949E;">&nbsp;&nbsp;);</div>
+          <div style="color: #8A949E;">}</div>
+          <div class="term-benefits" style="border-top-color: rgba(138,148,158,0.2);">
+            <span class="term-benefit" style="background: rgba(138,148,158,0.12); color: #8A949E; border-color: rgba(138,148,158,0.25);">one file</span>
+            <span class="term-benefit" style="background: rgba(138,148,158,0.12); color: #8A949E; border-color: rgba(138,148,158,0.25);">ghost text</span>
+            <span class="term-benefit" style="background: rgba(138,148,158,0.12); color: #8A949E; border-color: rgba(138,148,158,0.25);">accept / reject</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="compare-col claude">
-      <h3>Claude Code</h3>
-      <p class="lede">An agent, not a completion engine.</p>
-      <ul class="clean">
-        <li>You delegate. It plans, reads, edits, runs, reflects.</li>
-        <li>Operates across the codebase, not one file.</li>
-        <li>Persists across sessions through CLAUDE.md and memory.</li>
-      </ul>
+
+    <div>
+      <p class="col-label claude">Claude Code</p>
+      <div class="term term-sm term-session term-output-lines" style="--term-typed-width: 24ch;">
+        <div class="term-chrome">
+          <span></span><span></span><span></span>
+          <span class="term-title">~/project</span>
+        </div>
+        <div class="term-body" style="padding: 1rem 1.15rem;">
+          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="refactor the auth flow"></span></div>
+          <div class="term-output">
+            <div class="term-ln dim">plan &middot; read 4 files</div>
+            <div class="term-ln dim">edit session.ts, token.ts</div>
+            <div class="term-ln dim">run npm test</div>
+            <div class="term-ln ok term-check">done &middot; 4 files &middot; green</div>
+          </div>
+          <div class="term-benefits">
+            <span class="term-benefit">many files</span>
+            <span class="term-benefit">full loop</span>
+            <span class="term-benefit">checks itself</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
   <p class="compare-shift">
     <span class="from">next line</span><span class="arrow">&rarr;</span><span class="to">next pull request</span>
   </p>
+
   <aside class="notes">
-    <p>90 seconds. The whole reframe sits in the one-liner: Copilot writes the next line; Claude Code writes the next pull request. Say it out loud. Let it sit.</p>
-    <p>Do not claim Claude Code is better. Claim it is different. Let the audience draw the conclusion. If someone asks about Cursor, defer to Q&amp;A.</p>
-    <p>Exit line: "The shape of that difference is a loop — plan, act, observe. Let me show you."</p>
+    <p>90 seconds. The whole reframe sits in the one-liner: Copilot writes the next line. Claude Code writes the next pull request. Say it. Let it sit.</p>
+    <p>Point at the left terminal: ghost text, one buffer. Point at the right: a goal in, a plan plus edits plus a test run out. Different tool, different workflow.</p>
+    <p>Exit: "The shape of that difference is a loop. Let me show you."</p>
   </aside>
 </section>
 
 <section class="slide dark" data-section="2:45 — The agentic loop">
   <span class="label">The agent loop</span>
-  <h2>Plan &rarr; Tool use &rarr; Observe &rarr; Plan &rarr; Done</h2>
+  <h2>Plan &rarr; Tool use &rarr; Observe &rarr; done.</h2>
   <div class="anim-loop mt-md">
     <svg viewBox="0 0 720 405" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agentic loop: plan, tool use, observe">
       <defs>
@@ -113,44 +180,51 @@
       <text class="node-sub" x="360" y="88">DECIDE</text>
       <circle class="node n-tool" cx="473" cy="267" r="52"/>
       <text class="node-label l-tool" x="473" y="261">Tool use</text>
-      <text class="node-sub" x="473" y="283">READ · EDIT · RUN</text>
+      <text class="node-sub" x="473" y="283">READ &middot; EDIT &middot; RUN</text>
       <circle class="node n-obs" cx="247" cy="267" r="52"/>
       <text class="node-label l-obs" x="247" y="261">Observe</text>
       <text class="node-sub" x="247" y="283">REFLECT</text>
     </svg>
   </div>
-  <p class="caption" style="text-align: center;">
+  <p class="caption" style="text-align: center; color: rgba(255,255,255,0.65);">
     Claude iterates until done. Your job is to shape what it sees, what it can do, and how it checks itself.
   </p>
   <aside class="notes">
-    <p>45 seconds. Let the animation breathe. Silence while it pulses is fine — the shape is the point.</p>
-    <p>Land the teaching line on the caption: the loop exists, and the handles on the loop are the three levers coming up next. Do not name them yet; build the tension.</p>
+    <p>45 seconds. Let the loop pulse. Silence is fine.</p>
+    <p>Land on the caption: the loop exists, and the handles on the loop are the three levers coming up next. Do not name them yet. Build tension.</p>
+    <p>Note for Playwright pass: the SVG node positions may drift on different viewports. Worth a screenshot check.</p>
   </aside>
 </section>
 
 <section class="slide" data-section="3:30 — Three levers (first appearance)">
   <span class="label">The slide the whole talk hangs on</span>
-  <h2>Three levers</h2>
-  <div class="three-levers">
-    <div class="lever context">
-      <div class="lever-icon">01 · Context</div>
-      <div class="lever-title">What you put in front of it</div>
-      <p>Files, CLAUDE.md, memory, skills.</p>
-    </div>
-    <div class="lever capability">
-      <div class="lever-icon">02 · Capability</div>
-      <div class="lever-title">What you let it do</div>
-      <p>Permissions, hooks, tools, subagents.</p>
-    </div>
-    <div class="lever verification">
-      <div class="lever-icon">03 · Verification</div>
-      <div class="lever-title">How you check its work</div>
-      <p>Tests, review, /security-review, cite the line.</p>
+  <h2 style="color: var(--dark-grey); font-size: 2.25rem; font-weight: 500; letter-spacing: -0.01em;">Three levers decide whether Claude helps or hurts.</h2>
+
+  <div class="levers-hero">
+    <div class="lever-row">
+      <div class="lever-item context">
+        <div class="lever-number">01</div>
+        <p class="lever-name">Context</p>
+        <p class="lever-desc"><strong>What you put in front of it.</strong> Files, CLAUDE.md, memory, skills.</p>
+      </div>
+      <div class="lever-item capability">
+        <div class="lever-number">02</div>
+        <p class="lever-name">Capability</p>
+        <p class="lever-desc"><strong>What you let it do.</strong> Permissions, hooks, tools, subagents.</p>
+      </div>
+      <div class="lever-item verification">
+        <div class="lever-number">03</div>
+        <p class="lever-name">Verification</p>
+        <p class="lever-desc"><strong>How you check its work.</strong> Tests, review, cite the line.</p>
+      </div>
     </div>
   </div>
-  <p class="caption mt-lg">Everything else in the next 25 minutes is a variation on these three. Say that out loud.</p>
+
+  <p class="caption mt-lg" style="font-size: 1rem;">Everything else in the next 25 minutes is a variation on these three.</p>
+
   <aside class="notes">
-    <p>60 seconds. Name each lever, point at each column. This slide reappears at minute ~22 (responsible use) and minute ~29 (wrap). Same colors, same icons. Let the audience notice the repetition; do not announce it.</p>
-    <p>Exit line: "Let's start with the lever you touch most: context. And the commands that decide what Claude sees."</p>
+    <p>60 seconds. Name each lever, point at each column. The lever NAMES read first; the descriptions are secondary.</p>
+    <p>This slide reappears at slide 33 (wrap). Same pattern. Audience will notice the callback without you announcing it.</p>
+    <p>Exit: "Start with the lever you touch most &mdash; context &mdash; and the commands that decide what Claude sees."</p>
   </aside>
 </section>

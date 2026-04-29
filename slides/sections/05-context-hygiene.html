@@ -1,3 +1,50 @@
+<style>
+  /* 05-context-hygiene — section-specific tweaks. Kit classes do the heavy lifting. */
+  .ch-stat-graph { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: center; width: 100%; max-width: 1040px; margin: 0 auto; }
+  .ch-stat-graph .stat-duo { margin-top: 0; padding: 1.25rem 0; }
+  .ch-stat-graph .graph { max-width: 640px; }
+  .ch-quote-wrap { position: relative; width: 100%; max-width: 1040px; margin: 0 auto; }
+  .ch-quote-wrap .graph {
+    position: absolute; inset: 0; max-width: 900px; margin: auto;
+    opacity: 0.22; pointer-events: none; z-index: 0;
+  }
+  .ch-quote-wrap .quote { position: relative; z-index: 1; }
+  .ch-decision { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; width: 100%; max-width: 1080px; margin: 1.5rem auto 0; }
+  .ch-panel { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 1.1rem 1.2rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .ch-panel h3 { margin: 0; font-family: var(--font-mono); font-size: 1.1rem; color: var(--captech-blue); }
+  .ch-panel p { margin: 0; font-size: 0.98rem; line-height: 1.45; color: var(--dark-grey); }
+  .ch-mini-grid { display: grid; grid-template-columns: repeat(20, 6px); grid-auto-rows: 6px; gap: 1.5px; padding: 0.65rem; background: #0F1419; border-radius: 6px; align-self: center; }
+  .ch-mini-grid .cell { width: 6px; height: 6px; border-radius: 1px; background: transparent; box-sizing: border-box; }
+  .ch-mini-grid .cell.sys-prompt { background: #888; }
+  .ch-mini-grid .cell.sys-tools  { background: #999; }
+  .ch-mini-grid .cell.memory     { background: #D77757; }
+  .ch-mini-grid .cell.skills     { background: #FFC107; }
+  .ch-mini-grid .cell.messages   { background: #9333EA; }
+  .ch-mini-grid .cell.summary    { background: #9333EA; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4); }
+  .ch-mini-grid .cell.free       { border: 1px solid rgba(255,255,255,0.22); }
+  .ch-mini-grid .cell.autocompact { border: 1px solid #999; }
+  .ch-panel-verdict { margin-top: auto; font-family: var(--font-mono); font-size: 0.82rem; color: var(--medium-grey); }
+  .ch-compact-layout { display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: center; max-width: 1120px; margin: 1rem auto 0; }
+  .ch-compact-notes { font-size: 1.05rem; line-height: 1.5; color: var(--dark-grey); display: flex; flex-direction: column; gap: 0.9rem; }
+  .ch-compact-notes .num { font-family: var(--font-mono); color: var(--captech-blue); font-weight: 600; }
+  .ch-tok-compare { display: grid; grid-template-columns: 1fr; gap: 1.25rem; width: 100%; max-width: 880px; margin: 1.5rem auto 0; }
+  .ch-tok-row { display: grid; grid-template-columns: 140px 1fr 110px; gap: 1.25rem; align-items: center; }
+  .ch-tok-label { font-family: var(--font-mono); font-size: 1rem; color: var(--dark-grey); }
+  .ch-tok-label .sub { display: block; color: var(--medium-grey); font-size: 0.82rem; margin-top: 0.15rem; }
+  .ch-tok-bar { height: 38px; background: #F2EFE7; border-radius: 4px; position: relative; overflow: hidden; }
+  .ch-tok-bar .fill { position: absolute; inset: 0 auto 0 0; background: var(--captech-blue); border-radius: 4px; animation: ch-bar-grow 1.1s cubic-bezier(0.3, 0.8, 0.3, 1) 0.25s both; transform-origin: left center; }
+  .ch-tok-bar.bigger .fill { background: var(--sky-blue); animation-delay: 0.6s; }
+  .ch-tok-count { font-family: var(--font-mono); color: var(--dark-grey); font-size: 1rem; text-align: right; }
+  .ch-tok-count .delta { display: block; color: var(--yellow-dark, #8B6A00); font-size: 0.82rem; margin-top: 0.15rem; }
+  @keyframes ch-bar-grow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ch-tok-bar .fill { animation: none; }
+  }
+</style>
+
 <section class="slide section-divider" data-section="19:00 — Context hygiene">
   <span class="label">19:00 — 22:30</span>
   <h1>Context hygiene</h1>
@@ -5,75 +52,198 @@
 </section>
 
 <section class="slide" data-section="19:15 — The numbers">
-  <span class="label">Sonnet 4.5 &middot; SWE-bench Verified</span>
+  <span class="eyebrow">Sonnet 4.5 &middot; SWE-bench Verified</span>
   <h2>Essentially flat from 200K to 1M.</h2>
-  <div class="number-pair">
-    <div>
-      <div class="big-number">77.2<span class="unit">%</span></div>
-      <p class="caption caption-sm">200K context</p>
+  <div class="ch-stat-graph">
+    <div class="stat-duo">
+      <div class="stat-duo__num">77.2<span class="unit">%</span><span class="sub">200K context</span></div>
+      <div class="stat-duo__delta">
+        <div class="stat-duo__delta-val">&Delta; +1.0</div>
+        <div class="stat-duo__delta-line"></div>
+      </div>
+      <div class="stat-duo__num">78.2<span class="unit">%</span><span class="sub">1M context</span></div>
     </div>
-    <div>
-      <div class="big-number">78.2<span class="unit">%</span></div>
-      <p class="caption caption-sm">1M context</p>
+    <div class="graph graph-animate">
+      <svg viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sonnet 4.5 accuracy vs token count, essentially flat">
+        <line class="axis-line" x1="80" y1="30" x2="80" y2="220"/>
+        <line class="axis-line" x1="80" y1="220" x2="760" y2="220"/>
+        <line class="axis-tick" x1="80" y1="80" x2="760" y2="80"/>
+        <line class="axis-tick" x1="80" y1="130" x2="760" y2="130"/>
+        <line class="axis-tick" x1="80" y1="180" x2="760" y2="180"/>
+        <text class="axis-title" x="80" y="20" text-anchor="start">ACCURACY</text>
+        <text class="axis-title" x="760" y="246" text-anchor="end">TOKEN COUNT</text>
+        <text class="axis-text" x="280" y="240" text-anchor="middle">200K</text>
+        <text class="axis-text" x="760" y="240" text-anchor="middle">1M</text>
+        <text class="axis-text" x="72" y="84" text-anchor="end">80%</text>
+        <text class="axis-text" x="72" y="134" text-anchor="end">70%</text>
+        <path class="curve curve-flat" d="M 80 108 L 280 110 Q 500 112 760 106"/>
+        <circle class="annot-dot" cx="280" cy="110" r="4"/>
+        <circle class="annot-dot" cx="760" cy="106" r="4"/>
+        <text class="annot-text strong" x="280" y="96" text-anchor="middle">77.2%</text>
+        <text class="annot-text strong" x="760" y="96" text-anchor="end">78.2%</text>
+      </svg>
     </div>
   </div>
-  <p>You are paying for 1M tokens and cashing in usable performance on a much smaller slice.</p>
-  <p class="caption">Source: anthropic.com/news/claude-sonnet-4-5</p>
+  <p class="caption">anthropic.com/news/claude-sonnet-4-5</p>
   <aside class="notes">
-    <p>60 seconds. Say aloud: "Sonnet 4.5 scored 77.2% on SWE-bench Verified at 200K context and 78.2% at 1M context. Essentially flat." Let the numbers land.</p>
-    <p>Point: the 1M window is a ceiling, not a target. Performance does not improve by filling it; it mostly just costs more.</p>
+    <p>60 seconds. Read the numbers out loud. 77.2% at 200K. 78.2% at 1M. One point of difference. That is the curve going sideways.</p>
+    <p>Takeaway: you are paying for a million tokens and getting back performance that topped out well before you filled it. The 1M window is a ceiling, not a target.</p>
   </aside>
 </section>
 
 <section class="slide dark" data-section="20:00 — Context rot, verbatim">
-  <span class="label">Anthropic&rsquo;s own documentation</span>
-  <div class="quote quote-hero">
-    &ldquo;As token count grows, accuracy and recall degrade, a phenomenon known as context rot.&rdquo;
-    <cite>platform.claude.com/docs/en/build-with-claude/context-windows</cite>
+  <span class="eyebrow">Anthropic&rsquo;s own documentation</span>
+  <div class="ch-quote-wrap">
+    <div class="graph graph-dark graph-animate" aria-hidden="true">
+      <svg viewBox="0 0 780 320" xmlns="http://www.w3.org/2000/svg">
+        <rect class="zone-degrade" x="280" y="30" width="460" height="230"/>
+        <line class="axis-line" x1="80" y1="30" x2="80" y2="260"/>
+        <line class="axis-line" x1="80" y1="260" x2="760" y2="260"/>
+        <line class="axis-tick" x1="80" y1="100" x2="760" y2="100"/>
+        <line class="axis-tick" x1="80" y1="170" x2="760" y2="170"/>
+        <text class="axis-text" x="280" y="280" text-anchor="middle">200K</text>
+        <text class="axis-text" x="760" y="280" text-anchor="middle">1M</text>
+        <path class="curve curve-slope" d="M 80 90 L 280 92 Q 420 94 540 160 T 760 240"/>
+        <line class="annot-line" x1="280" y1="92" x2="280" y2="260"/>
+        <circle class="annot-dot" cx="280" cy="92" r="4"/>
+      </svg>
+    </div>
+    <div class="quote quote-hero">
+      &ldquo;As token count grows, accuracy and recall degrade, a phenomenon known as context rot.&rdquo;
+      <cite>platform.claude.com/docs/en/build-with-claude/context-windows</cite>
+    </div>
   </div>
   <aside class="notes">
-    <p>30 seconds. Read verbatim. This is Anthropic, not me, not you. Let it sit. "Context rot" is the term &mdash; use it when you talk to the team.</p>
+    <p>30 seconds. Read the quote. This is Anthropic documenting it, not me. The word is "context rot" — use it with the team so everyone is naming the same thing.</p>
+    <p>Point at the curve behind the text: that is the shape you are fighting. Past 200K, the line bends the wrong way.</p>
   </aside>
 </section>
 
 <section class="slide" data-section="20:45 — Decision rule">
-  <span class="label">The rule. Read it. Put it on a sticky note.</span>
-  <h2>When to <code>/clear</code>, when to <code>/compact</code>, when to <code>/context</code>.</h2>
-  <div class="rulebox rulebox-lg mt-sm">
-    <p>If the next thing you are going to do is <strong>unrelated</strong> to what you just did &rarr; <code>/clear</code>.</p>
-    <p>If it is <strong>related</strong> and you need continuity &rarr; <code>/compact</code>.</p>
-    <p>If you are <strong>not sure</strong> &rarr; <code>/context</code> first, then decide.</p>
-    <p><strong>Quit and re-launch</strong> only when you suspect the session picked up a bad assumption. <code>/compact</code> will summarize the bad assumption into the summary and it persists.</p>
+  <span class="eyebrow">The rule. Put it on a sticky note.</span>
+  <h2>When to <code>/clear</code>, <code>/compact</code>, or <code>/context</code>.</h2>
+  <div class="ch-decision">
+    <div class="ch-panel">
+      <h3>/clear</h3>
+      <div class="ch-mini-grid" aria-label="Context after clear, mostly free">
+        <div class="cell sys-prompt"></div><div class="cell sys-tools"></div><div class="cell sys-tools"></div><div class="cell memory"></div><div class="cell skills"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell autocompact"></div><div class="cell autocompact"></div><div class="cell autocompact"></div>
+      </div>
+      <p>Next task is <strong>unrelated</strong> to the last one. Wipe the session.</p>
+      <p class="ch-panel-verdict">fresh start &middot; 0 tokens</p>
+    </div>
+
+    <div class="ch-panel">
+      <h3>/compact</h3>
+      <div class="ch-mini-grid" aria-label="Context after compact, messages coalesced to summaries">
+        <div class="cell sys-prompt"></div><div class="cell sys-tools"></div><div class="cell sys-tools"></div><div class="cell memory"></div><div class="cell skills"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell summary"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell autocompact"></div><div class="cell autocompact"></div><div class="cell autocompact"></div>
+      </div>
+      <p>Next task is <strong>related</strong>. Keep a summary of the last one.</p>
+      <p class="ch-panel-verdict">summaries stay &middot; details drop</p>
+    </div>
+
+    <div class="ch-panel">
+      <h3>/context</h3>
+      <div class="ch-mini-grid" aria-label="Context inspection, full session visible">
+        <div class="cell sys-prompt"></div><div class="cell sys-tools"></div><div class="cell sys-tools"></div><div class="cell memory"></div><div class="cell skills"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div>
+        <div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div>
+        <div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell messages"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div>
+        <div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell free"></div><div class="cell autocompact"></div><div class="cell autocompact"></div><div class="cell autocompact"></div>
+      </div>
+      <p>Not sure. Look first. Decide after you see the fill.</p>
+      <p class="ch-panel-verdict">read-only &middot; no change</p>
+    </div>
   </div>
+  <p class="caption mt-sm">Quit and re-launch only when the session picked up a bad assumption. <code>/compact</code> will bake a wrong turn into the summary.</p>
   <aside class="notes">
-    <p>75 seconds. Read the rule line by line. Don&rsquo;t paraphrase. The quit-and-relaunch line is the one most people skip &mdash; /compact can bake a wrong turn into the summary, and then you&rsquo;re stuck with it.</p>
+    <p>75 seconds. Walk the three panels left to right. Unrelated &rarr; /clear. Related &rarr; /compact. Not sure &rarr; /context, then decide.</p>
+    <p>The quit-and-relaunch caveat is the one people skip. If Claude is down a wrong path, /compact will fossilize the wrong turn into the summary and you are stuck with it.</p>
   </aside>
 </section>
 
-<section class="slide" data-section="21:45 — Survives + tokenizer">
-  <span class="label">What survives &middot; and one budgeting gotcha</span>
-  <h2>Not as much as you think.</h2>
-  <div class="two-col mt-lg">
-    <div>
-      <h3 class="h3-blue">What survives <code>/compact</code></h3>
-      <ul class="clean">
-        <li>Skills re-attach, but each is capped at the <strong>first 5K tokens</strong>.</li>
-        <li>Inside a <strong>25K total budget</strong> for skill re-hydration.</li>
-        <li>Huge skill files lose their tails. Keep skills short.</li>
-      </ul>
+<section class="slide" data-section="21:45 — Survives compaction">
+  <span class="eyebrow">What survives <code>/compact</code></span>
+  <h2>Skills re-attach. Tails get cut.</h2>
+  <div class="ch-compact-layout">
+    <div class="ctx-real ctx-compact-real" style="max-width: 540px; padding: 1rem 1.2rem;">
+      <div class="ctx-real__title">/compact <span class="sub">after</span></div>
+      <div class="ctx-real__grid" data-cells="200" aria-label="Context grid after compact">
+        <div class="cell sys-prompt" style="--i:0;--mi:0"></div><div class="cell sys-tools" style="--i:1;--mi:0"></div><div class="cell sys-tools" style="--i:2;--mi:1"></div><div class="cell memory" style="--i:3;--mi:0"></div><div class="cell skills" style="--i:4;--mi:0"></div><div class="cell messages is-summary" style="--i:5;--mi:0"></div><div class="cell messages is-summary" style="--i:6;--mi:1"></div><div class="cell messages is-summary" style="--i:7;--mi:2"></div><div class="cell messages is-summary" style="--i:8;--mi:3"></div><div class="cell messages is-summary" style="--i:9;--mi:4"></div><div class="cell messages is-summary" style="--i:10;--mi:5"></div><div class="cell messages is-summary" style="--i:11;--mi:6"></div><div class="cell messages is-summary" style="--i:12;--mi:7"></div><div class="cell messages is-summary" style="--i:13;--mi:8"></div><div class="cell messages is-summary" style="--i:14;--mi:9"></div><div class="cell messages is-summary" style="--i:15;--mi:10"></div><div class="cell messages is-summary" style="--i:16;--mi:11"></div><div class="cell messages" style="--i:17;--mi:12"></div><div class="cell messages" style="--i:18;--mi:13"></div><div class="cell messages" style="--i:19;--mi:14"></div>
+        <div class="cell messages" style="--i:20;--mi:15"></div><div class="cell messages" style="--i:21;--mi:16"></div><div class="cell messages" style="--i:22;--mi:17"></div><div class="cell messages" style="--i:23;--mi:18"></div><div class="cell messages" style="--i:24;--mi:19"></div><div class="cell messages" style="--i:25;--mi:20"></div><div class="cell messages" style="--i:26;--mi:21"></div><div class="cell messages" style="--i:27;--mi:22"></div><div class="cell messages" style="--i:28;--mi:23"></div><div class="cell messages" style="--i:29;--mi:24"></div><div class="cell messages" style="--i:30;--mi:25"></div><div class="cell messages" style="--i:31;--mi:26"></div><div class="cell messages" style="--i:32;--mi:27"></div><div class="cell messages" style="--i:33;--mi:28"></div><div class="cell messages" style="--i:34;--mi:29"></div><div class="cell messages" style="--i:35;--mi:30"></div><div class="cell messages" style="--i:36;--mi:31"></div><div class="cell messages" style="--i:37;--mi:32"></div><div class="cell messages" style="--i:38;--mi:33"></div><div class="cell messages" style="--i:39;--mi:34"></div>
+        <div class="cell messages" style="--i:40;--mi:35"></div><div class="cell messages" style="--i:41;--mi:36"></div><div class="cell messages" style="--i:42;--mi:37"></div><div class="cell messages" style="--i:43;--mi:38"></div><div class="cell messages" style="--i:44;--mi:39"></div><div class="cell messages" style="--i:45;--mi:40"></div><div class="cell messages" style="--i:46;--mi:41"></div><div class="cell messages" style="--i:47;--mi:42"></div><div class="cell messages" style="--i:48;--mi:43"></div><div class="cell messages" style="--i:49;--mi:44"></div><div class="cell messages" style="--i:50;--mi:45"></div><div class="cell messages" style="--i:51;--mi:46"></div><div class="cell messages" style="--i:52;--mi:47"></div><div class="cell messages" style="--i:53;--mi:48"></div><div class="cell messages" style="--i:54;--mi:49"></div><div class="cell messages" style="--i:55;--mi:50"></div><div class="cell messages" style="--i:56;--mi:51"></div><div class="cell messages" style="--i:57;--mi:52"></div><div class="cell messages" style="--i:58;--mi:53"></div><div class="cell messages" style="--i:59;--mi:54"></div>
+        <div class="cell messages" style="--i:60;--mi:55"></div><div class="cell messages" style="--i:61;--mi:56"></div><div class="cell messages" style="--i:62;--mi:57"></div><div class="cell messages" style="--i:63;--mi:58"></div><div class="cell messages" style="--i:64;--mi:59"></div><div class="cell messages" style="--i:65;--mi:60"></div><div class="cell messages" style="--i:66;--mi:61"></div><div class="cell messages" style="--i:67;--mi:62"></div><div class="cell messages" style="--i:68;--mi:63"></div><div class="cell messages" style="--i:69;--mi:64"></div><div class="cell messages" style="--i:70;--mi:65"></div><div class="cell free" style="--i:71;--mi:0"></div><div class="cell free" style="--i:72;--mi:1"></div><div class="cell free" style="--i:73;--mi:2"></div><div class="cell free" style="--i:74;--mi:3"></div><div class="cell free" style="--i:75;--mi:4"></div><div class="cell free" style="--i:76;--mi:5"></div><div class="cell free" style="--i:77;--mi:6"></div><div class="cell free" style="--i:78;--mi:7"></div><div class="cell free" style="--i:79;--mi:8"></div>
+        <div class="cell free" style="--i:80;--mi:9"></div><div class="cell free" style="--i:81;--mi:10"></div><div class="cell free" style="--i:82;--mi:11"></div><div class="cell free" style="--i:83;--mi:12"></div><div class="cell free" style="--i:84;--mi:13"></div><div class="cell free" style="--i:85;--mi:14"></div><div class="cell free" style="--i:86;--mi:15"></div><div class="cell free" style="--i:87;--mi:16"></div><div class="cell free" style="--i:88;--mi:17"></div><div class="cell free" style="--i:89;--mi:18"></div><div class="cell free" style="--i:90;--mi:19"></div><div class="cell free" style="--i:91;--mi:20"></div><div class="cell free" style="--i:92;--mi:21"></div><div class="cell free" style="--i:93;--mi:22"></div><div class="cell free" style="--i:94;--mi:23"></div><div class="cell free" style="--i:95;--mi:24"></div><div class="cell free" style="--i:96;--mi:25"></div><div class="cell free" style="--i:97;--mi:26"></div><div class="cell free" style="--i:98;--mi:27"></div><div class="cell free" style="--i:99;--mi:28"></div>
+        <div class="cell free" style="--i:100;--mi:29"></div><div class="cell free" style="--i:101;--mi:30"></div><div class="cell free" style="--i:102;--mi:31"></div><div class="cell free" style="--i:103;--mi:32"></div><div class="cell free" style="--i:104;--mi:33"></div><div class="cell free" style="--i:105;--mi:34"></div><div class="cell free" style="--i:106;--mi:35"></div><div class="cell free" style="--i:107;--mi:36"></div><div class="cell free" style="--i:108;--mi:37"></div><div class="cell free" style="--i:109;--mi:38"></div><div class="cell free" style="--i:110;--mi:39"></div><div class="cell free" style="--i:111;--mi:40"></div><div class="cell free" style="--i:112;--mi:41"></div><div class="cell free" style="--i:113;--mi:42"></div><div class="cell free" style="--i:114;--mi:43"></div><div class="cell free" style="--i:115;--mi:44"></div><div class="cell free" style="--i:116;--mi:45"></div><div class="cell free" style="--i:117;--mi:46"></div><div class="cell free" style="--i:118;--mi:47"></div><div class="cell free" style="--i:119;--mi:48"></div>
+        <div class="cell free" style="--i:120;--mi:49"></div><div class="cell free" style="--i:121;--mi:50"></div><div class="cell free" style="--i:122;--mi:51"></div><div class="cell free" style="--i:123;--mi:52"></div><div class="cell free" style="--i:124;--mi:53"></div><div class="cell free" style="--i:125;--mi:54"></div><div class="cell free" style="--i:126;--mi:55"></div><div class="cell free" style="--i:127;--mi:56"></div><div class="cell free" style="--i:128;--mi:57"></div><div class="cell free" style="--i:129;--mi:58"></div><div class="cell free" style="--i:130;--mi:59"></div><div class="cell free" style="--i:131;--mi:60"></div><div class="cell free" style="--i:132;--mi:61"></div><div class="cell free" style="--i:133;--mi:62"></div><div class="cell free" style="--i:134;--mi:63"></div><div class="cell free" style="--i:135;--mi:64"></div><div class="cell free" style="--i:136;--mi:65"></div><div class="cell free" style="--i:137;--mi:66"></div><div class="cell free" style="--i:138;--mi:67"></div><div class="cell free" style="--i:139;--mi:68"></div>
+        <div class="cell free" style="--i:140;--mi:69"></div><div class="cell free" style="--i:141;--mi:70"></div><div class="cell free" style="--i:142;--mi:71"></div><div class="cell free" style="--i:143;--mi:72"></div><div class="cell free" style="--i:144;--mi:73"></div><div class="cell free" style="--i:145;--mi:74"></div><div class="cell free" style="--i:146;--mi:75"></div><div class="cell free" style="--i:147;--mi:76"></div><div class="cell free" style="--i:148;--mi:77"></div><div class="cell free" style="--i:149;--mi:78"></div><div class="cell free" style="--i:150;--mi:79"></div><div class="cell free" style="--i:151;--mi:80"></div><div class="cell free" style="--i:152;--mi:81"></div><div class="cell free" style="--i:153;--mi:82"></div><div class="cell free" style="--i:154;--mi:83"></div><div class="cell free" style="--i:155;--mi:84"></div><div class="cell free" style="--i:156;--mi:85"></div><div class="cell free" style="--i:157;--mi:86"></div><div class="cell free" style="--i:158;--mi:87"></div><div class="cell free" style="--i:159;--mi:88"></div>
+        <div class="cell free" style="--i:160;--mi:89"></div><div class="cell free" style="--i:161;--mi:90"></div><div class="cell free" style="--i:162;--mi:91"></div><div class="cell free" style="--i:163;--mi:92"></div><div class="cell free" style="--i:164;--mi:93"></div><div class="cell free" style="--i:165;--mi:94"></div><div class="cell free" style="--i:166;--mi:95"></div><div class="cell free" style="--i:167;--mi:96"></div><div class="cell free" style="--i:168;--mi:97"></div><div class="cell free" style="--i:169;--mi:98"></div><div class="cell free" style="--i:170;--mi:99"></div><div class="cell free" style="--i:171;--mi:100"></div><div class="cell free" style="--i:172;--mi:101"></div><div class="cell free" style="--i:173;--mi:102"></div><div class="cell free" style="--i:174;--mi:103"></div><div class="cell free" style="--i:175;--mi:104"></div><div class="cell free" style="--i:176;--mi:105"></div><div class="cell free" style="--i:177;--mi:106"></div><div class="cell free" style="--i:178;--mi:107"></div><div class="cell free" style="--i:179;--mi:108"></div>
+        <div class="cell free" style="--i:180;--mi:109"></div><div class="cell free" style="--i:181;--mi:110"></div><div class="cell free" style="--i:182;--mi:111"></div><div class="cell free" style="--i:183;--mi:112"></div><div class="cell free" style="--i:184;--mi:113"></div><div class="cell free" style="--i:185;--mi:114"></div><div class="cell free" style="--i:186;--mi:115"></div><div class="cell free" style="--i:187;--mi:116"></div><div class="cell free" style="--i:188;--mi:117"></div><div class="cell free" style="--i:189;--mi:118"></div><div class="cell free" style="--i:190;--mi:119"></div><div class="cell free" style="--i:191;--mi:120"></div><div class="cell free" style="--i:192;--mi:121"></div><div class="cell free" style="--i:193;--mi:122"></div><div class="cell free" style="--i:194;--mi:123"></div><div class="cell free" style="--i:195;--mi:124"></div><div class="cell free" style="--i:196;--mi:125"></div><div class="cell free" style="--i:197;--mi:126"></div><div class="cell autocompact" style="--i:198;--mi:0"></div><div class="cell autocompact" style="--i:199;--mi:1"></div>
+        <div class="cell autocompact" style="--i:200;--mi:2"></div>
+      </div>
     </div>
-    <div>
-      <h3 class="h3-blue">Opus 4.7 tokenizer</h3>
-      <ul class="clean">
-        <li>Up to <strong>35% more tokens</strong> for the same text vs 4.6.</li>
-        <li>The new tokenizer is chunkier. Daily spend went up by default.</li>
-        <li>Budget for it.</li>
-      </ul>
+    <div class="ch-compact-notes">
+      <div class="term term-sm term-session term-typing" style="--term-typed-steps: 30; --term-typed-width: 30ch; max-width: 420px;">
+        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/primer &middot; opus 4.7</span></div>
+        <div class="term-body">
+          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/compact Focus on the API"></span></div>
+        </div>
+      </div>
+      <p>Skills re-attach after compaction &mdash; but each one gets capped at the <span class="num">first 5K tokens</span>.</p>
+      <p>All skills share a <span class="num">25K total budget</span> for re-hydration. A bloated skill loses its tail.</p>
+      <p>Keep skills short. Progressive disclosure beats dumping a manual into the body.</p>
     </div>
   </div>
-  <p class="caption mt-lg">Auto-compaction fires at ~95% of context. Override earlier with <code>CLAUDE_CODE_AUTOCOMPACT_PCT_OVERRIDE=80</code>.</p>
+  <p class="caption mt-sm">Auto-compaction fires near 95%. Trigger earlier with <code>CLAUDE_CODE_AUTOCOMPACT_PCT_OVERRIDE=80</code>.</p>
   <aside class="notes">
-    <p>75 seconds. Two takeaways on one slide. Left: /compact is not free &mdash; big skills get their tails cut. Right: if you migrated from 4.6 to 4.7 and your bill jumped, this is why.</p>
-    <p>The override at the bottom: 80 is a sensible value for long-running work. Forces summarization before you hit the wall.</p>
+    <p>60 seconds. Point at the grid: purple cells with rings are the summaries that replaced the chat history. Everything else below them cleared.</p>
+    <p>The skills part trips people up. After /compact, Claude re-reads skill bodies from disk. Each skill is capped at the first 5K. Total budget is 25K across all skills. If your skill has a long tail, the tail is gone post-compact. Write them short.</p>
+    <p>The override line at the bottom: 80% is a sensible setting for long sessions. Summarize before the wall, not at it.</p>
+  </aside>
+</section>
+
+<section class="slide" data-section="22:00 — Opus 4.7 tokenizer">
+  <span class="eyebrow">Opus 4.7 tokenizer</span>
+  <h2>Same text. Up to <span style="color: var(--sky-blue);">35% more tokens</span>.</h2>
+  <div class="ch-tok-compare">
+    <div class="ch-tok-row">
+      <div class="ch-tok-label">Opus 4.6<span class="sub">100 chars of prose</span></div>
+      <div class="ch-tok-bar"><div class="fill" style="width: 60%;"></div></div>
+      <div class="ch-tok-count">100 tok<span class="delta">baseline</span></div>
+    </div>
+    <div class="ch-tok-row">
+      <div class="ch-tok-label">Opus 4.7<span class="sub">same 100 chars</span></div>
+      <div class="ch-tok-bar bigger"><div class="fill" style="width: 81%;"></div></div>
+      <div class="ch-tok-count">135 tok<span class="delta">+35%</span></div>
+    </div>
+  </div>
+  <p class="caption mt-md" style="max-width: 780px; margin-left: auto; margin-right: auto;">The new tokenizer is chunkier. Same prompt, same files, bigger footprint. If your bill jumped the week you moved to 4.7, this is why.</p>
+  <aside class="notes">
+    <p>45 seconds. The single fact: Opus 4.7 ships a new tokenizer that turns roughly 100 characters of English into 135 tokens where 4.6 would have given you 100. Up to 35% more.</p>
+    <p>Two practical consequences. One: your daily spend went up by default &mdash; budget for it. Two: you hit the context wall sooner than you did last month. If you had CLAUDE.md at 4K on 4.6, assume it is 5K now on 4.7. Same logic for skills, memory files, pasted snippets.</p>
+    <p>This is the last hygiene slide. Next section is responsible use.</p>
   </aside>
 </section>

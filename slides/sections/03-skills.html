@@ -1,113 +1,183 @@
 <style>
-  /* Small utilities local to this section (shared ones live in sections.css). */
-  .muted { color: var(--medium-grey); }
-  .note { font-size: 1.1rem; }
-  .note.muted { font-size: 1rem; }
-  .steps-dense { font-size: 1.15rem; }
+  /* Local tweaks for 03-skills. Shared components live in kit.css. */
+  .skills-section .muted { color: var(--medium-grey); }
+  .skills-section .note { font-size: 1.1rem; }
+  .skills-section .note.muted { font-size: 1rem; }
+  .skills-section .steps-dense { font-size: 1.1rem; }
 
-  /* Progressive disclosure visual */
-  .pd-stage {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2.5rem;
-    margin: 2rem auto;
-    max-width: 900px;
+  /* Two-pane layout for progressive disclosure: trigger terminal + body pane */
+  .pd-panes {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    gap: 1.75rem;
+    align-items: start;
+    max-width: 1040px;
+    margin: 1.25rem auto 0;
   }
-  .pd-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    flex: 1;
-  }
-  .pd-layer {
-    width: 100%;
-    padding: 1rem 1.25rem;
-    border-radius: 6px;
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    position: relative;
-    transition: all 0.3s ease;
-  }
-  .pd-layer-label {
+  .pd-pane-label {
     font-family: var(--font-sans);
     font-size: 0.72rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     font-weight: 600;
-    margin-bottom: 0.35rem;
-    display: block;
-  }
-  .pd-always {
-    background: rgba(0, 94, 184, 0.12);
-    border-left: 3px solid var(--captech-blue);
-    color: var(--dark-grey);
-  }
-  .pd-always .pd-layer-label { color: var(--captech-blue); }
-  .pd-lazy {
-    background: rgba(136, 139, 141, 0.1);
-    border-left: 3px solid var(--medium-grey);
     color: var(--medium-grey);
-    opacity: 0.55;
-    animation: lazyLoad 5s infinite;
+    margin: 0 0 0.45rem 0.25rem;
   }
-  .pd-lazy .pd-layer-label { color: var(--medium-grey); }
-  @keyframes lazyLoad {
-    0%, 60% { opacity: 0.4; border-left-color: var(--medium-grey); background: rgba(136, 139, 141, 0.08); }
-    70%, 90% { opacity: 1; border-left-color: var(--sky-blue); background: rgba(0, 165, 223, 0.15); color: var(--dark-grey); }
-    100% { opacity: 0.4; }
-  }
-  .pd-trigger {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .pd-body {
+    background: #0F1419;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
     font-family: var(--font-mono);
-    color: var(--sky-blue);
-    font-size: 1rem;
-    animation: triggerPulse 5s infinite;
+    font-size: 0.92rem;
+    color: #E6E6E6;
+    padding: 1.1rem 1.35rem 1.25rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    line-height: 1.55;
+    opacity: 0;
+    animation: pd-body-in 0.5s ease 4.9s forwards;
   }
-  .pd-trigger-arrow { font-size: 2rem; margin-top: 0.5rem; }
-  @keyframes triggerPulse {
-    0%, 55% { opacity: 0.35; transform: translateX(0); }
-    65%, 85% { opacity: 1; transform: translateX(6px); }
-    100% { opacity: 0.35; transform: translateX(0); }
+  .pd-body .pd-fm { color: #8A949E; font-size: 0.82rem; }
+  .pd-body .pd-fm .k { color: var(--sky-blue); }
+  .pd-body .pd-body-hr {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 0.7rem 0 0.8rem;
+  }
+  @keyframes pd-body-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .pd-lazy, .pd-trigger { animation: none !important; opacity: 1 !important; }
+    .pd-body { animation: none; opacity: 1; transform: none; }
   }
 
-  /* Frontmatter reference table */
-  table.fm-ref {
+  /* Frontmatter reference — compact dark table tuned for 100vh fit */
+  .skills-section table.fm-ref {
     width: 100%;
     border-collapse: collapse;
-    font-size: 1rem;
+    font-size: 0.98rem;
     margin-top: 1rem;
   }
-  table.fm-ref td {
-    padding: 0.6rem 0.9rem;
+  .skills-section table.fm-ref td {
+    padding: 0.55rem 0.9rem;
     border-bottom: 1px solid var(--light-grey);
     vertical-align: top;
+    line-height: 1.4;
   }
-  table.fm-ref td:first-child {
+  .skills-section table.fm-ref td:first-child {
     font-family: var(--font-mono);
     color: var(--captech-blue);
     white-space: nowrap;
-    width: 34%;
+    width: 32%;
     font-weight: 500;
   }
-  table.fm-ref td:last-child { font-size: 1rem; line-height: 1.4; }
+  .skills-section table.fm-ref tr:last-child td { border-bottom: 0; }
+
+  /* Writing-your-first-skill layout: tree top, terminal below, side by side */
+  .first-skill-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 2rem;
+    align-items: start;
+    max-width: 1100px;
+    margin: 1rem auto 0;
+  }
+  .first-skill-stage .tree { margin: 0; max-width: 100%; }
+  .first-skill-stage .term { margin: 0; }
+  .first-skill-steps {
+    grid-column: 1 / -1;
+    margin: 1.25rem 0 0;
+    font-size: 1rem;
+    color: var(--dark-grey);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.1rem;
+    justify-content: center;
+  }
+  .first-skill-steps .step {
+    font-family: var(--font-mono);
+    color: var(--medium-grey);
+  }
+  .first-skill-steps .step .num {
+    color: var(--captech-blue);
+    font-weight: 600;
+    margin-right: 0.35rem;
+  }
+
+  /* Subagents/hooks split: each column gets a mini terminal */
+  .sah-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+    margin-top: 1rem;
+  }
+  .sah-col h3 { margin: 0 0 0.4rem; }
+  .sah-col .note { margin: 0.25rem 0 0.9rem; }
+  .sah-col .term { margin: 0; }
+
+  /* A "fires" line in the hook terminal that flashes on in red/yellow */
+  .term-ln.fire {
+    color: var(--yellow);
+    position: relative;
+  }
+  .term-output-lines .term-ln.fire {
+    animation: term-fade-in 0.35s ease forwards, fire-flash 1.6s ease 3.9s 2;
+  }
+  @keyframes fire-flash {
+    0%, 100% { color: var(--yellow); }
+    50%      { color: #FF5F57; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .term-output-lines .term-ln.fire { animation: none; opacity: 1; color: var(--yellow); }
+  }
+
+  /* Description rule — calm pull-quote layout */
+  .desc-rule-stage {
+    max-width: 960px;
+    margin: 1.5rem auto 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .desc-rule-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .desc-card {
+    padding: 1.25rem 1.4rem;
+    border-radius: 8px;
+    background: #F7F6F2;
+    border-left: 3px solid var(--captech-blue);
+  }
+  .desc-card.bad {
+    border-left-color: #C75A3F;
+    background: rgba(199,90,63,0.06);
+  }
+  .desc-card .tag {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--captech-blue);
+    margin-bottom: 0.4rem;
+  }
+  .desc-card.bad .tag { color: #C75A3F; }
+  .desc-card p { margin: 0; font-family: var(--font-mono); font-size: 0.95rem; color: var(--dark-grey); line-height: 1.5; }
 </style>
 
 <section class="slide section-divider skills-section" data-section="10:00 — Skills">
   <span class="label">10:00 — 16:30</span>
   <h1>Skills</h1>
-  <p class="lede">Write your own. Ship them today.</p>
+  <p class="lede">Write one tonight. Ship it Monday.</p>
 </section>
+
 
 <section class="slide skills-section" data-section="10:00 — What a skill is">
   <span class="label">What it actually is</span>
-  <h2>A skill is a directory with <code>SKILL.md</code> — nothing more.</h2>
+  <h2>A skill is a folder with <code>SKILL.md</code>. That is the whole contract.</h2>
 
   <div class="code-header">~/.claude/skills/commit-message/</div>
 <pre>commit-message/
@@ -121,75 +191,82 @@ description: Use when the user asks for a commit message for
 ---
 
 Read the staged diff. Summarize in one line using
-conventional commits. Reference the diff; don't restate it.</pre>
+conventional commits. Reference the diff; do not restate it.</pre>
 
-  <p class="caption mt-sm">Directory name becomes the slash-command. Drop this in, type <code>/commit-message</code>, done.</p>
+  <p class="caption mt-sm">The folder name becomes the slash-command. Drop it in, type <code>/commit-message</code>, done.</p>
 
   <aside class="notes">
-    <p>60 seconds. Reframe from the existing mental model: "You do not need a plugin, you do not need a manifest, you do not need to register anything. A folder with a markdown file. That is the entire contract."</p>
-    <p>Live change detection: save the file, the skill is live in the next turn.</p>
+    <p>60 seconds. Lean on what the team already knows: no plugin, no manifest, no registry. A folder with a markdown file, and you have shipped a skill.</p>
+    <p>Save the file and it is live on the next turn. No restart, no reload.</p>
   </aside>
 </section>
 
 <section class="slide skills-section" data-section="11:00 — Progressive disclosure">
-  <span class="label">The core idea — why skills are cheap</span>
+  <span class="label">Why skills are cheap</span>
   <h2>Progressive disclosure</h2>
 
-  <div class="pd-stage">
-    <div class="pd-column">
-      <div class="pd-layer pd-always">
-        <span class="pd-layer-label">Always in context</span>
-        /commit-message<br>/explain-code<br>/deploy
-      </div>
-      <div class="pd-layer pd-always">
-        <span class="pd-layer-label">Always in context</span>
-        description: "Use when..."<br><span class="muted">(1,536 char cap each)</span>
+  <div class="pd-panes">
+    <div>
+      <p class="pd-pane-label">Trigger</p>
+      <div class="term term-md term-session term-typing term-output-lines"
+           style="--term-typed-steps: 15; --term-typed-width: 15ch;">
+        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7 · 18k/1M</span></div>
+        <div class="term-body">
+          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/commit-message"></span></div>
+          <div class="term-output">
+            <div class="term-ln dim">matched description · loading body</div>
+            <div class="term-ln ok term-check">SKILL.md loaded (142 lines)</div>
+            <div class="term-ln accent">reading staged diff...</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="pd-trigger">
-      <div>invoke</div>
-      <div class="pd-trigger-arrow">→</div>
-    </div>
-    <div class="pd-column">
-      <div class="pd-layer pd-lazy">
-        <span class="pd-layer-label">Loads on invoke</span>
-        SKILL.md body<br><span class="muted">(up to ~500 lines)</span>
-      </div>
-      <div class="pd-layer pd-lazy">
-        <span class="pd-layer-label">Loads on demand</span>
-        reference.md<br>examples.md<br>scripts/*
+
+    <div>
+      <p class="pd-pane-label">Body loads on invoke</p>
+      <div class="pd-body">
+        <div class="pd-fm">---<br>
+          <span class="k">description:</span> Use when the user asks for a commit message...<br>
+          <span class="k">allowed-tools:</span> Bash(git diff:*), Bash(git log:*)<br>
+          ---
+        </div>
+        <div class="pd-body-hr"></div>
+        <div>Read the staged diff with <span style="color: var(--sky-blue);">git diff --cached</span>.</div>
+        <div>Summarize in one line using conventional commits.</div>
+        <div>Reference the diff; do not restate it.</div>
+        <div style="color: #8A949E; margin-top: 0.45rem;"># ... 130 more lines, loaded only now ...</div>
       </div>
     </div>
   </div>
 
-  <p class="caption caption-center mt-sm">Long skills are free until you use them. A 2,000-line skill costs almost nothing until Claude invokes it.</p>
+  <p class="caption caption-center mt-md">Names and one-line descriptions live in context. The body only loads when Claude picks the skill. A 2,000-line skill costs you nothing until you need it.</p>
 
   <aside class="notes">
-    <p>90 seconds. This is the concept to land. Why can you have 30 skills installed and not pay a context penalty? Because only the names and one-line descriptions are always there. The body loads on invoke.</p>
-    <p>Corollary: your description IS the activation lever. If it's vague, Claude will not pick your skill when it matters.</p>
+    <p>90 seconds. This is the idea that unlocks the rest. You can install 30 skills and not pay a context tax, because only the names plus a 1,536-character description sit in context. The body comes in on invoke.</p>
+    <p>Corollary for later: the description is the activation lever. Vague description, Claude skips the skill. We will come back to this.</p>
   </aside>
 </section>
 
 <section class="slide skills-section" data-section="12:00 — Frontmatter reference">
-  <span class="label">The fields that matter</span>
-  <h2>Only <code>description</code> is recommended. The rest tune behavior.</h2>
+  <span class="eyebrow">Frontmatter reference</span>
+  <p class="display-quote-lg" style="margin-top: 0.6rem;"><code style="font-family: var(--font-mono); font-size: 0.85em; color: var(--captech-blue);">description</code> is the only one you need. The rest are <span class="accent">tuning knobs</span>.</p>
 
   <table class="fm-ref">
     <tr>
       <td>description</td>
-      <td>What it does AND when to use it. First 1,536 chars are the whole index entry. Front-load the "use when" trigger.</td>
+      <td>What it does and when to use it. The first 1,536 characters are the whole index entry. Lead with the "use when" trigger.</td>
     </tr>
     <tr>
       <td>disable-model-invocation: true</td>
-      <td>Manual-only. Use for side-effect workflows like <code>/deploy</code>, <code>/commit</code>, <code>/send-slack</code>.</td>
+      <td>Manual-only. Good for anything with side effects: <code>/deploy</code>, <code>/commit</code>, <code>/send-slack</code>.</td>
     </tr>
     <tr>
       <td>allowed-tools</td>
-      <td>Pre-approve tools while the skill is active. <code>Bash(git add *) Bash(git commit *)</code></td>
+      <td>Pre-approve tools while the skill is active. <code>Bash(git add *), Bash(git commit *)</code> stops the approval spam.</td>
     </tr>
     <tr>
       <td>context: fork</td>
-      <td>Run the skill body as the prompt to an isolated subagent. Pair with <code>agent:</code>.</td>
+      <td>Run the body as the prompt to an isolated subagent. Pair with <code>agent:</code>.</td>
     </tr>
     <tr>
       <td>agent: Explore | Plan | general-purpose</td>
@@ -197,12 +274,12 @@ conventional commits. Reference the diff; don't restate it.</pre>
     </tr>
     <tr>
       <td>paths</td>
-      <td>Glob patterns. Skill auto-loads only when Claude touches matching files.</td>
+      <td>Glob patterns. The skill auto-loads only when Claude touches matching files.</td>
     </tr>
   </table>
 
   <aside class="notes">
-    <p>90 seconds. Walk the table top to bottom. The two that matter most for this team today: <code>disable-model-invocation</code> for anything with side effects, and <code>allowed-tools</code> to stop the approval-prompt spam.</p>
+    <p>90 seconds. Walk top to bottom. For this team today, the two that matter most: <code>disable-model-invocation</code> on anything with side effects, and <code>allowed-tools</code> to stop the approval-prompt spam mid-demo.</p>
   </aside>
 </section>
 
@@ -210,36 +287,52 @@ conventional commits. Reference the diff; don't restate it.</pre>
   <span class="label">Ship your first skill tonight</span>
   <h2>Five steps. Ten minutes.</h2>
 
-  <div class="two-col mt-sm">
+  <div class="first-skill-stage">
     <div>
-      <ol class="clean steps-dense">
-        <li><code>mkdir -p ~/.claude/skills/explain-code</code></li>
-        <li>Create <code>SKILL.md</code> &mdash; frontmatter plus body.</li>
-        <li>Write the description as <em>"Use when..."</em> &mdash; triggers and symptoms, not what it does.</li>
-        <li>Save. Live change detection picks it up without restarting.</li>
-        <li>Invoke with <code>/explain-code</code> &mdash; or let Claude match it from your prompt.</li>
-      </ol>
+      <p class="pd-pane-label" style="color: var(--medium-grey);">The folder</p>
+      <div class="tree tree-grow">
+        <ul>
+          <li><span class="dir">~/.claude/skills/</span>
+            <ul>
+              <li><span class="dir">explain-code/</span>
+                <ul>
+                  <li><span class="file tree-highlight">SKILL.md</span> <span class="meta">that is it</span></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <div class="code-header">~/.claude/skills/explain-code/SKILL.md</div>
-<pre>---
-description: Explains code with diagrams and
-  analogies. Use when the user asks
-  "how does this work" or is onboarding
-  to an unfamiliar file.
----
 
-When explaining code:
-1. Start with an analogy from everyday life.
-2. Draw an ASCII diagram of the flow.
-3. Walk through the code step by step.
-4. Highlight one gotcha or misconception.</pre>
+    <div>
+      <p class="pd-pane-label" style="color: var(--medium-grey);">The run</p>
+      <div class="term term-md term-session term-typing term-output-lines"
+           style="--term-typed-steps: 13; --term-typed-width: 13ch;">
+        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7 · 22k/1M</span></div>
+        <div class="term-body">
+          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/explain-code"></span></div>
+          <div class="term-output">
+            <div class="term-ln dim">matched: explain-code</div>
+            <div class="term-ln accent">reading SKILL.md...</div>
+            <div class="term-ln ok term-check">ready · which file?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="first-skill-steps">
+      <span class="step"><span class="num">1</span>mkdir the folder</span>
+      <span class="step"><span class="num">2</span>write SKILL.md</span>
+      <span class="step"><span class="num">3</span>description says "use when..."</span>
+      <span class="step"><span class="num">4</span>save — live on next turn</span>
+      <span class="step"><span class="num">5</span>invoke or let Claude match it</span>
     </div>
   </div>
 
   <aside class="notes">
-    <p>120 seconds. This is the "do it Monday" slide. Walk the left column as a checklist. Show the right as the actual artifact.</p>
-    <p>The `.claude/skills/` variant (project-level) goes in the repo and ships with the team. The `~/.claude/skills/` variant (personal) is just for you.</p>
+    <p>120 seconds. This is the do-it-tonight slide. Walk the five steps along the bottom as a checklist, then point at the tree and say "that is the whole folder structure," then point at the terminal and say "that is the whole invocation."</p>
+    <p>Project-scope vs personal-scope: <code>.claude/skills/</code> in the repo ships with the team; <code>~/.claude/skills/</code> is just for you. Mention the CapTech-side vs client-side split here.</p>
   </aside>
 </section>
 
@@ -247,42 +340,71 @@ When explaining code:
   <span class="label">Two knobs that extend skills · 60s aside</span>
   <h2>Where subagents and hooks fit</h2>
 
-  <div class="two-col mt-sm">
-    <div>
+  <div class="sah-grid">
+    <div class="sah-col">
       <h3 class="h3-blue">Subagents</h3>
-      <p class="note">Add <code>context: fork</code> + <code>agent: Explore</code> to your SKILL.md. The skill body becomes the task; an isolated context window does the work.</p>
-      <p class="note muted">Use for: research, code review, anything that would pollute your main conversation.</p>
+      <p class="note">Add <code>context: fork</code> plus <code>agent: Explore</code> to your SKILL.md. The body becomes the task; an isolated context window does the work.</p>
+      <div class="term term-sm term-session term-typing term-output-lines"
+           style="--term-typed-steps: 14; --term-typed-width: 14ch;">
+        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">main session</span></div>
+        <div class="term-body">
+          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/deep-research"></span></div>
+          <div class="term-output">
+            <div class="term-ln dim">forking · agent: Explore</div>
+            <div class="term-ln accent">child window · 0 tokens</div>
+            <div class="term-ln ok term-check">done · returned 3-line summary</div>
+          </div>
+        </div>
+      </div>
+      <p class="note muted" style="margin-top: 0.6rem;">Use for research, code review, anything that would otherwise pollute your main conversation.</p>
     </div>
-    <div>
-      <h3 class="h3-sky">Hooks</h3>
-      <p class="note">Shell commands that run on tool events. Deterministic, unlike CLAUDE.md instructions. Configured in <code>.claude/settings.json</code>.</p>
-      <p class="note muted">Use for: block force-push without a flag, run lint after every edit, enforce what CLAUDE.md only requests.</p>
-    </div>
-  </div>
 
-  <div class="rulebox mt-lg">
-    <p><strong>Mental model:</strong> Skills are the playbook. Subagents are where it can run. Hooks are the guarantee.</p>
+    <div class="sah-col">
+      <h3 class="h3-sky">Hooks</h3>
+      <p class="note">Shell commands that fire on tool events. Deterministic, unlike CLAUDE.md instructions. Configured in <code>.claude/settings.json</code>.</p>
+      <div class="term term-sm term-typing term-output-lines"
+           style="--term-typed-steps: 20; --term-typed-width: 20ch;">
+        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">PostToolUse hook</span></div>
+        <div class="term-body">
+          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="Edit src/auth.ts"></span></div>
+          <div class="term-output">
+            <div class="term-ln ok">wrote 1 file</div>
+            <div class="term-ln fire">hook fired · npm run lint</div>
+            <div class="term-ln ok term-check">lint passed · continuing</div>
+          </div>
+        </div>
+      </div>
+      <p class="note muted" style="margin-top: 0.6rem;">Use to block force-push without a flag, run lint after every edit, or enforce what CLAUDE.md can only request.</p>
+    </div>
   </div>
 
   <aside class="notes">
-    <p>60 seconds flat. Do not deep-dive. The job here is name recognition so "subagent" and "hook" are not foreign words when they come up later on the job.</p>
+    <p>60 seconds flat. No deep dive. The job is name-recognition so "subagent" and "hook" land as familiar words when they come up on the job next week.</p>
+    <p>Mental model to say out loud: skills are the playbook, subagents are where it can run, hooks are the guarantee.</p>
   </aside>
 </section>
 
 <section class="slide skills-section" data-section="16:00 — The description rule">
   <span class="label">The one rule that breaks most skills</span>
-  <h2>Descriptions say <em>when</em>, never <em>what</em>.</h2>
+  <p class="display-quote-lg">Descriptions say <span class="accent">when</span>, never <span class="accent">what</span>.</p>
 
-  <div class="rulebox mt-lg">
-    <p><strong>Descriptions describe <span class="accent-blue">when</span> to use the skill.</strong></p>
-    <p>Third-person triggers. Symptoms. "Use when the user asks..."</p>
-    <p><strong>Never describe <span class="accent-dark">what</span> the skill does.</strong></p>
-    <p>That's the body's job.</p>
+  <div class="desc-rule-stage">
+    <div class="desc-rule-pair">
+      <div class="desc-card bad">
+        <div class="tag">what — skipped</div>
+        <p>description: Reviews code for bugs, suggests refactors, and writes a summary.</p>
+      </div>
+      <div class="desc-card">
+        <div class="tag">when — invoked</div>
+        <p>description: Use when the user asks for a code review or says "look over this diff."</p>
+      </div>
+    </div>
+
+    <p class="caption caption-center" style="margin-top: 0.5rem;">If the description summarizes the workflow, Claude follows the description and never reads the body. This is how the Superpowers "code review between tasks" bug happened.</p>
   </div>
 
-  <p class="caption caption-lg mt-md">If the description summarizes the workflow, Claude follows the description and skips the body entirely. Proven empirically &mdash; the Superpowers "code review between tasks" bug.</p>
-
   <aside class="notes">
-    <p>60 seconds. Read the rulebox twice — once fast, once slow. End on the concrete failure mode: if your description says "do X then Y," Claude may do just X and never read the body.</p>
+    <p>60 seconds. Read the quote twice — once fast, once slow. Then land the failure mode: if your description says "do X then Y," Claude may do just X and never open the body.</p>
+    <p>Third-person triggers. Symptoms. "Use when the user asks..." That is the pattern.</p>
   </aside>
 </section>

@@ -1,49 +1,171 @@
+<style>
+  /* Section-scoped tweaks for 07-responsible-use. Keep under 40 lines. */
+  .resp-divider-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+    max-width: 520px;
+    margin: 2rem 0 0 0;
+  }
+  .resp-divider-grid .cell {
+    aspect-ratio: 1;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+  }
+  .resp-divider-grid .cell.redact {
+    background: repeating-linear-gradient(45deg,
+      #1c1c1c 0 6px, #000 6px 12px);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+  .resp-divider-grid .cell.mark {
+    background: var(--yellow);
+  }
+  .policy-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-top: 1.25rem;
+  }
+  .policy-lock {
+    width: 160px; height: 160px;
+    margin: 0 auto;
+    display: block;
+    color: var(--captech-blue);
+    opacity: 0.9;
+  }
+  .five-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+  .five-grid .term { max-width: none; }
+  .five-grid .term-body { padding: 0.8rem 0.9rem 0.9rem; font-size: 0.82rem; }
+  .five-grid .step-tag {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--sky-blue);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+  }
+  .five-grid .step-body { color: #E6E6E6; font-size: 0.88rem; line-height: 1.4; }
+  .five-grid .step-body code {
+    color: var(--yellow);
+    background: rgba(253, 218, 36, 0.08);
+    padding: 0 0.25rem;
+    border-radius: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .resp-divider-grid .cell { transition: none; }
+  }
+</style>
+
 <section class="slide section-divider" data-section="22:30 — Responsible use">
   <span class="label">22:30 — 25:00</span>
-  <h1>Responsible use</h1>
+  <h1>Responsible use.</h1>
   <p class="lede">Three rules. One habit. Start tonight.</p>
+  <div class="resp-divider-grid" aria-hidden="true">
+    <div class="cell"></div><div class="cell redact"></div><div class="cell"></div><div class="cell"></div><div class="cell mark"></div><div class="cell"></div><div class="cell redact"></div><div class="cell"></div>
+    <div class="cell redact"></div><div class="cell"></div><div class="cell"></div><div class="cell redact"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell redact"></div>
+    <div class="cell"></div><div class="cell"></div><div class="cell redact"></div><div class="cell"></div><div class="cell"></div><div class="cell redact"></div><div class="cell"></div><div class="cell"></div>
+  </div>
 </section>
 
 <section class="slide" data-section="22:45 — Data policy">
-  <span class="label">Anthropic&rsquo;s data policy &middot; verbatim</span>
-  <div class="quote">
-    &ldquo;By default, we will not use your inputs or outputs from our commercial products to train our models.&rdquo;
-    <cite>privacy.claude.com/en/articles/7996868</cite>
+  <span class="eyebrow">Anthropic data policy &middot; verbatim</span>
+  <div class="policy-grid">
+    <p class="display-quote-lg">
+      &ldquo;By default, we will <span class="accent">not use your inputs or outputs</span> from our commercial products to train our models.&rdquo;
+    </p>
+    <svg class="policy-lock" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="12" y="28" width="40" height="28" rx="3"/>
+      <path d="M20 28 V18 a12 12 0 0 1 24 0 V28"/>
+      <circle cx="32" cy="42" r="3" fill="currentColor" stroke="none"/>
+      <line x1="32" y1="45" x2="32" y2="50"/>
+    </svg>
   </div>
-  <p class="mt-sm"><strong>The exception:</strong> thumbs-up / thumbs-down feedback buttons.</p>
-  <div class="rulebox rulebox-warn mt-sm">
-    <p><strong>Action (Team/Enterprise admins):</strong> Organization settings &rarr; Data and Privacy &rarr; &ldquo;Rate chats&rdquo; &rarr; disable.</p>
-    <p>Do this once, org-wide, before touching client data.</p>
+  <p class="caption mt-sm">privacy.claude.com/en/articles/7996868</p>
+  <div class="rulebox rulebox-warn mt-lg">
+    <p><strong>The exception:</strong> thumbs-up and thumbs-down feedback buttons do send data back.</p>
+    <p><strong>Admin action</strong> (Team / Enterprise): Organization settings &rarr; Data and Privacy &rarr; Rate chats &rarr; off. One click, org-wide, before you touch client data.</p>
   </div>
   <aside class="notes">
-    <p>60 seconds. Read the quote verbatim. Then name the exception: the thumbs feedback buttons do send data back. The admin toggle is one click and it&rsquo;s the single most important action before a client engagement.</p>
+    <p>60 seconds. Read the quote verbatim so the team hears the exact wording, not my paraphrase. Then the exception: the thumbs buttons are the one channel that sends content back, and most people do not know that.</p>
+    <p>The admin toggle is the single most important action before a client engagement. One click. Do it before the kickoff call.</p>
   </aside>
 </section>
 
 <section class="slide" data-section="23:45 — Cite the line">
-  <span class="label">The single highest-ROI habit</span>
-  <h2 class="h2-hero">&ldquo;Cite the file and line.&rdquo;</h2>
-  <p class="lede-light mt-sm">Require a path and line number for every claimed reference &mdash; every function, type, or GraphQL field Claude names.</p>
-  <p class="lede-light mt-sm"><strong>If it cannot cite, it is guessing.</strong></p>
-  <p class="caption mt-lg">Put it in CLAUDE.md. Cheapest insurance against shipping a hallucinated Apollo hook or phantom schema field.</p>
+  <span class="eyebrow">the single highest-ROI habit</span>
+  <p class="display-quote-lg mt-sm">
+    &ldquo;<span class="accent">Cite the file and line.</span>&rdquo;
+  </p>
+  <p class="lede-light mt-lg">Every function, type, or GraphQL field Claude names needs a <code>path:line</code>. If it cannot cite, it is guessing.</p>
+
+  <div class="term term-md term-session mt-lg" style="max-width: 720px;">
+    <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/client/subgraph &middot; opus 4.7</span></div>
+    <div class="term-body">
+      <div class="term-line"><span class="term-prompt">$</span> Where does the consumer refresh token live?</div>
+      <div class="term-output" style="margin-top: 0.5rem;">
+        <div class="term-ln accent" style="opacity: 1;">src/auth/session.ts:47 &mdash; refreshToken()</div>
+        <div class="term-ln dim" style="opacity: 1;">schema/auth.graphql:12 &mdash; type SessionToken</div>
+        <div class="term-ln ok term-check" style="opacity: 1;">cited &middot; verified against file</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="caption mt-lg">Put it in CLAUDE.md as rule #1. Reject diffs that claim a reference without a line.</p>
   <aside class="notes">
-    <p>60 seconds. This lands. Slow down. This is the line that walks out of the room with them.</p>
-    <p>Make it CLAUDE.md rule #1 on the client repo. When you see a claim with no path:line, reject the diff.</p>
+    <p>60 seconds. This line walks out of the room with them. Slow down.</p>
+    <p>The terminal on this slide shows the shape of a correct answer: path, line, symbol. That is what you demand every time. When the team sees a claim with no path:line, they reject the diff and ask for the citation.</p>
   </aside>
 </section>
 
 <section class="slide" data-section="24:30 — Five things tonight">
-  <span class="label">Your Monday-morning starter kit</span>
+  <span class="eyebrow">your Monday-morning starter kit</span>
   <h2>Five things to install tonight.</h2>
-  <ol class="clean clean-md mt-sm">
-    <li>Claude Code, if you don&rsquo;t have it yet.</li>
-    <li>Run <code>/init</code> in your project &mdash; generates a starter CLAUDE.md.</li>
-    <li>Turn on auto memory &mdash; it&rsquo;s on by default in v2.1.59+.</li>
-    <li>Allowlist safe tools via <code>/permissions</code> so you stop clicking Approve.</li>
-    <li>A habit of running <code>/clear</code> between unrelated tasks.</li>
-  </ol>
+  <div class="five-grid">
+    <div class="term term-session">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">01</span></div>
+      <div class="term-body">
+        <span class="step-tag">install</span>
+        <div class="step-body">Install <code>claude</code> if you do not have it.</div>
+      </div>
+    </div>
+    <div class="term term-session">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">02</span></div>
+      <div class="term-body">
+        <span class="step-tag">bootstrap</span>
+        <div class="step-body">Run <code>/init</code> in your repo. Writes a starter CLAUDE.md.</div>
+      </div>
+    </div>
+    <div class="term term-session">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">03</span></div>
+      <div class="term-body">
+        <span class="step-tag">memory</span>
+        <div class="step-body">Auto memory is on by default in v2.1.59 and later. Confirm.</div>
+      </div>
+    </div>
+    <div class="term term-session">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">04</span></div>
+      <div class="term-body">
+        <span class="step-tag">permissions</span>
+        <div class="step-body">Allowlist safe tools with <code>/permissions</code>. Stop clicking Approve.</div>
+      </div>
+    </div>
+    <div class="term term-session">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">05</span></div>
+      <div class="term-body">
+        <span class="step-tag">habit</span>
+        <div class="step-body">Run <code>/clear</code> between unrelated tasks. Every time.</div>
+      </div>
+    </div>
+  </div>
+  <p class="caption mt-lg">Do all five before you open the client repo tomorrow.</p>
   <aside class="notes">
-    <p>60 seconds. Read the list. Say: &ldquo;Do these before you open the client repo tomorrow.&rdquo;</p>
-    <p>The /permissions one is the stealth winner &mdash; the team will get tired of clicking Approve on every git status, and this is the fix.</p>
+    <p>60 seconds. Read each tile. The /permissions one is the stealth winner. The team will get tired of clicking Approve on every git status, and this is the fix.</p>
+    <p>Tell them: if you only do one tonight, do <code>/init</code>. You cannot cite the line without a CLAUDE.md that says to.</p>
   </aside>
 </section>

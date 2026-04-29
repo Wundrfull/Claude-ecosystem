@@ -1,449 +1,457 @@
 <style>
-  /* Scoped animations for the commands section. Shared .pane-tag lives in
-     sections.css. Reduced-motion handled at the bottom. */
+  /* Scoped to the commands section. Most visuals come from kit.css;
+     the rules below fill in the divider grid, plan/execute pair,
+     checkpoint timeline, and memory flow. */
   .cmd-anim { font-family: var(--font-mono); }
 
-  /* Plan Mode: two panes, arrow pulses between them */
-  .plan-mode-panes {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 1.5rem;
-    align-items: stretch;
-    max-width: 880px;
-    margin: 0 auto;
-  }
-  .plan-pane {
-    background: #0F1419;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 8px;
-    padding: 1.25rem 1.5rem;
-    color: #E6E6E6;
-    font-size: 1rem;
-    line-height: 1.55;
-  }
-  .plan-pane.normal .pane-tag { color: var(--yellow); }
-  .plan-pane .ln { opacity: 0; animation: paneLine 7s infinite; }
-  .plan-pane .ln:nth-child(2) { animation-delay: 0.4s; }
-  .plan-pane .ln:nth-child(3) { animation-delay: 0.8s; }
-  .plan-pane .ln:nth-child(4) { animation-delay: 1.2s; }
-  .plan-pane.normal .ln { animation: paneLineNormal 7s infinite; }
-  .plan-pane.normal .ln:nth-child(1) { animation-delay: 3.4s; }
-  .plan-pane.normal .ln:nth-child(2) { animation-delay: 3.8s; }
-  .plan-pane.normal .ln:nth-child(3) { animation-delay: 4.2s; }
-  @keyframes paneLine {
-    0%, 45% { opacity: 0; transform: translateX(-6px); }
-    3%, 40% { opacity: 1; transform: translateX(0); }
-    50%, 100% { opacity: 0.3; }
-  }
-  @keyframes paneLineNormal {
-    0%, 45% { opacity: 0.1; }
-    50%, 95% { opacity: 1; }
-    100% { opacity: 0.1; }
-  }
-  .plan-arrow {
+  /* Slide 7 — divider: a grid of pills that drop in, one by one. */
+  .cmd-pill-grid {
     display: flex;
-    align-items: center;
-    color: var(--captech-blue);
-    font-size: 2.5rem;
-    font-weight: 300;
-    animation: arrowPulse 7s infinite;
+    flex-wrap: wrap;
+    gap: 0.75rem 0.9rem;
+    justify-content: center;
+    max-width: 780px;
+    margin: 2rem auto 0;
   }
-  @keyframes arrowPulse {
-    0%, 45% { opacity: 0.35; transform: translateX(0); }
-    50%, 55% { opacity: 1; transform: translateX(4px); }
-    100% { opacity: 0.35; transform: translateX(0); }
+  .cmd-pill-grid .tag-pill {
+    font-size: 1.1rem;
+    padding: 0.45rem 1rem;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: cmd-pill-in 0.5s ease forwards;
+  }
+  .cmd-pill-grid .tag-pill:nth-child(1) { animation-delay: 0.2s; }
+  .cmd-pill-grid .tag-pill:nth-child(2) { animation-delay: 0.45s; }
+  .cmd-pill-grid .tag-pill:nth-child(3) { animation-delay: 0.7s; }
+  .cmd-pill-grid .tag-pill:nth-child(4) { animation-delay: 0.95s; }
+  .cmd-pill-grid .tag-pill:nth-child(5) { animation-delay: 1.2s; }
+  @keyframes cmd-pill-in {
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  /* /clear: token grid fills with junk, then empties */
-  .context-grid {
+  /* Slide 8 — Plan vs Execute. Two terminals side-by-side, centered. */
+  .plan-exec-pair {
     display: grid;
-    grid-template-columns: repeat(20, 1fr);
-    gap: 3px;
-    max-width: 720px;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1.25rem;
+    align-items: center;
+    max-width: 980px;
     margin: 0 auto;
-    padding: 1rem;
-    background: #0F1419;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.12);
   }
-  .context-grid .tok-cell {
-    aspect-ratio: 1;
-    background: rgba(255,255,255,0.08);
-    border-radius: 2px;
-    animation: fillCell 6s infinite;
+  .plan-exec-pair .term { max-width: 100%; }
+  .plan-arrow-mini {
+    color: var(--sky-blue);
+    font-size: 2.25rem;
+    font-weight: 300;
+    opacity: 0.7;
   }
-  .context-grid .tok-cell:nth-child(3n) { animation-delay: 0.05s; }
-  .context-grid .tok-cell:nth-child(3n+1) { animation-delay: 0.1s; }
-  .context-grid .tok-cell:nth-child(5n) { animation-delay: 0.15s; }
-  .context-grid .tok-cell:nth-child(7n) { animation-delay: 0.2s; }
-  @keyframes fillCell {
-    0% { background: rgba(255,255,255,0.08); }
-    40% { background: var(--captech-blue); }
-    55% { background: var(--captech-blue); }
-    60% { background: rgba(255,255,255,0.08); }
-    100% { background: rgba(255,255,255,0.08); }
-  }
-  .clear-label {
-    display: block;
-    text-align: center;
-    margin-top: 0.75rem;
+  .readonly-badge {
+    display: inline-block;
     font-family: var(--font-mono);
-    font-size: 0.95rem;
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    background: rgba(253, 218, 36, 0.15);
     color: var(--yellow);
-    animation: clearFlash 6s infinite;
-    opacity: 0;
+    border: 1px solid rgba(253, 218, 36, 0.45);
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    margin-left: 0.55rem;
+    vertical-align: middle;
   }
-  @keyframes clearFlash {
-    0%, 55% { opacity: 0; }
-    58%, 70% { opacity: 1; }
-    100% { opacity: 0; }
+  .exec-badge {
+    background: rgba(0, 165, 223, 0.12);
+    color: var(--sky-blue);
+    border-color: rgba(0, 165, 223, 0.4);
+  }
+
+  /* Slide 9/10 — terminal + ctx grid pair. Grid is the hero. */
+  .ctx-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.75rem;
+    align-items: center;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  .ctx-pair .ctx-real { max-width: 100%; }
+  .ctx-pair .term { max-width: 100%; }
+
+  /* Slide 11 — checkpoint timeline. Simpler than the old version. */
+  .checkpoints {
+    position: relative;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 2.25rem 1rem 2.75rem;
+    background: #0F1419;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+  }
+  .checkpoints-track {
+    position: relative;
+    height: 2px;
+    background: rgba(255,255,255,0.18);
+    margin: 1.5rem 1rem;
+  }
+  .checkpoint-dot {
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    transform: translate(-50%, -50%);
+  }
+  .checkpoint-dot[data-label]::after {
+    content: attr(data-label);
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.6);
+    white-space: nowrap;
+  }
+  .checkpoint-dot.target {
+    background: var(--yellow);
+    width: 18px;
+    height: 18px;
+    box-shadow: 0 0 0 5px rgba(253, 218, 36, 0.22);
+    animation: cp-pulse 3.2s ease-in-out infinite;
+  }
+  .checkpoint-dot.target[data-label]::after { color: var(--yellow); }
+  @keyframes cp-pulse {
+    0%, 100% { box-shadow: 0 0 0 5px rgba(253, 218, 36, 0.22); }
+    50%      { box-shadow: 0 0 0 11px rgba(253, 218, 36, 0.36); }
+  }
+  .rewind-arrow {
+    position: absolute;
+    top: 50%;
+    width: 2px;
+    height: 28px;
+    background: var(--sky-blue);
+    transform: translate(-50%, -50%);
+    animation: rw-travel 5s ease-in-out infinite;
+  }
+  @keyframes rw-travel {
+    0%        { left: 92%; opacity: 0.9; }
+    40%, 60%  { left: 55%; opacity: 1;  }
+    100%      { left: 92%; opacity: 0;  }
+  }
+
+  /* Slide 12 — memory. Tree + small card pair showing the two files. */
+  .memory-pair {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 2rem;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .mem-flow {
+    background: #0F1419;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    font-family: var(--font-sans);
+  }
+  .mem-flow-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.9rem;
+    align-items: center;
+    margin-bottom: 0.9rem;
+  }
+  .mem-flow-row:last-child { margin-bottom: 0; }
+  .mem-chip {
+    background: rgba(0, 94, 184, 0.18);
+    border: 1px solid rgba(0, 94, 184, 0.4);
+    color: #E6E6E6;
+    border-radius: 6px;
+    padding: 0.65rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  .mem-chip.yellow {
+    background: rgba(253, 218, 36, 0.1);
+    border-color: rgba(253, 218, 36, 0.35);
+    color: var(--yellow);
+  }
+  .mem-chip small {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 0.2rem;
+    letter-spacing: 0.02em;
+  }
+  .mem-arrow {
+    color: var(--sky-blue);
+    font-size: 1.4rem;
+    text-align: center;
+    opacity: 0.75;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cmd-anim *, .cmd-anim { animation: none !important; }
-    .plan-pane .ln { opacity: 1; }
-    .context-grid .tok-cell:nth-child(4n) { background: var(--captech-blue); }
-    .clear-label { opacity: 1; }
+    .cmd-pill-grid .tag-pill,
+    .checkpoint-dot.target,
+    .rewind-arrow { animation: none !important; opacity: 1 !important; transform: translate(-50%, -50%); }
+    .rewind-arrow { left: 55%; }
   }
 </style>
 
 <section class="slide section-divider" data-section="4:30 — Commands">
   <span class="label">4:30 — 10:00</span>
-  <h1>Commands worth<br>learning today</h1>
-  <p class="lede">Five Anthropic recommends. Start Monday morning.</p>
+  <h1>Five commands.<br>Monday morning.</h1>
+  <p class="lede">Anthropic's short list. The ones you will reach for first.</p>
+  <div class="cmd-pill-grid">
+    <span class="tag-pill tag-pill--sky">Shift+Tab · Plan Mode</span>
+    <span class="tag-pill">/clear</span>
+    <span class="tag-pill tag-pill--sky">/compact</span>
+    <span class="tag-pill tag-pill--yellow">/rewind</span>
+    <span class="tag-pill">/memory</span>
+  </div>
 </section>
 
 <section class="slide dark" data-section="4:30 — Plan Mode">
   <span class="label">01 of 05 · Shift + Tab</span>
   <h2>Plan Mode</h2>
-  <p class="body-dark">Read-only exploration, then implement. The recommended workflow for anything more than a one-line change.</p>
+  <p class="body-dark">Read first, write second. Toggle Claude into read-only exploration, agree on a plan, then flip back to execute.</p>
 
-  <div class="cmd-anim mt-lg">
-    <div class="plan-mode-panes">
-      <div class="plan-pane">
-        <span class="pane-tag">Plan Mode · read-only</span>
-        <div class="ln">read src/auth/session.ts</div>
-        <div class="ln">read src/auth/token.ts</div>
-        <div class="ln">grep -R "refreshToken"</div>
-        <div class="ln">propose plan →</div>
+  <div class="cmd-anim mt-lg plan-exec-pair">
+    <div class="term term-md term-session">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">plan<span class="readonly-badge">read-only</span></span></div>
+      <div class="term-body">
+        <div class="term-output">
+          <div class="term-ln dim">read src/auth/session.ts</div>
+          <div class="term-ln dim">read src/auth/token.ts</div>
+          <div class="term-ln dim">grep -R "refreshToken"</div>
+          <div class="term-ln accent">propose plan</div>
+        </div>
       </div>
-      <div class="plan-arrow">→</div>
-      <div class="plan-pane normal">
-        <span class="pane-tag">Normal Mode · execute</span>
-        <div class="ln">edit session.ts</div>
-        <div class="ln">run npm test</div>
-        <div class="ln">commit &amp; push</div>
+    </div>
+
+    <div class="plan-arrow-mini">&rarr;</div>
+
+    <div class="term term-md term-session">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">execute<span class="readonly-badge exec-badge">writes allowed</span></span></div>
+      <div class="term-body">
+        <div class="term-output">
+          <div class="term-ln">edit session.ts</div>
+          <div class="term-ln">run npm test</div>
+          <div class="term-ln ok term-check">tests pass</div>
+          <div class="term-ln">commit &amp; push</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <p class="caption mt-md">Toggle with Shift+Tab. Open the plan in your editor with Ctrl+G before executing.</p>
+  <p class="caption mt-md">Toggle with Shift+Tab. Open the plan in your editor with Ctrl+G before you run it.</p>
 
   <aside class="notes">
-    <p>45 seconds. Say: "This is Anthropic's recommended default workflow. You explore with Plan Mode — Claude can read but not edit — then switch to Normal Mode to execute."</p>
-    <p>Callback point: skip plan mode for one-line changes. Use it when scope is unclear or touches multiple files.</p>
+    <p>45 seconds. This is the recommended default for anything that touches more than one file. You get to see the plan before Claude edits anything.</p>
+    <p>Skip plan mode for one-line fixes. Use it when the scope is fuzzy, the blast radius is unclear, or you are somewhere sensitive on the client side.</p>
   </aside>
 </section>
 
 <section class="slide dark" data-section="5:30 — /clear">
   <span class="label">02 of 05</span>
   <h2><code class="cmd-name">/clear</code></h2>
-  <p class="body-dark">Reset context between unrelated tasks. The single most-recommended habit.</p>
+  <p class="body-dark">Reset the context between unrelated tasks. The single habit Anthropic recommends most.</p>
 
-  <div class="cmd-anim mt-md">
-    <div class="context-grid" aria-label="Context window filling with tokens, then clearing">
-      <!-- 60 cells: 20 cols x 3 rows -->
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
-      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+  <div class="cmd-anim mt-md ctx-pair">
+    <div class="ctx-real ctx-clear">
+      <div class="ctx-real__title">/clear <span class="sub">Context Usage</span></div>
+      <div class="ctx-real__layout">
+        <div class="ctx-real__grid" data-cells="200"
+             data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:54,free:138,autocompact:3"
+             aria-label="Context grid clearing"><div class="cell sys-prompt" style="--i:0;--mi:0"></div><div class="cell sys-tools" style="--i:1;--mi:0"></div><div class="cell sys-tools" style="--i:2;--mi:1"></div><div class="cell memory" style="--i:3;--mi:0"></div><div class="cell skills" style="--i:4;--mi:0"></div><div class="cell messages" style="--i:5;--mi:0"></div><div class="cell messages" style="--i:6;--mi:1"></div><div class="cell messages" style="--i:7;--mi:2"></div><div class="cell messages" style="--i:8;--mi:3"></div><div class="cell messages" style="--i:9;--mi:4"></div><div class="cell messages" style="--i:10;--mi:5"></div><div class="cell messages" style="--i:11;--mi:6"></div><div class="cell messages" style="--i:12;--mi:7"></div><div class="cell messages" style="--i:13;--mi:8"></div><div class="cell messages" style="--i:14;--mi:9"></div><div class="cell messages" style="--i:15;--mi:10"></div><div class="cell messages" style="--i:16;--mi:11"></div><div class="cell messages" style="--i:17;--mi:12"></div><div class="cell messages" style="--i:18;--mi:13"></div><div class="cell messages" style="--i:19;--mi:14"></div><div class="cell messages" style="--i:20;--mi:15"></div><div class="cell messages" style="--i:21;--mi:16"></div><div class="cell messages" style="--i:22;--mi:17"></div><div class="cell messages" style="--i:23;--mi:18"></div><div class="cell messages" style="--i:24;--mi:19"></div><div class="cell messages" style="--i:25;--mi:20"></div><div class="cell messages" style="--i:26;--mi:21"></div><div class="cell messages" style="--i:27;--mi:22"></div><div class="cell messages" style="--i:28;--mi:23"></div><div class="cell messages" style="--i:29;--mi:24"></div><div class="cell messages" style="--i:30;--mi:25"></div><div class="cell messages" style="--i:31;--mi:26"></div><div class="cell messages" style="--i:32;--mi:27"></div><div class="cell messages" style="--i:33;--mi:28"></div><div class="cell messages" style="--i:34;--mi:29"></div><div class="cell messages" style="--i:35;--mi:30"></div><div class="cell messages" style="--i:36;--mi:31"></div><div class="cell messages" style="--i:37;--mi:32"></div><div class="cell messages" style="--i:38;--mi:33"></div><div class="cell messages" style="--i:39;--mi:34"></div><div class="cell messages" style="--i:40;--mi:35"></div><div class="cell messages" style="--i:41;--mi:36"></div><div class="cell messages" style="--i:42;--mi:37"></div><div class="cell messages" style="--i:43;--mi:38"></div><div class="cell messages" style="--i:44;--mi:39"></div><div class="cell messages" style="--i:45;--mi:40"></div><div class="cell messages" style="--i:46;--mi:41"></div><div class="cell messages" style="--i:47;--mi:42"></div><div class="cell messages" style="--i:48;--mi:43"></div><div class="cell messages" style="--i:49;--mi:44"></div><div class="cell messages" style="--i:50;--mi:45"></div><div class="cell messages" style="--i:51;--mi:46"></div><div class="cell messages" style="--i:52;--mi:47"></div><div class="cell messages" style="--i:53;--mi:48"></div><div class="cell messages" style="--i:54;--mi:49"></div><div class="cell messages" style="--i:55;--mi:50"></div><div class="cell messages" style="--i:56;--mi:51"></div><div class="cell messages" style="--i:57;--mi:52"></div><div class="cell messages" style="--i:58;--mi:53"></div><div class="cell free" style="--i:59;--mi:0"></div><div class="cell free" style="--i:60;--mi:1"></div><div class="cell free" style="--i:61;--mi:2"></div><div class="cell free" style="--i:62;--mi:3"></div><div class="cell free" style="--i:63;--mi:4"></div><div class="cell free" style="--i:64;--mi:5"></div><div class="cell free" style="--i:65;--mi:6"></div><div class="cell free" style="--i:66;--mi:7"></div><div class="cell free" style="--i:67;--mi:8"></div><div class="cell free" style="--i:68;--mi:9"></div><div class="cell free" style="--i:69;--mi:10"></div><div class="cell free" style="--i:70;--mi:11"></div><div class="cell free" style="--i:71;--mi:12"></div><div class="cell free" style="--i:72;--mi:13"></div><div class="cell free" style="--i:73;--mi:14"></div><div class="cell free" style="--i:74;--mi:15"></div><div class="cell free" style="--i:75;--mi:16"></div><div class="cell free" style="--i:76;--mi:17"></div><div class="cell free" style="--i:77;--mi:18"></div><div class="cell free" style="--i:78;--mi:19"></div><div class="cell free" style="--i:79;--mi:20"></div><div class="cell free" style="--i:80;--mi:21"></div><div class="cell free" style="--i:81;--mi:22"></div><div class="cell free" style="--i:82;--mi:23"></div><div class="cell free" style="--i:83;--mi:24"></div><div class="cell free" style="--i:84;--mi:25"></div><div class="cell free" style="--i:85;--mi:26"></div><div class="cell free" style="--i:86;--mi:27"></div><div class="cell free" style="--i:87;--mi:28"></div><div class="cell free" style="--i:88;--mi:29"></div><div class="cell free" style="--i:89;--mi:30"></div><div class="cell free" style="--i:90;--mi:31"></div><div class="cell free" style="--i:91;--mi:32"></div><div class="cell free" style="--i:92;--mi:33"></div><div class="cell free" style="--i:93;--mi:34"></div><div class="cell free" style="--i:94;--mi:35"></div><div class="cell free" style="--i:95;--mi:36"></div><div class="cell free" style="--i:96;--mi:37"></div><div class="cell free" style="--i:97;--mi:38"></div><div class="cell free" style="--i:98;--mi:39"></div><div class="cell free" style="--i:99;--mi:40"></div><div class="cell free" style="--i:100;--mi:41"></div><div class="cell free" style="--i:101;--mi:42"></div><div class="cell free" style="--i:102;--mi:43"></div><div class="cell free" style="--i:103;--mi:44"></div><div class="cell free" style="--i:104;--mi:45"></div><div class="cell free" style="--i:105;--mi:46"></div><div class="cell free" style="--i:106;--mi:47"></div><div class="cell free" style="--i:107;--mi:48"></div><div class="cell free" style="--i:108;--mi:49"></div><div class="cell free" style="--i:109;--mi:50"></div><div class="cell free" style="--i:110;--mi:51"></div><div class="cell free" style="--i:111;--mi:52"></div><div class="cell free" style="--i:112;--mi:53"></div><div class="cell free" style="--i:113;--mi:54"></div><div class="cell free" style="--i:114;--mi:55"></div><div class="cell free" style="--i:115;--mi:56"></div><div class="cell free" style="--i:116;--mi:57"></div><div class="cell free" style="--i:117;--mi:58"></div><div class="cell free" style="--i:118;--mi:59"></div><div class="cell free" style="--i:119;--mi:60"></div><div class="cell free" style="--i:120;--mi:61"></div><div class="cell free" style="--i:121;--mi:62"></div><div class="cell free" style="--i:122;--mi:63"></div><div class="cell free" style="--i:123;--mi:64"></div><div class="cell free" style="--i:124;--mi:65"></div><div class="cell free" style="--i:125;--mi:66"></div><div class="cell free" style="--i:126;--mi:67"></div><div class="cell free" style="--i:127;--mi:68"></div><div class="cell free" style="--i:128;--mi:69"></div><div class="cell free" style="--i:129;--mi:70"></div><div class="cell free" style="--i:130;--mi:71"></div><div class="cell free" style="--i:131;--mi:72"></div><div class="cell free" style="--i:132;--mi:73"></div><div class="cell free" style="--i:133;--mi:74"></div><div class="cell free" style="--i:134;--mi:75"></div><div class="cell free" style="--i:135;--mi:76"></div><div class="cell free" style="--i:136;--mi:77"></div><div class="cell free" style="--i:137;--mi:78"></div><div class="cell free" style="--i:138;--mi:79"></div><div class="cell free" style="--i:139;--mi:80"></div><div class="cell free" style="--i:140;--mi:81"></div><div class="cell free" style="--i:141;--mi:82"></div><div class="cell free" style="--i:142;--mi:83"></div><div class="cell free" style="--i:143;--mi:84"></div><div class="cell free" style="--i:144;--mi:85"></div><div class="cell free" style="--i:145;--mi:86"></div><div class="cell free" style="--i:146;--mi:87"></div><div class="cell free" style="--i:147;--mi:88"></div><div class="cell free" style="--i:148;--mi:89"></div><div class="cell free" style="--i:149;--mi:90"></div><div class="cell free" style="--i:150;--mi:91"></div><div class="cell free" style="--i:151;--mi:92"></div><div class="cell free" style="--i:152;--mi:93"></div><div class="cell free" style="--i:153;--mi:94"></div><div class="cell free" style="--i:154;--mi:95"></div><div class="cell free" style="--i:155;--mi:96"></div><div class="cell free" style="--i:156;--mi:97"></div><div class="cell free" style="--i:157;--mi:98"></div><div class="cell free" style="--i:158;--mi:99"></div><div class="cell free" style="--i:159;--mi:100"></div><div class="cell free" style="--i:160;--mi:101"></div><div class="cell free" style="--i:161;--mi:102"></div><div class="cell free" style="--i:162;--mi:103"></div><div class="cell free" style="--i:163;--mi:104"></div><div class="cell free" style="--i:164;--mi:105"></div><div class="cell free" style="--i:165;--mi:106"></div><div class="cell free" style="--i:166;--mi:107"></div><div class="cell free" style="--i:167;--mi:108"></div><div class="cell free" style="--i:168;--mi:109"></div><div class="cell free" style="--i:169;--mi:110"></div><div class="cell free" style="--i:170;--mi:111"></div><div class="cell free" style="--i:171;--mi:112"></div><div class="cell free" style="--i:172;--mi:113"></div><div class="cell free" style="--i:173;--mi:114"></div><div class="cell free" style="--i:174;--mi:115"></div><div class="cell free" style="--i:175;--mi:116"></div><div class="cell free" style="--i:176;--mi:117"></div><div class="cell free" style="--i:177;--mi:118"></div><div class="cell free" style="--i:178;--mi:119"></div><div class="cell free" style="--i:179;--mi:120"></div><div class="cell free" style="--i:180;--mi:121"></div><div class="cell free" style="--i:181;--mi:122"></div><div class="cell free" style="--i:182;--mi:123"></div><div class="cell free" style="--i:183;--mi:124"></div><div class="cell free" style="--i:184;--mi:125"></div><div class="cell free" style="--i:185;--mi:126"></div><div class="cell free" style="--i:186;--mi:127"></div><div class="cell free" style="--i:187;--mi:128"></div><div class="cell free" style="--i:188;--mi:129"></div><div class="cell free" style="--i:189;--mi:130"></div><div class="cell free" style="--i:190;--mi:131"></div><div class="cell free" style="--i:191;--mi:132"></div><div class="cell free" style="--i:192;--mi:133"></div><div class="cell free" style="--i:193;--mi:134"></div><div class="cell free" style="--i:194;--mi:135"></div><div class="cell free" style="--i:195;--mi:136"></div><div class="cell free" style="--i:196;--mi:137"></div><div class="cell autocompact" style="--i:197;--mi:0"></div><div class="cell autocompact" style="--i:198;--mi:1"></div><div class="cell autocompact" style="--i:199;--mi:2"></div></div>
+        <div class="ctx-real__info">
+          <span class="model-name">Opus 4.7 (1M context)</span>
+          <span class="model-id">us.anthropic.claude-opus-4-7[1m]</span>
+          <span class="usage-total">287k &rarr; 17.1k tokens</span>
+          <div class="section-label">After /clear</div>
+          <div class="ctx-real__cat free"><span class="glyph">&#9142;</span><span class="name">Free space:</span><span class="tokens">980.9k (98.1%)</span></div>
+          <div class="ctx-real__cat autocompact"><span class="glyph">&#9149;</span><span class="name">Autocompact buffer:</span><span class="tokens">17.1k (1.7%)</span></div>
+        </div>
+      </div>
     </div>
-    <code class="clear-label">&gt; /clear</code>
+
+    <div>
+      <div class="term term-md term-session term-typing" style="--term-typed-steps: 6; --term-typed-width: 6ch;">
+        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/captech/primer</span></div>
+        <div class="term-body">
+          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/clear"></span></div>
+          <div class="term-output term-output-lines">
+            <div class="term-ln ok term-check">Context cleared</div>
+            <div class="term-ln dim">session reset &middot; 0 tokens</div>
+          </div>
+          <div class="term-benefits">
+            <span class="term-benefit">fresh session</span>
+            <span class="term-benefit">no baggage</span>
+            <span class="term-benefit">faster answers</span>
+          </div>
+        </div>
+      </div>
+      <p class="caption mt-md" style="text-align:left;">Anthropic: "Use <code>/clear</code> frequently between tasks to reset the context window entirely."</p>
+    </div>
   </div>
 
-  <p class="caption mt-sm">Anthropic: "Use <code>/clear</code> frequently between tasks to reset the context window entirely."</p>
-
   <aside class="notes">
-    <p>60 seconds. Walk through: "Every file Claude reads, every command output, every turn — it all stacks in the context window. Performance degrades as it fills. `/clear` is how you get a fresh session without relaunching."</p>
-    <p>Rule of thumb: after two failed corrections on the same issue, `/clear` and rewrite the prompt with what you learned. Clean context beats accumulated corrections.</p>
+    <p>60 seconds. Every file Claude reads, every command output, every turn piles up in the context window. Performance degrades as it fills. <code>/clear</code> gets you a fresh session without relaunching.</p>
+    <p>Rule of thumb: after two failed corrections on the same issue, clear and rewrite the prompt with what you just learned. Clean context beats a stack of corrections.</p>
   </aside>
 </section>
 
 <section class="slide dark" data-section="6:30 — /compact">
   <span class="label">03 of 05</span>
   <h2><code class="cmd-name">/compact</code> <span class="cmd-arg">[instructions]</span></h2>
-  <p class="body-dark">Summarize the conversation to free context while keeping decisions. Pass optional instructions to bias the summary.</p>
+  <p class="body-dark">Summarize the conversation to free context while keeping the decisions. Pass optional instructions to bias what the summary preserves.</p>
 
-  <div class="cmd-anim compact-anim mt-lg">
-    <div class="compact-row">
-      <div class="compact-before">
-        <span class="pane-tag pane-tag-muted">Before · 47 turns</span>
-        <div class="turn-line"></div><div class="turn-line"></div><div class="turn-line"></div>
-        <div class="turn-line"></div><div class="turn-line"></div><div class="turn-line"></div>
-        <div class="turn-line"></div><div class="turn-line"></div><div class="turn-line"></div>
-        <div class="turn-line"></div><div class="turn-line"></div><div class="turn-line"></div>
+  <div class="cmd-anim mt-md ctx-pair">
+    <div class="ctx-real ctx-compact-real">
+      <div class="ctx-real__title">/compact <span class="sub">Context Usage</span></div>
+      <div class="ctx-real__layout">
+        <div class="ctx-real__grid" data-cells="200"
+             data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:66,free:126,autocompact:3"
+             aria-label="Context grid compacting"><div class="cell sys-prompt" style="--i:0;--mi:0"></div><div class="cell sys-tools" style="--i:1;--mi:0"></div><div class="cell sys-tools" style="--i:2;--mi:1"></div><div class="cell memory" style="--i:3;--mi:0"></div><div class="cell skills" style="--i:4;--mi:0"></div><div class="cell messages is-summary" style="--i:5;--mi:0"></div><div class="cell messages is-summary" style="--i:6;--mi:1"></div><div class="cell messages is-summary" style="--i:7;--mi:2"></div><div class="cell messages is-summary" style="--i:8;--mi:3"></div><div class="cell messages is-summary" style="--i:9;--mi:4"></div><div class="cell messages is-summary" style="--i:10;--mi:5"></div><div class="cell messages is-summary" style="--i:11;--mi:6"></div><div class="cell messages is-summary" style="--i:12;--mi:7"></div><div class="cell messages is-summary" style="--i:13;--mi:8"></div><div class="cell messages is-summary" style="--i:14;--mi:9"></div><div class="cell messages is-summary" style="--i:15;--mi:10"></div><div class="cell messages is-summary" style="--i:16;--mi:11"></div><div class="cell messages" style="--i:17;--mi:12"></div><div class="cell messages" style="--i:18;--mi:13"></div><div class="cell messages" style="--i:19;--mi:14"></div><div class="cell messages" style="--i:20;--mi:15"></div><div class="cell messages" style="--i:21;--mi:16"></div><div class="cell messages" style="--i:22;--mi:17"></div><div class="cell messages" style="--i:23;--mi:18"></div><div class="cell messages" style="--i:24;--mi:19"></div><div class="cell messages" style="--i:25;--mi:20"></div><div class="cell messages" style="--i:26;--mi:21"></div><div class="cell messages" style="--i:27;--mi:22"></div><div class="cell messages" style="--i:28;--mi:23"></div><div class="cell messages" style="--i:29;--mi:24"></div><div class="cell messages" style="--i:30;--mi:25"></div><div class="cell messages" style="--i:31;--mi:26"></div><div class="cell messages" style="--i:32;--mi:27"></div><div class="cell messages" style="--i:33;--mi:28"></div><div class="cell messages" style="--i:34;--mi:29"></div><div class="cell messages" style="--i:35;--mi:30"></div><div class="cell messages" style="--i:36;--mi:31"></div><div class="cell messages" style="--i:37;--mi:32"></div><div class="cell messages" style="--i:38;--mi:33"></div><div class="cell messages" style="--i:39;--mi:34"></div><div class="cell messages" style="--i:40;--mi:35"></div><div class="cell messages" style="--i:41;--mi:36"></div><div class="cell messages" style="--i:42;--mi:37"></div><div class="cell messages" style="--i:43;--mi:38"></div><div class="cell messages" style="--i:44;--mi:39"></div><div class="cell messages" style="--i:45;--mi:40"></div><div class="cell messages" style="--i:46;--mi:41"></div><div class="cell messages" style="--i:47;--mi:42"></div><div class="cell messages" style="--i:48;--mi:43"></div><div class="cell messages" style="--i:49;--mi:44"></div><div class="cell messages" style="--i:50;--mi:45"></div><div class="cell messages" style="--i:51;--mi:46"></div><div class="cell messages" style="--i:52;--mi:47"></div><div class="cell messages" style="--i:53;--mi:48"></div><div class="cell messages" style="--i:54;--mi:49"></div><div class="cell messages" style="--i:55;--mi:50"></div><div class="cell messages" style="--i:56;--mi:51"></div><div class="cell messages" style="--i:57;--mi:52"></div><div class="cell messages" style="--i:58;--mi:53"></div><div class="cell messages" style="--i:59;--mi:54"></div><div class="cell messages" style="--i:60;--mi:55"></div><div class="cell messages" style="--i:61;--mi:56"></div><div class="cell messages" style="--i:62;--mi:57"></div><div class="cell messages" style="--i:63;--mi:58"></div><div class="cell messages" style="--i:64;--mi:59"></div><div class="cell messages" style="--i:65;--mi:60"></div><div class="cell messages" style="--i:66;--mi:61"></div><div class="cell messages" style="--i:67;--mi:62"></div><div class="cell messages" style="--i:68;--mi:63"></div><div class="cell messages" style="--i:69;--mi:64"></div><div class="cell messages" style="--i:70;--mi:65"></div><div class="cell free" style="--i:71;--mi:0"></div><div class="cell free" style="--i:72;--mi:1"></div><div class="cell free" style="--i:73;--mi:2"></div><div class="cell free" style="--i:74;--mi:3"></div><div class="cell free" style="--i:75;--mi:4"></div><div class="cell free" style="--i:76;--mi:5"></div><div class="cell free" style="--i:77;--mi:6"></div><div class="cell free" style="--i:78;--mi:7"></div><div class="cell free" style="--i:79;--mi:8"></div><div class="cell free" style="--i:80;--mi:9"></div><div class="cell free" style="--i:81;--mi:10"></div><div class="cell free" style="--i:82;--mi:11"></div><div class="cell free" style="--i:83;--mi:12"></div><div class="cell free" style="--i:84;--mi:13"></div><div class="cell free" style="--i:85;--mi:14"></div><div class="cell free" style="--i:86;--mi:15"></div><div class="cell free" style="--i:87;--mi:16"></div><div class="cell free" style="--i:88;--mi:17"></div><div class="cell free" style="--i:89;--mi:18"></div><div class="cell free" style="--i:90;--mi:19"></div><div class="cell free" style="--i:91;--mi:20"></div><div class="cell free" style="--i:92;--mi:21"></div><div class="cell free" style="--i:93;--mi:22"></div><div class="cell free" style="--i:94;--mi:23"></div><div class="cell free" style="--i:95;--mi:24"></div><div class="cell free" style="--i:96;--mi:25"></div><div class="cell free" style="--i:97;--mi:26"></div><div class="cell free" style="--i:98;--mi:27"></div><div class="cell free" style="--i:99;--mi:28"></div><div class="cell free" style="--i:100;--mi:29"></div><div class="cell free" style="--i:101;--mi:30"></div><div class="cell free" style="--i:102;--mi:31"></div><div class="cell free" style="--i:103;--mi:32"></div><div class="cell free" style="--i:104;--mi:33"></div><div class="cell free" style="--i:105;--mi:34"></div><div class="cell free" style="--i:106;--mi:35"></div><div class="cell free" style="--i:107;--mi:36"></div><div class="cell free" style="--i:108;--mi:37"></div><div class="cell free" style="--i:109;--mi:38"></div><div class="cell free" style="--i:110;--mi:39"></div><div class="cell free" style="--i:111;--mi:40"></div><div class="cell free" style="--i:112;--mi:41"></div><div class="cell free" style="--i:113;--mi:42"></div><div class="cell free" style="--i:114;--mi:43"></div><div class="cell free" style="--i:115;--mi:44"></div><div class="cell free" style="--i:116;--mi:45"></div><div class="cell free" style="--i:117;--mi:46"></div><div class="cell free" style="--i:118;--mi:47"></div><div class="cell free" style="--i:119;--mi:48"></div><div class="cell free" style="--i:120;--mi:49"></div><div class="cell free" style="--i:121;--mi:50"></div><div class="cell free" style="--i:122;--mi:51"></div><div class="cell free" style="--i:123;--mi:52"></div><div class="cell free" style="--i:124;--mi:53"></div><div class="cell free" style="--i:125;--mi:54"></div><div class="cell free" style="--i:126;--mi:55"></div><div class="cell free" style="--i:127;--mi:56"></div><div class="cell free" style="--i:128;--mi:57"></div><div class="cell free" style="--i:129;--mi:58"></div><div class="cell free" style="--i:130;--mi:59"></div><div class="cell free" style="--i:131;--mi:60"></div><div class="cell free" style="--i:132;--mi:61"></div><div class="cell free" style="--i:133;--mi:62"></div><div class="cell free" style="--i:134;--mi:63"></div><div class="cell free" style="--i:135;--mi:64"></div><div class="cell free" style="--i:136;--mi:65"></div><div class="cell free" style="--i:137;--mi:66"></div><div class="cell free" style="--i:138;--mi:67"></div><div class="cell free" style="--i:139;--mi:68"></div><div class="cell free" style="--i:140;--mi:69"></div><div class="cell free" style="--i:141;--mi:70"></div><div class="cell free" style="--i:142;--mi:71"></div><div class="cell free" style="--i:143;--mi:72"></div><div class="cell free" style="--i:144;--mi:73"></div><div class="cell free" style="--i:145;--mi:74"></div><div class="cell free" style="--i:146;--mi:75"></div><div class="cell free" style="--i:147;--mi:76"></div><div class="cell free" style="--i:148;--mi:77"></div><div class="cell free" style="--i:149;--mi:78"></div><div class="cell free" style="--i:150;--mi:79"></div><div class="cell free" style="--i:151;--mi:80"></div><div class="cell free" style="--i:152;--mi:81"></div><div class="cell free" style="--i:153;--mi:82"></div><div class="cell free" style="--i:154;--mi:83"></div><div class="cell free" style="--i:155;--mi:84"></div><div class="cell free" style="--i:156;--mi:85"></div><div class="cell free" style="--i:157;--mi:86"></div><div class="cell free" style="--i:158;--mi:87"></div><div class="cell free" style="--i:159;--mi:88"></div><div class="cell free" style="--i:160;--mi:89"></div><div class="cell free" style="--i:161;--mi:90"></div><div class="cell free" style="--i:162;--mi:91"></div><div class="cell free" style="--i:163;--mi:92"></div><div class="cell free" style="--i:164;--mi:93"></div><div class="cell free" style="--i:165;--mi:94"></div><div class="cell free" style="--i:166;--mi:95"></div><div class="cell free" style="--i:167;--mi:96"></div><div class="cell free" style="--i:168;--mi:97"></div><div class="cell free" style="--i:169;--mi:98"></div><div class="cell free" style="--i:170;--mi:99"></div><div class="cell free" style="--i:171;--mi:100"></div><div class="cell free" style="--i:172;--mi:101"></div><div class="cell free" style="--i:173;--mi:102"></div><div class="cell free" style="--i:174;--mi:103"></div><div class="cell free" style="--i:175;--mi:104"></div><div class="cell free" style="--i:176;--mi:105"></div><div class="cell free" style="--i:177;--mi:106"></div><div class="cell free" style="--i:178;--mi:107"></div><div class="cell free" style="--i:179;--mi:108"></div><div class="cell free" style="--i:180;--mi:109"></div><div class="cell free" style="--i:181;--mi:110"></div><div class="cell free" style="--i:182;--mi:111"></div><div class="cell free" style="--i:183;--mi:112"></div><div class="cell free" style="--i:184;--mi:113"></div><div class="cell free" style="--i:185;--mi:114"></div><div class="cell free" style="--i:186;--mi:115"></div><div class="cell free" style="--i:187;--mi:116"></div><div class="cell free" style="--i:188;--mi:117"></div><div class="cell free" style="--i:189;--mi:118"></div><div class="cell free" style="--i:190;--mi:119"></div><div class="cell free" style="--i:191;--mi:120"></div><div class="cell free" style="--i:192;--mi:121"></div><div class="cell free" style="--i:193;--mi:122"></div><div class="cell free" style="--i:194;--mi:123"></div><div class="cell free" style="--i:195;--mi:124"></div><div class="cell free" style="--i:196;--mi:125"></div><div class="cell autocompact" style="--i:197;--mi:0"></div><div class="cell autocompact" style="--i:198;--mi:1"></div><div class="cell autocompact" style="--i:199;--mi:2"></div></div>
+        <div class="ctx-real__info">
+          <span class="model-name">Opus 4.7 (1M context)</span>
+          <span class="model-id">us.anthropic.claude-opus-4-7[1m]</span>
+          <span class="usage-total">287k &rarr; 95k tokens</span>
+          <div class="section-label">After /compact</div>
+          <div class="ctx-real__cat sys-prompt"><span class="glyph">&#9153;</span><span class="name">System prompt:</span><span class="tokens">6.2k (unchanged)</span></div>
+          <div class="ctx-real__cat memory"><span class="glyph">&#9153;</span><span class="name">Memory files:</span><span class="tokens">812 (unchanged)</span></div>
+          <div class="ctx-real__cat skills"><span class="glyph">&#9153;</span><span class="name">Skills:</span><span class="tokens">956 (unchanged)</span></div>
+          <div class="ctx-real__cat messages"><span class="glyph">&#9153;</span><span class="name">Messages (summarized):</span><span class="tokens">60k (was 269.5k)</span></div>
+        </div>
       </div>
-      <div class="compact-arrow">⇢</div>
-      <div class="compact-after">
-        <span class="pane-tag">After · 1 summary</span>
-        <div class="summary-line"><span>Decisions made</span></div>
-        <div class="summary-line"><span>Files modified</span></div>
-        <div class="summary-line"><span>Open questions</span></div>
+    </div>
+
+    <div>
+      <div class="term term-md term-session term-typing" style="--term-typed-steps: 30; --term-typed-width: 30ch;">
+        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/captech/primer</span></div>
+        <div class="term-body">
+          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/compact Focus on the API changes"></span></div>
+          <div class="term-output term-output-lines">
+            <div class="term-ln dim">47 turns &rarr; summary</div>
+            <div class="term-ln ok term-check">API decisions preserved</div>
+            <div class="term-ln dim">older scaffolding dropped</div>
+          </div>
+          <div class="term-benefits">
+            <span class="term-benefit">keeps continuity</span>
+            <span class="term-benefit">drops the noise</span>
+            <span class="term-benefit">bias the summary</span>
+          </div>
+        </div>
       </div>
+      <p class="caption mt-md" style="text-align:left;"><code>/clear</code> wipes. <code>/compact</code> summarizes. Pick based on whether the next task is related to the last one.</p>
     </div>
   </div>
 
-  <p class="caption mt-md">Example: <code>/compact Focus on the API changes</code> preserves API context, drops the rest.</p>
-
   <aside class="notes">
-    <p>45 seconds. Key distinction: `/clear` wipes everything; `/compact` preserves a summary. Use `/compact` when the work is related and you need continuity. Use `/clear` when it isn't.</p>
-    <p>The optional instructions argument is underused. If you just spent 20 turns on auth but now want to focus on billing, `/compact Focus on billing-related decisions` lets you keep the useful context and lose the noise.</p>
+    <p>45 seconds. Key distinction: <code>/clear</code> wipes everything; <code>/compact</code> preserves a summary. Use <code>/compact</code> when the work is related and you need continuity. Use <code>/clear</code> when it is not.</p>
+    <p>The optional instructions argument is underused. If you just spent 20 turns on auth but want to pivot to billing, <code>/compact Focus on billing-related decisions</code> lets you keep the useful context and lose the rest.</p>
   </aside>
 </section>
-
-<style>
-  .compact-anim { max-width: 880px; margin-left: auto; margin-right: auto; }
-  .pane-tag-muted { color: var(--medium-grey); }
-  .compact-row {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 1.5rem;
-    align-items: center;
-  }
-  .compact-before, .compact-after {
-    background: #0F1419;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 8px;
-    padding: 1.25rem;
-    min-height: 200px;
-  }
-  .compact-before .turn-line {
-    height: 8px;
-    background: rgba(255,255,255,0.15);
-    margin: 6px 0;
-    border-radius: 2px;
-    animation: compactShrink 7s infinite;
-    transform-origin: left center;
-  }
-  .compact-before .turn-line:nth-child(2n) { width: 80%; }
-  .compact-before .turn-line:nth-child(3n) { width: 65%; }
-  .compact-before .turn-line:nth-child(4n) { width: 92%; }
-  @keyframes compactShrink {
-    0%, 40% { opacity: 1; transform: scaleY(1); }
-    50%, 100% { opacity: 0.15; transform: scaleY(0.3); }
-  }
-  .compact-after .summary-line {
-    padding: 0.5rem 0.75rem;
-    background: rgba(0, 165, 223, 0.12);
-    border-left: 3px solid var(--sky-blue);
-    margin: 0.5rem 0;
-    font-size: 0.95rem;
-    color: #E6E6E6;
-    opacity: 0;
-    animation: summaryAppear 7s infinite;
-  }
-  .compact-after .summary-line:nth-child(2) { animation-delay: 0.2s; }
-  .compact-after .summary-line:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes summaryAppear {
-    0%, 45% { opacity: 0; transform: translateX(-4px); }
-    55%, 95% { opacity: 1; transform: translateX(0); }
-    100% { opacity: 0; }
-  }
-  .compact-arrow {
-    color: var(--captech-blue);
-    font-size: 2.5rem;
-    text-align: center;
-    animation: arrowPulse 7s infinite;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .compact-before .turn-line, .compact-after .summary-line, .compact-arrow { animation: none !important; opacity: 1 !important; transform: none !important; }
-  }
-</style>
 
 <section class="slide dark" data-section="7:30 — /rewind">
   <span class="label">04 of 05 · Esc Esc</span>
   <h2><code class="cmd-name">/rewind</code></h2>
-  <p class="body-dark">Every action is a checkpoint. Restore conversation, code, or both &mdash; to any previous point.</p>
+  <p class="body-dark">Every action is a checkpoint. Restore the conversation, the code, or both &mdash; to any previous point.</p>
 
-  <div class="cmd-anim rewind-anim mt-lg">
-    <div class="timeline">
-      <div class="timeline-track"></div>
-      <div class="checkpoint" style="left: 5%;" data-label="start"></div>
-      <div class="checkpoint" style="left: 22%;" data-label="read"></div>
-      <div class="checkpoint" style="left: 40%;" data-label="plan"></div>
-      <div class="checkpoint target" style="left: 58%;" data-label="edit"></div>
-      <div class="checkpoint" style="left: 76%;" data-label="test"></div>
-      <div class="checkpoint" style="left: 92%;" data-label="commit"></div>
-      <div class="rewind-cursor"></div>
+  <div class="cmd-anim mt-lg" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;max-width:1180px;margin:0 auto;">
+    <div class="checkpoints">
+      <div class="checkpoints-track">
+        <div class="checkpoint-dot" style="left: 5%;" data-label="start"></div>
+        <div class="checkpoint-dot" style="left: 25%;" data-label="read"></div>
+        <div class="checkpoint-dot" style="left: 40%;" data-label="plan"></div>
+        <div class="checkpoint-dot target" style="left: 55%;" data-label="edit"></div>
+        <div class="checkpoint-dot" style="left: 75%;" data-label="test"></div>
+        <div class="checkpoint-dot" style="left: 92%;" data-label="commit"></div>
+        <div class="rewind-arrow"></div>
+      </div>
+      <p style="text-align:center;margin-top:2rem;font-family:var(--font-mono);color:var(--yellow);font-size:0.9rem;">&#8634; restore to: edit</p>
     </div>
-    <p class="rewind-restore">&#8634; restore to: edit</p>
+
+    <div>
+      <div class="term term-md term-session term-typing" style="--term-typed-steps: 7; --term-typed-width: 7ch;">
+        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/captech/primer</span></div>
+        <div class="term-body">
+          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/rewind"></span></div>
+          <div class="term-output term-output-lines">
+            <div class="term-ln dim">checkpoint: edit session.ts</div>
+            <div class="term-ln ok term-check">conversation restored</div>
+            <div class="term-ln ok term-check">files restored</div>
+          </div>
+          <div class="term-benefits">
+            <span class="term-benefit">try risky things</span>
+            <span class="term-benefit">undo across sessions</span>
+          </div>
+        </div>
+      </div>
+      <p class="caption mt-md" style="text-align:left;">Double-tap Esc. Checkpoints persist across sessions &mdash; rewind tomorrow if you need to.</p>
+    </div>
   </div>
 
-  <p class="caption mt-sm">Double-tap Esc. Checkpoints persist across sessions &mdash; rewind tomorrow if you need to.</p>
-
   <aside class="notes">
-    <p>30 seconds. Say: "This changes how you experiment. You don't have to plan every move carefully. Tell Claude to try something risky — if it doesn't work, rewind."</p>
-    <p>Caveat: checkpoints track Claude's changes, not external processes. Not a replacement for git.</p>
+    <p>30 seconds. This changes how you experiment. You do not have to plan every move carefully. Tell Claude to try something risky &mdash; if it fails, rewind.</p>
+    <p>Caveat: checkpoints track Claude's changes, not external processes like migrations or deployments. Not a replacement for git.</p>
   </aside>
 </section>
-
-<style>
-  .rewind-anim { max-width: 900px; margin-left: auto; margin-right: auto; }
-  .rewind-restore {
-    text-align: center;
-    margin-top: 1.5rem;
-    font-family: var(--font-mono);
-    color: var(--yellow);
-    font-size: 0.95rem;
-  }
-  .timeline {
-    position: relative;
-    height: 80px;
-    padding: 30px 0;
-  }
-  .timeline-track {
-    position: absolute;
-    top: 50%;
-    left: 0; right: 0;
-    height: 2px;
-    background: rgba(255,255,255,0.2);
-  }
-  .checkpoint {
-    position: absolute;
-    top: calc(50% - 8px);
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.4);
-    transform: translateX(-50%);
-  }
-  .checkpoint::after {
-    content: attr(data-label);
-    position: absolute;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.55);
-    white-space: nowrap;
-  }
-  .checkpoint.target {
-    background: var(--yellow);
-    box-shadow: 0 0 0 6px rgba(253, 218, 36, 0.2);
-    animation: targetPulse 5s infinite;
-  }
-  @keyframes targetPulse {
-    0%, 100% { box-shadow: 0 0 0 6px rgba(253, 218, 36, 0.2); }
-    50% { box-shadow: 0 0 0 12px rgba(253, 218, 36, 0.35); }
-  }
-  .rewind-cursor {
-    position: absolute;
-    top: calc(50% - 14px);
-    left: 92%;
-    width: 2px;
-    height: 28px;
-    background: var(--sky-blue);
-    animation: rewindMove 5s infinite;
-  }
-  @keyframes rewindMove {
-    0% { left: 92%; opacity: 1; }
-    35%, 65% { left: 58%; opacity: 1; }
-    80% { left: 58%; opacity: 0.3; }
-    100% { left: 92%; opacity: 0; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .checkpoint.target, .rewind-cursor { animation: none !important; }
-    .rewind-cursor { left: 58%; }
-  }
-</style>
 
 <section class="slide dark" data-section="8:30 — /memory">
   <span class="label">05 of 05</span>
   <h2><code class="cmd-name">/memory</code></h2>
-  <p class="body-dark">View and edit what Claude remembers &mdash; the CLAUDE.md you wrote and the notes Claude wrote itself.</p>
+  <p class="body-dark">View and edit what Claude remembers &mdash; the rules you wrote and the notes Claude wrote itself.</p>
 
-  <div class="cmd-anim memory-anim mt-lg">
-    <div class="mem-pair">
-      <div class="mem-card">
-        <span class="pane-tag pane-tag-blue">You wrote</span>
-        <div class="mem-file">CLAUDE.md</div>
-        <p class="mem-desc">Rules, conventions, build commands.</p>
+  <div class="cmd-anim mt-lg memory-pair">
+    <div class="tree tree-dark tree-grow">
+      <ul>
+        <li><span class="dir">~/.claude/projects/primer/</span>
+          <ul>
+            <li><span class="dir">memory/</span>
+              <ul>
+                <li><span class="file tree-highlight">MEMORY.md</span> <span class="meta">auto-written index</span></li>
+                <li><span class="file">user_role.md</span></li>
+                <li><span class="file">project_audience.md</span></li>
+                <li><span class="file">feedback_agent_teams.md</span></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><span class="file">CLAUDE.md</span> <span class="meta">you wrote, in-repo</span></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="term term-md term-session term-typing" style="--term-typed-steps: 7; --term-typed-width: 7ch;">
+        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/captech/primer</span></div>
+        <div class="term-body">
+          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/memory"></span></div>
+          <div class="term-output term-output-lines">
+            <div class="term-ln accent">CLAUDE.md &middot; 512 tokens</div>
+            <div class="term-ln accent">MEMORY.md &middot; 300 tokens</div>
+            <div class="term-ln dim">open in editor?</div>
+          </div>
+        </div>
       </div>
-      <div class="mem-flow">
-        <div class="flow-arrow up">&uarr;</div>
-        <div class="flow-arrow down">&darr;</div>
-      </div>
-      <div class="mem-card">
-        <span class="pane-tag pane-tag-yellow">Claude wrote</span>
-        <div class="mem-file">MEMORY.md</div>
-        <p class="mem-desc">Learnings captured across sessions.</p>
+
+      <div class="mem-flow mt-md">
+        <div class="mem-flow-row">
+          <div class="mem-chip">CLAUDE.md<small>you wrote it</small></div>
+          <div class="mem-arrow">&harr;</div>
+          <div class="mem-chip yellow">MEMORY.md<small>Claude wrote it</small></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <p class="caption mt-md">"Remember that..." &mdash; Claude saves it to auto memory. Open <code>/memory</code> to audit or edit.</p>
+  <p class="caption mt-md">Tell Claude "remember that we use pnpm" &mdash; it saves to auto memory. Open <code>/memory</code> to audit or edit anytime.</p>
 
   <aside class="notes">
-    <p>45 seconds. Auto memory is the newer half of this — v2.1.59+. Claude saves build commands, debugging insights, preferences as it discovers them. Stored per-project at <code>~/.claude/projects/&lt;project&gt;/memory/</code>.</p>
-    <p>Call out the two directions: you tell Claude "always use pnpm" and it writes to auto memory. You open `/memory` and browse what it's saved — plain markdown, editable anytime.</p>
+    <p>45 seconds. Two files doing two jobs. CLAUDE.md is what you hand-wrote in the repo: rules, conventions, build commands. MEMORY.md is what Claude keeps at <code>~/.claude/projects/&lt;project&gt;/memory/</code> as it learns your preferences.</p>
+    <p>Auto memory is new (v2.1.59+). It is plain markdown, editable anytime. If Claude starts remembering something wrong, open the file and fix the line.</p>
   </aside>
 </section>
-
-<style>
-  .memory-anim { max-width: 880px; margin-left: auto; margin-right: auto; }
-  .pane-tag-blue   { color: var(--captech-blue); }
-  .pane-tag-yellow { color: var(--yellow); }
-  .mem-pair {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    gap: 2rem;
-    align-items: center;
-  }
-  .mem-card {
-    background: #0F1419;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-align: center;
-  }
-  .mem-file {
-    font-family: var(--font-mono);
-    font-size: 1.5rem;
-    color: #E6E6E6;
-    margin: 0.75rem 0 0.5rem 0;
-  }
-  .mem-desc {
-    font-size: 0.95rem;
-    color: rgba(255,255,255,0.65);
-    margin: 0;
-    font-family: var(--font-sans);
-  }
-  .mem-flow {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    font-size: 1.75rem;
-    color: var(--sky-blue);
-  }
-  .flow-arrow {
-    animation: flowPulse 5s infinite;
-  }
-  .flow-arrow.down { animation-delay: 2.5s; }
-  @keyframes flowPulse {
-    0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
-    25% { opacity: 1; transform: translateY(-3px); }
-    50% { opacity: 0.35; transform: translateY(0); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .flow-arrow { animation: none !important; opacity: 1 !important; }
-  }
-</style>

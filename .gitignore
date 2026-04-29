@@ -20,3 +20,7 @@ brand-assets/
 # Remotion render outputs
 motion/out/
 motion/*.mp4
+# Phase 3 local-only artifacts
+slides/screenshots/
+slides/node_modules/
+

@@ -1,53 +1,164 @@
+<style>
+  /* Section-local tweaks for 04-claude-md. Keep under 40 lines. */
+  .cmd-split {
+    display: grid;
+    grid-template-columns: 1.05fr 1.35fr;
+    gap: 3rem;
+    align-items: center;
+    margin-top: 1.25rem;
+  }
+  .cmd-split .tree { margin: 0; max-width: 100%; }
+  .cmd-rules {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+    margin-top: 0.5rem;
+  }
+  .cmd-rule {
+    display: grid;
+    grid-template-columns: 1.4rem 1fr;
+    gap: 0.9rem;
+    align-items: baseline;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    color: var(--dark-grey);
+    padding: 0.35rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .cmd-rule:last-child { border-bottom: 0; }
+  .cmd-rule .n {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--captech-blue);
+    font-weight: 600;
+  }
+  .cmd-rule code { background: rgba(0,94,184,0.07); padding: 0 0.3em; border-radius: 3px; font-size: 0.95em; }
+  .mem-split { display: grid; grid-template-columns: 1fr 1.1fr; gap: 2.5rem; align-items: start; margin-top: 1rem; }
+  .mem-split .tree, .mem-split .term { margin: 0; max-width: 100%; }
+  .mem-caption { font-size: 1.05rem; color: var(--medium-grey); margin-top: 1rem; max-width: 60ch; }
+  .divider-visual { margin-top: 1.5rem; display: flex; justify-content: center; }
+  .divider-visual .tree { max-width: 520px; }
+  .gql-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
+  .gql-wrap .term { width: 100%; max-width: 820px; }
+  .gql-why { color: rgba(255,255,255,0.72); font-size: 1.05rem; max-width: 58ch; text-align: center; margin: 0.25rem auto 0; }
+</style>
+
 <section class="slide section-divider" data-section="16:30 — CLAUDE.md + memory">
   <span class="label">16:30 — 19:00</span>
   <h1>CLAUDE.md<br>and auto memory</h1>
-  <p class="lede">What persists across sessions.</p>
+  <p class="lede">The two files that persist between sessions.</p>
+  <div class="divider-visual">
+    <div class="tree tree-grow" aria-label="Where CLAUDE.md and MEMORY.md live on disk">
+      <ul>
+        <li><span class="dir">~/project/</span>
+          <ul>
+            <li><span class="file tree-highlight">CLAUDE.md</span> <span class="meta">behavior contract, in the repo</span></li>
+            <li><span class="file">src/</span></li>
+          </ul>
+        </li>
+        <li><span class="dir">~/.claude/projects/&lt;project&gt;/memory/</span>
+          <ul>
+            <li><span class="file tree-highlight">MEMORY.md</span> <span class="meta">auto-written notes, local</span></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
 </section>
 
 <section class="slide" data-section="16:45 — The five-line CLAUDE.md">
   <span class="label">The five-line CLAUDE.md</span>
-  <h2>Treat it like a constitution, not a README.</h2>
-  <ul class="clean clean-lg mt-sm">
-    <li>Before writing code, state the plan.</li>
-    <li>Never run <code>git push --force</code> without explicit confirmation.</li>
-    <li>If a test was passing and now fails, stop and ask before modifying the test.</li>
-    <li>When unsure, ask one question rather than guessing.</li>
-    <li>Do not add dependencies without asking.</li>
-  </ul>
-  <p class="caption mt-lg">Anthropic recommends under 200 lines. Review it like code.</p>
+  <h2>A behavior contract, not a README.</h2>
+  <div class="cmd-split">
+    <div class="term term-md term-session term-typing term-output-lines" style="--term-typed-steps: 16; --term-typed-width: 16ch;">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project</span></div>
+      <div class="term-body">
+        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="git push --force"></span></div>
+        <div class="term-output">
+          <div class="term-ln warn">Hold on. CLAUDE.md rule 2:</div>
+          <div class="term-ln dim">"Never run git push --force without explicit confirmation."</div>
+          <div class="term-ln accent">Confirm? (y/N)</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="cmd-rules">
+        <div class="cmd-rule"><span class="n">01</span><span>State the plan before writing code.</span></div>
+        <div class="cmd-rule"><span class="n">02</span><span>Never run <code>git push --force</code> without explicit confirmation.</span></div>
+        <div class="cmd-rule"><span class="n">03</span><span>If a test was passing and now fails, stop and ask before changing the test.</span></div>
+        <div class="cmd-rule"><span class="n">04</span><span>When unsure, ask one question instead of guessing.</span></div>
+        <div class="cmd-rule"><span class="n">05</span><span>Do not add dependencies without asking.</span></div>
+      </div>
+      <p class="caption mt-sm">Under 200 lines. Version it. Review it like code.</p>
+    </div>
+  </div>
   <aside class="notes">
-    <p>60 seconds. Read the five lines aloud. Pause between them. These are the lines that show up in nearly every public CLAUDE.md I sampled — anthropics/claude-code, cloudflare/agents, obra/superpowers, langchain.</p>
-    <p>Frame: CLAUDE.md is a behavior contract. Forbidden phrases, precedence rules, escalation triggers. Not documentation. Version it in the repo, review it like code.</p>
+    <p>60 seconds. Read the five lines. Pause. These show up in nearly every public CLAUDE.md I sampled (anthropics/claude-code, cloudflare/agents, obra/superpowers, langchain).</p>
+    <p>Frame it as a behavior contract. Forbidden phrases, precedence rules, escalation triggers. The terminal panel shows rule 2 in action: Claude catches a destructive command before it runs.</p>
   </aside>
 </section>
 
 <section class="slide" data-section="17:30 — Auto memory">
-  <span class="label">New in v2.1.59 — worth naming</span>
+  <span class="label">New in v2.1.59</span>
   <h2>Auto memory &mdash; notes Claude writes itself.</h2>
-  <p class="body-light">Claude now saves what it learns about your project automatically. Stored at <code>~/.claude/projects/&lt;project&gt;/memory/MEMORY.md</code>. The first 200 lines or 25KB load at the start of every session.</p>
-  <div class="rulebox mt-sm">
-    <p>Use <code>/memory</code> to view and edit.</p>
-    <p>Ask Claude &ldquo;remember that X&rdquo; &mdash; it writes the entry for you.</p>
+  <div class="mem-split">
+    <div class="tree" aria-label="Where auto memory lives">
+      <ul>
+        <li><span class="dir">~/project/</span>
+          <ul>
+            <li><span class="file">CLAUDE.md</span> <span class="meta">you write it</span></li>
+          </ul>
+        </li>
+        <li><span class="dir">~/.claude/projects/&lt;project&gt;/memory/</span>
+          <ul>
+            <li><span class="file tree-highlight">MEMORY.md</span> <span class="meta">Claude writes it</span></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="term term-md term-session term-typing term-output-lines" style="--term-typed-steps: 44; --term-typed-width: 44ch;">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7</span></div>
+      <div class="term-body">
+        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="remember that we use gqlgen on the API"></span></div>
+        <div class="term-output">
+          <div class="term-ln ok term-check">Saved to MEMORY.md</div>
+          <div class="term-ln dim">entry: "Project uses gqlgen; generated files are regenerated, not edited."</div>
+          <div class="term-ln accent">Loads at the start of every session (first 200 lines / 25KB).</div>
+        </div>
+        <div class="term-benefits">
+          <span class="term-benefit">/memory to view</span>
+          <span class="term-benefit">/memory to edit</span>
+          <span class="term-benefit">skim it weekly</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="quote quote-sm mt-sm">
-    &ldquo;Claude decides what&rsquo;s worth remembering based on whether the information would be useful in a future conversation.&rdquo;
-    <cite>Anthropic docs &middot; auto memory</cite>
-  </div>
+  <p class="mem-caption">Claude decides what is worth keeping. You decide when it got that wrong. Skim MEMORY.md so bad assumptions do not harden into permanent context.</p>
   <aside class="notes">
-    <p>60 seconds. This is the newer feature most of the team has not seen yet. Make it concrete: show the MEMORY.md path, show /memory, show the "remember that" pattern.</p>
-    <p>Point out the tradeoff: you are not writing every note by hand anymore, but you should still skim MEMORY.md occasionally to catch bad assumptions that got promoted into permanent context.</p>
+    <p>60 seconds. This is the feature most of the team has not seen. Show the two paths side by side: CLAUDE.md in the repo (you own it), MEMORY.md in ~/.claude (Claude owns it).</p>
+    <p>Demo the "remember that..." phrasing. Then name the tradeoff: you are not writing notes by hand anymore, but you should still audit the file occasionally. A bad assumption that gets promoted into permanent context is the new version of a stale comment.</p>
   </aside>
 </section>
 
 <section class="slide dark" data-section="18:15 — gqlgen one-liner">
-  <span class="label">The single most important CLAUDE.md line for this engagement</span>
-  <p class="mega-quote">
-    <code>Regenerate code: go run github.com/99designs/gqlgen generate.<br>Never edit generated files by hand.</code>
-  </p>
-  <p class="caption mt-xl">One line. Prevents the most common catastrophic mistake on a gqlgen project. Say it twice.</p>
+  <span class="label">The one CLAUDE.md line that pays for itself on day one</span>
+  <div class="gql-wrap">
+    <div class="term term-lg term-session term-typing term-output-lines" style="--term-typed-steps: 48; --term-typed-width: 48ch;">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">CLAUDE.md · line 14</span></div>
+      <div class="term-body">
+        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="go run github.com/99designs/gqlgen generate"></span></div>
+        <div class="term-output">
+          <div class="term-ln ok term-check">generated.go rebuilt from schema.graphql</div>
+          <div class="term-ln warn">Rule: never edit generated files by hand.</div>
+          <div class="term-ln dim">Hand-edits get clobbered on the next regen.</div>
+        </div>
+      </div>
+    </div>
+    <p class="gql-why">One line. Prevents the most common catastrophic mistake on a gqlgen project. Say it twice in the talk.</p>
+  </div>
   <div class="stamp client-ready"><span class="dot"></span>Template travels</div>
   <aside class="notes">
-    <p>45 seconds. Say the line twice. Say why: gqlgen regenerates generated.go on every schema change. A hand-edit gets silently clobbered and the mistake looks like a bug somewhere else.</p>
-    <p>This is the one line that pays for itself on day one of the engagement.</p>
+    <p>45 seconds. Say the command twice. Say why: gqlgen regenerates generated.go on every schema change. A hand-edit gets silently overwritten and the symptom looks like a bug somewhere else entirely.</p>
+    <p>This is the single line I would copy into every engagement CLAUDE.md before anything else.</p>
   </aside>
 </section>
