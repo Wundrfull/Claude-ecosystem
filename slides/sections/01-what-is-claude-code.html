@@ -17,8 +17,13 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     max-width: 1100px;
+  }
+  .compare-split > .compare-col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
   .compare-split .col-label {
     font-family: var(--font-sans);
@@ -30,8 +35,14 @@
     margin: 0 0 0.5rem;
   }
   .compare-split .col-label.claude { color: var(--captech-blue); }
+  /* Force terminals to share the column's left edge (not auto-centered). */
+  .compare-split .term {
+    margin: 0;
+    max-width: 100%;
+    width: 100%;
+  }
   .compare-shift {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     font-family: var(--font-mono);
     font-size: 1.3rem;
     color: var(--dark-grey);
@@ -40,6 +51,51 @@
   .compare-shift .from { color: var(--medium-grey); }
   .compare-shift .to   { color: var(--captech-blue); font-weight: 600; }
   .compare-shift .arrow { color: var(--sky-blue); margin: 0 0.75rem; font-weight: 600; }
+
+  /* Linear agent loop (replaces SVG circular diagram). */
+  .loop-linear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    flex-wrap: nowrap;
+    max-width: 900px;
+    margin: 1.25rem auto 0.75rem;
+  }
+  .loop-step {
+    font-family: var(--font-sans);
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    padding: 0.55rem 1.25rem;
+    border-radius: 999px;
+    border: 1px solid;
+    background: rgba(255,255,255,0.04);
+    white-space: nowrap;
+  }
+  .loop-step.plan     { color: var(--captech-blue); border-color: var(--captech-blue); background: rgba(0, 94, 184, 0.15); }
+  .loop-step.tool     { color: var(--sky-blue);     border-color: var(--sky-blue);     background: rgba(0, 165, 223, 0.12); }
+  .loop-step.observe  { color: var(--dark-blue);    border-color: var(--dark-blue);    background: rgba(5, 42, 92, 0.25); }
+  .loop-step.done     { color: #98C379;             border-color: #98C379;             background: rgba(152, 195, 121, 0.15); }
+  .loop-arrow {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    color: rgba(255,255,255,0.35);
+    font-weight: 400;
+  }
+  .loop-return {
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.5);
+    margin: 0 auto 1rem;
+    letter-spacing: 0.01em;
+  }
+  .loop-return .curve {
+    font-family: var(--font-mono);
+    color: rgba(255,255,255,0.4);
+    margin-right: 0.4rem;
+  }
 
   /* Three levers with clearer hierarchy: title on top, the three
      LEVER NAMES are the next dominant layer, descriptions below them. */
@@ -103,7 +159,7 @@
   <h2>Copilot is not the model.</h2>
 
   <div class="compare-split">
-    <div>
+    <div class="compare-col">
       <p class="col-label">Copilot</p>
       <div class="term term-sm" style="background: #1E252B;">
         <div class="term-chrome">
@@ -125,7 +181,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="compare-col">
       <p class="col-label claude">Claude Code</p>
       <div class="term term-sm term-session term-output-lines" style="--term-typed-width: 24ch;">
         <div class="term-chrome">
@@ -164,28 +220,16 @@
 <section class="slide dark" data-section="2:45 — The agentic loop">
   <span class="label">The agent loop</span>
   <h2>Plan &rarr; Tool use &rarr; Observe &rarr; done.</h2>
-  <div class="anim-loop mt-md">
-    <svg viewBox="0 0 720 405" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agentic loop: plan, tool use, observe">
-      <defs>
-        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
-          <polygon points="0 0, 9 3, 0 6" fill="rgba(255,255,255,0.4)"/>
-        </marker>
-      </defs>
-      <circle class="ring" cx="360" cy="202" r="130"/>
-      <path class="arrow a-1" d="M 440 140 A 130 130 0 0 1 440 265"/>
-      <path class="arrow a-2" d="M 400 290 A 130 130 0 0 1 280 202"/>
-      <path class="arrow a-3" d="M 280 202 A 130 130 0 0 1 400 115"/>
-      <circle class="node n-plan" cx="360" cy="72" r="52"/>
-      <text class="node-label l-plan" x="360" y="66">Plan</text>
-      <text class="node-sub" x="360" y="88">DECIDE</text>
-      <circle class="node n-tool" cx="473" cy="267" r="52"/>
-      <text class="node-label l-tool" x="473" y="261">Tool use</text>
-      <text class="node-sub" x="473" y="283">READ &middot; EDIT &middot; RUN</text>
-      <circle class="node n-obs" cx="247" cy="267" r="52"/>
-      <text class="node-label l-obs" x="247" y="261">Observe</text>
-      <text class="node-sub" x="247" y="283">REFLECT</text>
-    </svg>
+  <div class="loop-linear" role="img" aria-label="Agent loop: Plan, Tool use, Observe, Done. Then repeats.">
+    <span class="loop-step plan">Plan</span>
+    <span class="loop-arrow" aria-hidden="true">&rarr;</span>
+    <span class="loop-step tool">Tool use</span>
+    <span class="loop-arrow" aria-hidden="true">&rarr;</span>
+    <span class="loop-step observe">Observe</span>
+    <span class="loop-arrow" aria-hidden="true">&rarr;</span>
+    <span class="loop-step done">Done.</span>
   </div>
+  <p class="loop-return"><span class="curve" aria-hidden="true">&#8630;</span> &hellip; then loops back to Plan.</p>
   <p class="caption" style="text-align: center; color: rgba(255,255,255,0.65);">
     Claude iterates until done. Your job is to shape what it sees, what it can do, and how it checks itself.
   </p>

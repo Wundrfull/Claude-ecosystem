@@ -16,8 +16,8 @@
   }
   .cmd-rule {
     display: grid;
-    grid-template-columns: 1.4rem 1fr;
-    gap: 0.9rem;
+    grid-template-columns: 2rem 1fr;
+    column-gap: 1.25rem;
     align-items: baseline;
     font-size: 1.15rem;
     line-height: 1.35;
@@ -31,6 +31,7 @@
     font-size: 0.85rem;
     color: var(--captech-blue);
     font-weight: 600;
+    margin-right: 0.6em;
   }
   .cmd-rule code { background: rgba(0,94,184,0.07); padding: 0 0.3em; border-radius: 3px; font-size: 0.95em; }
   .mem-split { display: grid; grid-template-columns: 1fr 1.1fr; gap: 2.5rem; align-items: start; margin-top: 1rem; }
@@ -43,7 +44,7 @@
   .gql-why { color: rgba(255,255,255,0.72); font-size: 1.05rem; max-width: 58ch; text-align: center; margin: 0.25rem auto 0; }
 </style>
 
-<section class="slide section-divider" data-section="16:30 — CLAUDE.md + memory">
+<section class="slide slide--top-aligned section-divider" data-section="16:30 — CLAUDE.md + memory">
   <span class="label">16:30 — 19:00</span>
   <h1>CLAUDE.md<br>and auto memory</h1>
   <p class="lede">The two files that persist between sessions.</p>
@@ -66,7 +67,7 @@
   </div>
 </section>
 
-<section class="slide" data-section="16:45 — The five-line CLAUDE.md">
+<section class="slide slide--top-aligned" data-section="16:45 — The five-line CLAUDE.md">
   <span class="label">The five-line CLAUDE.md</span>
   <h2>A behavior contract, not a README.</h2>
   <div class="cmd-split">
@@ -98,7 +99,7 @@
   </aside>
 </section>
 
-<section class="slide" data-section="17:30 — Auto memory">
+<section class="slide slide--top-aligned" data-section="17:30 — Auto memory">
   <span class="label">New in v2.1.59</span>
   <h2>Auto memory &mdash; notes Claude writes itself.</h2>
   <div class="mem-split">

@@ -35,15 +35,23 @@
     grid-template-columns: 1fr auto 1fr;
     gap: 1.25rem;
     align-items: center;
-    max-width: 980px;
+    max-width: 1080px;
     margin: 0 auto;
   }
   .plan-exec-pair .term { max-width: 100%; }
+  .plan-exec-pair .term-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
   .plan-arrow-mini {
     color: var(--sky-blue);
-    font-size: 2.25rem;
+    font-size: 2.5rem;
     font-weight: 300;
-    opacity: 0.7;
+    opacity: 0.75;
+    text-align: center;
+    line-height: 1;
+    align-self: center;
   }
   .readonly-badge {
     display: inline-block;
@@ -55,7 +63,6 @@
     border: 1px solid rgba(253, 218, 36, 0.45);
     border-radius: 3px;
     letter-spacing: 0.05em;
-    margin-left: 0.55rem;
     vertical-align: middle;
   }
   .exec-badge {
@@ -76,12 +83,16 @@
   .ctx-pair .ctx-real { max-width: 100%; }
   .ctx-pair .term { max-width: 100%; }
 
-  /* Slide 11 — checkpoint timeline. Simpler than the old version. */
+  /* Slide 11 — checkpoint timeline. Sits above the terminal. */
+  .rewind-stack {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
   .checkpoints {
     position: relative;
-    max-width: 880px;
-    margin: 0 auto;
-    padding: 2.25rem 1rem 2.75rem;
+    padding: 1.5rem 1.25rem 2rem;
     background: #0F1419;
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 10px;
@@ -90,7 +101,7 @@
     position: relative;
     height: 2px;
     background: rgba(255,255,255,0.18);
-    margin: 1.5rem 1rem;
+    margin: 0.75rem 1.25rem 0;
   }
   .checkpoint-dot {
     position: absolute;
@@ -219,29 +230,30 @@
   <h2>Plan Mode</h2>
   <p class="body-dark">Read first, write second. Toggle Claude into read-only exploration, agree on a plan, then flip back to execute.</p>
 
-  <div class="cmd-anim mt-lg plan-exec-pair">
-    <div class="term term-md term-session">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">plan<span class="readonly-badge">read-only</span></span></div>
+  <div class="cmd-anim mt-md plan-exec-pair">
+    <div class="term term-md term-session term-typing" style="--term-typed-steps: 26; --term-typed-width: 26ch;">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"><span>Plan Mode</span> <span class="readonly-badge">read-only</span></span></div>
       <div class="term-body">
-        <div class="term-output">
-          <div class="term-ln dim">read src/auth/session.ts</div>
-          <div class="term-ln dim">read src/auth/token.ts</div>
-          <div class="term-ln dim">grep -R "refreshToken"</div>
-          <div class="term-ln accent">propose plan</div>
+        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="read src/auth/session.ts"></span></div>
+        <div class="term-output term-output-lines">
+          <div class="term-ln dim">reading 4 files&hellip;</div>
+          <div class="term-ln dim">analysis: session refresh uses token.ts</div>
+          <div class="term-ln accent">ready to plan.</div>
         </div>
       </div>
     </div>
 
-    <div class="plan-arrow-mini">&rarr;</div>
+    <div class="plan-arrow-mini" aria-hidden="true">&rarr;</div>
 
-    <div class="term term-md term-session">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">execute<span class="readonly-badge exec-badge">writes allowed</span></span></div>
+    <div class="term term-md term-session term-typing" style="--term-typed-steps: 14; --term-typed-width: 14ch;">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"><span>Execute</span> <span class="readonly-badge exec-badge">writes allowed</span></span></div>
       <div class="term-body">
-        <div class="term-output">
+        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/plan approved"></span></div>
+        <div class="term-output term-output-lines">
           <div class="term-ln">edit session.ts</div>
+          <div class="term-ln">edit token.ts</div>
           <div class="term-ln">run npm test</div>
-          <div class="term-ln ok term-check">tests pass</div>
-          <div class="term-ln">commit &amp; push</div>
+          <div class="term-ln ok term-check">green</div>
         </div>
       </div>
     </div>
@@ -361,38 +373,36 @@
   <h2><code class="cmd-name">/rewind</code></h2>
   <p class="body-dark">Every action is a checkpoint. Restore the conversation, the code, or both &mdash; to any previous point.</p>
 
-  <div class="cmd-anim mt-lg" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;max-width:1180px;margin:0 auto;">
+  <div class="cmd-anim mt-md rewind-stack">
     <div class="checkpoints">
       <div class="checkpoints-track">
-        <div class="checkpoint-dot" style="left: 5%;" data-label="start"></div>
-        <div class="checkpoint-dot" style="left: 25%;" data-label="read"></div>
-        <div class="checkpoint-dot" style="left: 40%;" data-label="plan"></div>
-        <div class="checkpoint-dot target" style="left: 55%;" data-label="edit"></div>
-        <div class="checkpoint-dot" style="left: 75%;" data-label="test"></div>
-        <div class="checkpoint-dot" style="left: 92%;" data-label="commit"></div>
+        <div class="checkpoint-dot" style="left: 8%;" data-label="start"></div>
+        <div class="checkpoint-dot" style="left: 26%;" data-label="read"></div>
+        <div class="checkpoint-dot" style="left: 44%;" data-label="plan"></div>
+        <div class="checkpoint-dot target" style="left: 62%;" data-label="edit"></div>
+        <div class="checkpoint-dot" style="left: 80%;" data-label="test"></div>
+        <div class="checkpoint-dot" style="left: 94%;" data-label="commit"></div>
         <div class="rewind-arrow"></div>
       </div>
-      <p style="text-align:center;margin-top:2rem;font-family:var(--font-mono);color:var(--yellow);font-size:0.9rem;">&#8634; restore to: edit</p>
     </div>
 
-    <div>
-      <div class="term term-md term-session term-typing" style="--term-typed-steps: 7; --term-typed-width: 7ch;">
-        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/captech/primer</span></div>
-        <div class="term-body">
-          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/rewind"></span></div>
-          <div class="term-output term-output-lines">
-            <div class="term-ln dim">checkpoint: edit session.ts</div>
-            <div class="term-ln ok term-check">conversation restored</div>
-            <div class="term-ln ok term-check">files restored</div>
-          </div>
-          <div class="term-benefits">
-            <span class="term-benefit">try risky things</span>
-            <span class="term-benefit">undo across sessions</span>
-          </div>
+    <div class="term term-md term-session term-typing" style="--term-typed-steps: 12; --term-typed-width: 12ch; margin: 0 auto;">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/captech/primer</span></div>
+      <div class="term-body">
+        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/rewind edit"></span></div>
+        <div class="term-output term-output-lines">
+          <div class="term-ln dim">restoring to checkpoint: edit</div>
+          <div class="term-ln dim">reverted 2 turns</div>
+          <div class="term-ln ok term-check">ready</div>
+        </div>
+        <div class="term-benefits">
+          <span class="term-benefit">try risky things</span>
+          <span class="term-benefit">undo across sessions</span>
         </div>
       </div>
-      <p class="caption mt-md" style="text-align:left;">Double-tap Esc. Checkpoints persist across sessions &mdash; rewind tomorrow if you need to.</p>
     </div>
+
+    <p class="caption" style="text-align:left;">Double-tap Esc. Checkpoints persist across sessions &mdash; rewind tomorrow if you need to.</p>
   </div>
 
   <aside class="notes">

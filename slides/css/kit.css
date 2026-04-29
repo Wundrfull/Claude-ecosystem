@@ -1040,3 +1040,15 @@
   color: var(--sky-blue);
   border-color: rgba(0, 165, 223, 0.4);
 }
+
+/* ==========================================================
+   7. LAYOUT UTILITIES
+   ========================================================== */
+
+/* Pulls slide content toward the top instead of vertically centering.
+   Use on content-heavy slides that otherwise leave a ~30-40% void
+   above the H1. Pairs with the default .slide padding (6vh 8vw). */
+.slide.slide--top-aligned {
+  justify-content: flex-start;
+  padding-top: 12vh;
+}
