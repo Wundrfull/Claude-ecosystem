@@ -4,6 +4,77 @@
   .skills-section .note { font-size: 1.1rem; }
   .skills-section .note.muted { font-size: 1rem; }
   .skills-section .steps-dense { font-size: 1.1rem; }
+  .skills-section .footnote {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    color: var(--medium-grey);
+    font-style: normal;
+    margin-top: 0.75rem;
+  }
+  .skills-section .callout {
+    font-family: var(--font-sans);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--medium-grey);
+    margin-left: 0.5rem;
+  }
+
+  /* Slide 14: headline constraint + mono shrink */
+  .skill-headline {
+    max-width: 22ch;
+    margin: 0.4rem 0 1rem;
+  }
+  .skill-headline .line2 {
+    display: block;
+  }
+  .skill-headline code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--captech-blue);
+  }
+  .skill-cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+    max-width: 1040px;
+    margin: 0.5rem auto 0;
+  }
+  .skill-card .eyebrow {
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .skill-card .code-header { margin-top: 0; }
+  .skill-card pre { margin-top: 0.35rem; }
+
+  /* Slide 15 + 17: 180px label gutter grid */
+  .pd-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    align-items: start;
+    gap: 2rem;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .pd-row + .pd-row { margin-top: 1.5rem; }
+  .pd-row .pd-pane-label { margin: 0.35rem 0 0; }
+
+  /* Slide 18: hook terminal chrome tint — amber accent */
+  .term.term-session--warn {
+    border-left: 2px solid var(--yellow);
+  }
+  .term.term-session--warn .term-chrome {
+    background: rgba(253, 218, 36, 0.10);
+    border-bottom: 1px solid rgba(253, 218, 36, 0.35);
+  }
+  .term.term-session--warn .term-chrome .term-title {
+    color: rgba(253, 218, 36, 0.9);
+  }
+  .sah-col h3.h3-blue { color: var(--captech-blue); }
+  .sah-col h3.h3-sky  { color: var(--sky-blue); }
 
   /* Two-pane layout for progressive disclosure: trigger terminal + body pane */
   .pd-panes {
@@ -85,8 +156,8 @@
   .first-skill-stage .tree { margin: 0; max-width: 100%; }
   .first-skill-stage .term { margin: 0; }
   .first-skill-steps {
-    grid-column: 1 / -1;
-    margin: 1.25rem 0 0;
+    margin: 1.25rem auto 0;
+    max-width: 1080px;
     font-size: 1rem;
     color: var(--dark-grey);
     display: flex;
@@ -177,13 +248,22 @@
 
 <section class="slide skills-section" data-section="10:00 — What a skill is">
   <span class="label">What it actually is</span>
-  <h2>A skill is a folder with <code>SKILL.md</code>. That is the whole contract.</h2>
+  <h2 class="skill-headline">
+    A skill is a folder
+    <span class="line2">with <code>SKILL.md</code>.</span>
+  </h2>
 
-  <div class="code-header">~/.claude/skills/commit-message/</div>
+  <div class="skill-cards">
+    <div class="skill-card">
+      <span class="eyebrow">STRUCTURE</span>
+      <div class="code-header">~/.claude/skills/commit-message/</div>
 <pre>commit-message/
 └── SKILL.md    <span class="muted"># required entrypoint</span></pre>
+    </div>
 
-  <div class="code-header code-header-gap">commit-message/SKILL.md</div>
+    <div class="skill-card">
+      <span class="eyebrow">CONTENTS</span>
+      <div class="code-header">commit-message/SKILL.md</div>
 <pre>---
 description: Use when the user asks for a commit message for
   staged changes. Reads git diff --cached and produces a
@@ -192,8 +272,10 @@ description: Use when the user asks for a commit message for
 
 Read the staged diff. Summarize in one line using
 conventional commits. Reference the diff; do not restate it.</pre>
+    </div>
+  </div>
 
-  <p class="caption mt-sm">The folder name becomes the slash-command. Drop it in, type <code>/commit-message</code>, done.</p>
+  <p class="footnote">The folder name becomes the slash-command. Drop it in, type <code>/commit-message</code>, done.</p>
 
   <aside class="notes">
     <p>60 seconds. Lean on what the team already knows: no plugin, no manifest, no registry. A folder with a markdown file, and you have shipped a skill.</p>
@@ -205,41 +287,39 @@ conventional commits. Reference the diff; do not restate it.</pre>
   <span class="label">Why skills are cheap</span>
   <h2>Progressive disclosure</h2>
 
-  <div class="pd-panes">
-    <div>
-      <p class="pd-pane-label">Trigger</p>
-      <div class="term term-md term-session term-typing term-output-lines"
-           style="--term-typed-steps: 15; --term-typed-width: 15ch;">
-        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7 · 18k/1M</span></div>
-        <div class="term-body">
-          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/commit-message"></span></div>
-          <div class="term-output">
-            <div class="term-ln dim">matched description · loading body</div>
-            <div class="term-ln ok term-check">SKILL.md loaded (142 lines)</div>
-            <div class="term-ln accent">reading staged diff...</div>
-          </div>
+  <div class="pd-row">
+    <p class="pd-pane-label">Trigger</p>
+    <div class="term term-md term-session term-typing term-output-lines"
+         style="--term-typed-steps: 15; --term-typed-width: 15ch; margin: 0;">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7 · 18k/1M</span></div>
+      <div class="term-body">
+        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/commit-message"></span></div>
+        <div class="term-output">
+          <div class="term-ln dim">matched description · loading body</div>
+          <div class="term-ln ok term-check">SKILL.md loaded (142 lines)</div>
+          <div class="term-ln accent">reading staged diff...</div>
         </div>
-      </div>
-    </div>
-
-    <div>
-      <p class="pd-pane-label">Body loads on invoke</p>
-      <div class="pd-body">
-        <div class="pd-fm">---<br>
-          <span class="k">description:</span> Use when the user asks for a commit message...<br>
-          <span class="k">allowed-tools:</span> Bash(git diff:*), Bash(git log:*)<br>
-          ---
-        </div>
-        <div class="pd-body-hr"></div>
-        <div>Read the staged diff with <span style="color: var(--sky-blue);">git diff --cached</span>.</div>
-        <div>Summarize in one line using conventional commits.</div>
-        <div>Reference the diff; do not restate it.</div>
-        <div style="color: #8A949E; margin-top: 0.45rem;"># ... 130 more lines, loaded only now ...</div>
       </div>
     </div>
   </div>
 
-  <p class="caption caption-center mt-md">Names and one-line descriptions live in context. The body only loads when Claude picks the skill. A 2,000-line skill costs you nothing until you need it.</p>
+  <div class="pd-row">
+    <p class="pd-pane-label">Body loads on invoke</p>
+    <div class="pd-body code-card" style="margin: 0;">
+      <div class="pd-fm">---<br>
+        <span class="k">description:</span> Use when the user asks for a commit message...<br>
+        <span class="k">allowed-tools:</span> Bash(git diff:*), Bash(git log:*)<br>
+        ---
+      </div>
+      <div class="pd-body-hr"></div>
+      <div>Read the staged diff with <span style="color: var(--sky-blue);">git diff --cached</span>.</div>
+      <div>Summarize in one line using conventional commits.</div>
+      <div>Reference the diff; do not restate it.</div>
+      <div style="color: #8A949E; margin-top: 0.45rem;"># ... 130 more lines, loaded only now ...</div>
+    </div>
+  </div>
+
+  <p class="footnote" style="text-align: center;">Names and one-line descriptions live in context. The body only loads when Claude picks the skill. A 2,000-line skill costs you nothing until you need it.</p>
 
   <aside class="notes">
     <p>90 seconds. This is the idea that unlocks the rest. You can install 30 skills and not pay a context tax, because only the names plus a 1,536-character description sit in context. The body comes in on invoke.</p>
@@ -287,47 +367,45 @@ conventional commits. Reference the diff; do not restate it.</pre>
   <span class="label">Ship your first skill tonight</span>
   <h2>Five steps. Ten minutes.</h2>
 
-  <div class="first-skill-stage">
-    <div>
-      <p class="pd-pane-label" style="color: var(--medium-grey);">The folder</p>
-      <div class="tree tree-grow">
-        <ul>
-          <li><span class="dir">~/.claude/skills/</span>
-            <ul>
-              <li><span class="dir">explain-code/</span>
-                <ul>
-                  <li><span class="file tree-highlight">SKILL.md</span> <span class="meta">that is it</span></li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+  <div class="pd-row">
+    <p class="pd-pane-label">The folder</p>
+    <div class="tree tree-grow" style="margin: 0;">
+      <ul>
+        <li><span class="dir">~/.claude/skills/</span>
+          <ul>
+            <li><span class="dir">explain-code/</span>
+              <ul>
+                <li><span class="file tree-highlight">SKILL.md</span> <span class="callout">that is it</span></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
+  </div>
 
-    <div>
-      <p class="pd-pane-label" style="color: var(--medium-grey);">The run</p>
-      <div class="term term-md term-session term-typing term-output-lines"
-           style="--term-typed-steps: 13; --term-typed-width: 13ch;">
-        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7 · 22k/1M</span></div>
-        <div class="term-body">
-          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/explain-code"></span></div>
-          <div class="term-output">
-            <div class="term-ln dim">matched: explain-code</div>
-            <div class="term-ln accent">reading SKILL.md...</div>
-            <div class="term-ln ok term-check">ready · which file?</div>
-          </div>
+  <div class="pd-row">
+    <p class="pd-pane-label">The run</p>
+    <div class="term term-md term-session term-typing term-output-lines"
+         style="--term-typed-steps: 13; --term-typed-width: 13ch; margin: 0;">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7 · 22k/1M</span></div>
+      <div class="term-body">
+        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/explain-code"></span></div>
+        <div class="term-output">
+          <div class="term-ln dim">matched: explain-code</div>
+          <div class="term-ln accent">reading SKILL.md...</div>
+          <div class="term-ln ok term-check">ready · which file?</div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="first-skill-steps">
-      <span class="step"><span class="num">1</span>mkdir the folder</span>
-      <span class="step"><span class="num">2</span>write SKILL.md</span>
-      <span class="step"><span class="num">3</span>description says "use when..."</span>
-      <span class="step"><span class="num">4</span>save — live on next turn</span>
-      <span class="step"><span class="num">5</span>invoke or let Claude match it</span>
-    </div>
+  <div class="first-skill-steps">
+    <span class="step"><span class="num">1</span>mkdir the folder</span>
+    <span class="step"><span class="num">2</span>write SKILL.md</span>
+    <span class="step"><span class="num">3</span>description says "use when..."</span>
+    <span class="step"><span class="num">4</span>save — live on next turn</span>
+    <span class="step"><span class="num">5</span>invoke or let Claude match it</span>
   </div>
 
   <aside class="notes">
@@ -362,7 +440,7 @@ conventional commits. Reference the diff; do not restate it.</pre>
     <div class="sah-col">
       <h3 class="h3-sky">Hooks</h3>
       <p class="note">Shell commands that fire on tool events. Deterministic, unlike CLAUDE.md instructions. Configured in <code>.claude/settings.json</code>.</p>
-      <div class="term term-sm term-typing term-output-lines"
+      <div class="term term-sm term-session--warn term-typing term-output-lines"
            style="--term-typed-steps: 20; --term-typed-width: 20ch;">
         <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">PostToolUse hook</span></div>
         <div class="term-body">

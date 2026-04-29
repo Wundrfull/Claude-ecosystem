@@ -35,27 +35,56 @@
     opacity: 0.9;
   }
   .five-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
-    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-top: 1rem;
   }
-  .five-grid .term { max-width: none; }
-  .five-grid .term-body { padding: 0.8rem 0.9rem 0.9rem; font-size: 0.82rem; }
+  .five-grid .term { max-width: 900px; width: 100%; border-left: 4px solid var(--step-accent, var(--sky-blue)); }
+  .five-grid .term-body {
+    padding: 0.7rem 1.1rem 0.75rem;
+    font-size: 0.88rem;
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 0 1rem;
+    align-items: baseline;
+  }
+  .five-grid .step-num {
+    font-family: var(--font-mono);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--step-accent, var(--sky-blue));
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
   .five-grid .step-tag {
-    display: block;
     font-family: var(--font-mono);
     font-size: 0.7rem;
-    color: var(--sky-blue);
-    letter-spacing: 0.08em;
-    margin-bottom: 0.35rem;
+    color: var(--step-accent, var(--sky-blue));
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
-  .five-grid .step-body { color: #E6E6E6; font-size: 0.88rem; line-height: 1.4; }
+  .five-grid .step-body { color: #E6E6E6; font-size: 0.95rem; line-height: 1.45; }
   .five-grid .step-body code {
     color: var(--yellow);
     background: rgba(253, 218, 36, 0.08);
     padding: 0 0.25rem;
     border-radius: 3px;
+  }
+  /* Per-step accents: captech-blue, sky-blue, yellow, light-teal, green. */
+  .five-grid .s-1 { --step-accent: var(--captech-blue); }
+  .five-grid .s-2 { --step-accent: var(--sky-blue); }
+  .five-grid .s-3 { --step-accent: var(--yellow); }
+  .five-grid .s-4 { --step-accent: var(--light-teal); }
+  .five-grid .s-5 { --step-accent: #98C379; }
+  /* Tint the session chrome's "claude" pill to match each step's accent. */
+  .five-grid .term-session .term-chrome {
+    background: color-mix(in srgb, var(--step-accent, var(--sky-blue)) 10%, transparent);
+    border-bottom-color: color-mix(in srgb, var(--step-accent, var(--sky-blue)) 25%, transparent);
+  }
+  .five-grid .term-session .term-chrome .term-title::before {
+    color: var(--step-accent, var(--sky-blue));
+    background: color-mix(in srgb, var(--step-accent, var(--sky-blue)) 15%, transparent);
   }
   @media (prefers-reduced-motion: reduce) {
     .resp-divider-grid .cell { transition: none; }
@@ -127,37 +156,42 @@
   <span class="eyebrow">your Monday-morning starter kit</span>
   <h2>Five things to install tonight.</h2>
   <div class="five-grid">
-    <div class="term term-session">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">01</span></div>
+    <div class="term term-session s-1">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"></span></div>
       <div class="term-body">
+        <span class="step-num">01</span>
         <span class="step-tag">install</span>
         <div class="step-body">Install <code>claude</code> if you do not have it.</div>
       </div>
     </div>
-    <div class="term term-session">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">02</span></div>
+    <div class="term term-session s-2">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"></span></div>
       <div class="term-body">
+        <span class="step-num">02</span>
         <span class="step-tag">bootstrap</span>
         <div class="step-body">Run <code>/init</code> in your repo. Writes a starter CLAUDE.md.</div>
       </div>
     </div>
-    <div class="term term-session">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">03</span></div>
+    <div class="term term-session s-3">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"></span></div>
       <div class="term-body">
+        <span class="step-num">03</span>
         <span class="step-tag">memory</span>
         <div class="step-body">Auto memory is on by default in v2.1.59 and later. Confirm.</div>
       </div>
     </div>
-    <div class="term term-session">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">04</span></div>
+    <div class="term term-session s-4">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"></span></div>
       <div class="term-body">
+        <span class="step-num">04</span>
         <span class="step-tag">permissions</span>
         <div class="step-body">Allowlist safe tools with <code>/permissions</code>. Stop clicking Approve.</div>
       </div>
     </div>
-    <div class="term term-session">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">05</span></div>
+    <div class="term term-session s-5">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"></span></div>
       <div class="term-body">
+        <span class="step-num">05</span>
         <span class="step-tag">habit</span>
         <div class="step-body">Run <code>/clear</code> between unrelated tasks. Every time.</div>
       </div>

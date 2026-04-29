@@ -9,6 +9,8 @@
     opacity: 0.22; pointer-events: none; z-index: 0;
   }
   .ch-quote-wrap .quote { position: relative; z-index: 1; }
+  /* Slide 26 danger-zone: force brand yellow at readable opacity on the dark bg. */
+  .ch-quote-wrap .graph.graph-dark .zone-degrade { fill: rgba(253, 218, 36, 0.15); }
   .ch-decision { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; width: 100%; max-width: 1080px; margin: 1.5rem auto 0; }
   .ch-panel { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 1.1rem 1.2rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
   .ch-panel h3 { margin: 0; font-family: var(--font-mono); font-size: 1.15rem; color: var(--captech-blue); }
@@ -107,6 +109,7 @@
         <line class="axis-line" x1="80" y1="260" x2="760" y2="260"/>
         <line class="axis-tick" x1="80" y1="100" x2="760" y2="100"/>
         <line class="axis-tick" x1="80" y1="170" x2="760" y2="170"/>
+        <text class="axis-title" x="80" y="20" text-anchor="start">ACCURACY</text>
         <text class="axis-text" x="280" y="280" text-anchor="middle">200K</text>
         <text class="axis-text" x="760" y="280" text-anchor="middle">1M</text>
         <path class="curve curve-slope" d="M 80 90 L 280 92 Q 420 94 540 160 T 760 240"/>
