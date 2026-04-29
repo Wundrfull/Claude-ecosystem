@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visual kit preview — Claude Code Team Primer</title>
+  <link rel="stylesheet" href="css/brand.css">
+  <link rel="stylesheet" href="css/deck.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/sections.css">
+  <link rel="stylesheet" href="css/kit.css">
+  <style>
+    /* Kit preview page chrome — NOT used in the real deck. */
+    html, body { overflow: auto; height: auto; }
+    body { background: #F7F6F2; padding: 3rem 0 6rem; }
+    .kit-wrap { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .kit-head { margin-bottom: 3rem; }
+    .kit-head h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+    .kit-head p { font-size: 1.2rem; color: var(--medium-grey); max-width: 64ch; margin: 0; }
+    .kit-nav { margin: 1.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.85rem; }
+    .kit-nav a { padding: 0.35rem 0.75rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 999px; color: var(--captech-blue); text-decoration: none; background: #fff; }
+    .kit-nav a:hover { background: var(--captech-blue); color: #fff; border-color: var(--captech-blue); }
+    .kit-section { margin: 4rem 0; padding-top: 3rem; border-top: 1px solid rgba(0,0,0,0.08); }
+    .kit-section:first-of-type { border-top: none; padding-top: 0; }
+    .kit-section h2 { font-size: 2.25rem; color: var(--captech-blue); margin: 0 0 0.25rem; }
+    .kit-section .kit-desc { color: var(--medium-grey); font-size: 1.05rem; max-width: 70ch; margin: 0 0 2rem; }
+    .kit-example { margin: 2.5rem 0; padding: 2rem; background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.03); }
+    .kit-example.kit-dark { background: var(--bg-dark); color: #fff; }
+    .kit-example h3 { margin: 0 0 0.4rem; font-size: 1.1rem; font-weight: 600; color: var(--dark-grey); text-transform: uppercase; letter-spacing: 0.08em; }
+    .kit-example.kit-dark h3 { color: rgba(255,255,255,0.85); }
+    .kit-example .kit-note { color: var(--medium-grey); font-size: 0.95rem; margin: 0 0 1.5rem; }
+    .kit-example.kit-dark .kit-note { color: rgba(255,255,255,0.55); }
+    .kit-snippet {
+      margin-top: 1.5rem;
+      background: #1E252B;
+      color: #E6E6E6;
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.55;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .kit-callout {
+      background: rgba(253, 218, 36, 0.18);
+      border-left: 4px solid var(--yellow);
+      padding: 1rem 1.25rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      margin: 1rem 0 2rem;
+    }
+    .kit-restage {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.4rem 0.9rem;
+      background: var(--captech-blue);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="kit-wrap">
+    <header class="kit-head">
+      <span class="eyebrow">Phase 1 · Component preview</span>
+      <h1>Visual kit</h1>
+      <p>Reusable components for slides 3-34. Each component below shows its intended use, with copy-paste HTML. Flag anything to change and I'll iterate before we apply it across the deck. Animations honor <code>prefers-reduced-motion</code>.</p>
+      <nav class="kit-nav">
+        <a href="#term">Terminal</a>
+        <a href="#ctx">Context tetris</a>
+        <a href="#tree">Folder tree</a>
+        <a href="#graph">Graph</a>
+        <a href="#stat">Stat duo</a>
+        <a href="#type">Typography</a>
+      </nav>
+    </header>
+
+    <div class="kit-callout">
+      <strong>How to view animations:</strong> Animations fire on page load with their natural delays (terminals type at ~2.8s, benefits appear at ~4.6s, etc.). If you miss one, scroll past and back, or click the <em>Replay</em> button under each example.
+    </div>
+
+    <!-- ==================== TERMINAL ==================== -->
+    <section id="term" class="kit-section">
+      <h2>Terminal <span style="color: var(--medium-grey); font-weight: 300; font-size: 1rem; margin-left: 0.5rem;">.term-*</span></h2>
+      <p class="kit-desc">The centerpiece. Reusable for every command slide. Three sizes (sm / md / lg), a typing animation, output lines that fade in, and a benefits strip that animates after the command finishes.</p>
+
+      <!-- Example 1: in-session command with benefits -->
+      <div class="kit-example">
+        <h3>Example 1 — in-session command with benefits (md)</h3>
+        <p class="kit-note">We're already inside Claude Code. The session header shows the <code>claude</code> badge; the prompt is <code>&gt;</code>; the user types just <code>/clear</code>. Command types itself, output appears, benefit pills animate in below.</p>
+        <div class="term term-md term-session term-typing term-output-lines" style="--term-typed-steps: 6; --term-typed-width: 6ch;">
+          <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · sonnet 4.6 · 15k/200k</span></div>
+          <div class="term-body">
+            <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/clear"></span></div>
+            <div class="term-output">
+              <div class="term-ln ok term-check">Context cleared</div>
+              <div class="term-ln dim">session reset · 0 tokens</div>
+            </div>
+            <div class="term-benefits">
+              <span class="term-benefit">fresh session</span>
+              <span class="term-benefit">no baggage</span>
+              <span class="term-benefit">faster responses</span>
+            </div>
+          </div>
+        </div>
+        <button class="kit-restage" onclick="restage(this)">Replay</button>
+        <pre class="kit-snippet">&lt;div class="term term-md term-session term-typing term-output-lines"
+     style="--term-typed-steps: 6; --term-typed-width: 6ch;"&gt;
+  &lt;div class="term-chrome"&gt;
+    &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;
+    &lt;span class="term-title"&gt;~/project · sonnet 4.6 · 15k/200k&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="term-body"&gt;
+    &lt;div class="term-line"&gt;
+      &lt;span class="term-prompt"&gt;$&lt;/span&gt;                    &lt;!-- renders as &gt; via .term-session --&gt;
+      &lt;span class="term-typed" data-text="/clear"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="term-output"&gt;
+      &lt;div class="term-ln ok term-check"&gt;Context cleared&lt;/div&gt;
+      &lt;div class="term-ln dim"&gt;session reset · 0 tokens&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="term-benefits"&gt;
+      &lt;span class="term-benefit"&gt;fresh session&lt;/span&gt;
+      &lt;span class="term-benefit"&gt;no baggage&lt;/span&gt;
+      &lt;span class="term-benefit"&gt;faster responses&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+      </div>
+
+      <!-- Example 2: cold-open hero is NOT an in-session prompt.
+           For the cold open we're launching claude from the shell, so
+           keep the "$" prompt + "claude ..." invocation. -->
+      <div class="kit-example kit-dark">
+        <h3>Example 2 — shell invocation for cold open (lg)</h3>
+        <p class="kit-note">This one IS from a regular shell (we're launching claude). So it keeps the <code>$</code> + <code>claude "..."</code> pattern. Every other command slide uses the in-session variant above.</p>
+        <div class="term term-lg term-typing term-output-lines" style="--term-typed-steps: 32; --term-typed-width: 32ch;">
+          <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/captech/primer</span></div>
+          <div class="term-body">
+            <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text='claude "refactor the auth flow"'></span></div>
+            <div class="term-output">
+              <div class="term-ln dim">plan · read · edit · verify</div>
+              <div class="term-ln ok term-check">done · 4 files changed · tests passing</div>
+            </div>
+          </div>
+        </div>
+        <button class="kit-restage" onclick="restage(this)">Replay</button>
+      </div>
+    </section>
+
+    <!-- ==================== CONTEXT VISUALS ==================== -->
+    <section id="ctx" class="kit-section">
+      <h2>Context grid <span style="color: var(--medium-grey); font-weight: 300; font-size: 1rem; margin-left: 0.5rem;">.ctx-real .ctx-clear .ctx-compact-real</span></h2>
+      <p class="kit-desc">One shared 200-cell grid visual, three modes: <strong>/context</strong> (cells pop in, info panel fades), <strong>/clear</strong> (cells drain away in reverse), <strong>/compact</strong> (messages cells shrink away; summary cells fade in). Same mental model, one visual language.</p>
+
+      <div class="kit-example">
+        <h3>Real /context output mock — for the /context slide</h3>
+        <p class="kit-note">Faithful replica of the actual <code>/context</code> terminal output. 20×10 grid (200 cells) fills left-to-right, top-to-bottom like reading a book. Each cell's color comes from the category it belongs to in the continuous fill sequence. Info panel sits to the right.</p>
+        <div class="ctx-real ctx-real-animate">
+          <div class="ctx-real__title">/context <span class="sub">Context Usage</span></div>
+          <!-- 20 cols × 10 rows = 200 cells. Filled left-to-right,
+               top-to-bottom. Sequence: sys-prompt → sys-tools → memory
+               → skills → messages → free → autocompact (end-aligned). -->
+          <div class="ctx-real__layout">
+            <div class="ctx-real__grid" data-cells="200"
+                 data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:54,free:138,autocompact:3"
+                 aria-label="Context window fill: 287k of 1M tokens, 29%">
+              <!-- Cells injected by kit.js on load to avoid 200 lines of markup. -->
+            </div>
+
+            <div class="ctx-real__info">
+              <span class="model-name">Opus 4.7 (1M context)</span>
+              <span class="model-id">us.anthropic.claude-opus-4-7[1m]</span>
+              <span class="usage-total">287k/1m tokens (29%)</span>
+
+              <div class="section-label">Estimated usage by category</div>
+              <div class="ctx-real__cat sys-prompt"><span class="glyph">⛁</span><span class="name">System prompt:</span><span class="tokens">6.2k (0.6%)</span></div>
+              <div class="ctx-real__cat sys-tools"><span class="glyph">⛁</span><span class="name">System tools:</span><span class="tokens">9.5k (0.9%)</span></div>
+              <div class="ctx-real__cat memory"><span class="glyph">⛁</span><span class="name">Memory files:</span><span class="tokens">812 (0.1%)</span></div>
+              <div class="ctx-real__cat skills"><span class="glyph">⛁</span><span class="name">Skills:</span><span class="tokens">956 (0.1%)</span></div>
+              <div class="ctx-real__cat messages"><span class="glyph">⛁</span><span class="name">Messages:</span><span class="tokens">269.5k (27.0%)</span></div>
+              <div class="ctx-real__cat free"><span class="glyph">⛶</span><span class="name">Free space:</span><span class="tokens">695.9k (69.6%)</span></div>
+              <div class="ctx-real__cat autocompact"><span class="glyph">⛝</span><span class="name">Autocompact buffer:</span><span class="tokens">17.1k (1.7%)</span></div>
+            </div>
+          </div>
+
+          <div class="ctx-real__divider"></div>
+          <div class="ctx-real__sub-head">Memory files <span class="cmd">· /memory</span></div>
+          <div class="ctx-real__file"><span class="path">CLAUDE.md</span><span class="toks">512 tokens</span></div>
+          <div class="ctx-real__file"><span class="path">~/.claude/projects/.../memory/MEMORY.md</span><span class="toks">300 tokens</span></div>
+
+          <div class="ctx-real__divider"></div>
+          <div class="ctx-real__sub-head">Skills <span class="cmd">· /skills</span></div>
+          <div class="ctx-real__sub-head" style="font-style: normal; color: rgba(255,255,255,0.55); font-size: 0.8rem; margin-top: 0.2rem;">Project</div>
+          <div class="ctx-real__file"><span class="path">impeccable:</span><span class="toks">227 tokens</span></div>
+          <div class="ctx-real__sub-head" style="font-style: normal; color: rgba(255,255,255,0.55); font-size: 0.8rem; margin-top: 0.5rem;">User</div>
+          <div class="ctx-real__file"><span class="path">humanizer:</span><span class="toks">111 tokens</span></div>
+        </div>
+        <button class="kit-restage" onclick="restage(this)">Replay</button>
+        <pre class="kit-snippet">&lt;div class="ctx-real ctx-real-animate"&gt;
+  &lt;div class="ctx-real__title"&gt;/context &lt;span class="sub"&gt;Context Usage&lt;/span&gt;&lt;/div&gt;
+
+  &lt;div class="ctx-real__layout"&gt;
+    &lt;!-- 200 cells auto-generated by kit.js from the data-fill spec.
+         Order: sys-prompt → sys-tools → memory → skills → messages
+         → free → autocompact. The free count auto-pads the rest. --&gt;
+    &lt;div class="ctx-real__grid" data-cells="200"
+         data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:54,free:138,autocompact:3"&gt;&lt;/div&gt;
+
+    &lt;div class="ctx-real__info"&gt;
+      &lt;span class="model-name"&gt;Opus 4.7 (1M context)&lt;/span&gt;
+      &lt;span class="model-id"&gt;us.anthropic.claude-opus-4-7[1m]&lt;/span&gt;
+      &lt;span class="usage-total"&gt;287k/1m tokens (29%)&lt;/span&gt;
+      &lt;div class="section-label"&gt;Estimated usage by category&lt;/div&gt;
+      &lt;div class="ctx-real__cat messages"&gt;
+        &lt;span class="glyph"&gt;⛁&lt;/span&gt;
+        &lt;span class="name"&gt;Messages:&lt;/span&gt;
+        &lt;span class="tokens"&gt;269.5k (27.0%)&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;!-- ... more categories ... --&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+      </div>
+
+      <!-- /clear variant -->
+      <div class="kit-example">
+        <h3>/clear — cells drain away</h3>
+        <p class="kit-note">Start with the grid filled (same data-fill as /context). On trigger, every non-free, non-autocompact cell fades and scales away in reverse order. The grid ends empty, ready for a fresh session.</p>
+        <div class="ctx-real ctx-clear">
+          <div class="ctx-real__title">/clear <span class="sub">Context Usage</span></div>
+          <div class="ctx-real__layout">
+            <div class="ctx-real__grid" data-cells="200"
+                 data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:54,free:138,autocompact:3"
+                 aria-label="Context grid clearing"></div>
+            <div class="ctx-real__info">
+              <span class="model-name">Opus 4.7 (1M context)</span>
+              <span class="model-id">us.anthropic.claude-opus-4-7[1m]</span>
+              <span class="usage-total">287k → 17.1k tokens</span>
+
+              <div class="section-label">After /clear</div>
+              <div class="ctx-real__cat free"><span class="glyph">⛶</span><span class="name">Free space:</span><span class="tokens">980.9k (98.1%)</span></div>
+              <div class="ctx-real__cat autocompact"><span class="glyph">⛝</span><span class="name">Autocompact buffer:</span><span class="tokens">17.1k (1.7%)</span></div>
+              <p style="margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5;">Benefits: no baggage, fresh session, faster responses.</p>
+            </div>
+          </div>
+        </div>
+        <button class="kit-restage" onclick="restage(this)">Replay</button>
+        <pre class="kit-snippet">&lt;div class="ctx-real ctx-clear"&gt;
+  &lt;div class="ctx-real__title"&gt;/clear &lt;span class="sub"&gt;Context Usage&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="ctx-real__layout"&gt;
+    &lt;div class="ctx-real__grid" data-cells="200"
+         data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:54,free:138,autocompact:3"&gt;&lt;/div&gt;
+    &lt;div class="ctx-real__info"&gt;...&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+      </div>
+
+      <!-- /compact variant -->
+      <div class="kit-example">
+        <h3>/compact — messages coalesce into summaries</h3>
+        <p class="kit-note">Sys-prompt / sys-tools / memory / skills stay put. The 54 messages cells shrink away; a handful of new summary cells (filled, with an inset ring) fade in at the start of the messages region. The total messages footprint drops by ~75%.</p>
+        <div class="ctx-real ctx-compact-real">
+          <div class="ctx-real__title">/compact <span class="sub">Context Usage</span></div>
+          <div class="ctx-real__layout">
+            <div class="ctx-real__grid" data-cells="200"
+                 data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:66,free:126,autocompact:3"
+                 aria-label="Context grid compacting"></div>
+            <div class="ctx-real__info">
+              <span class="model-name">Opus 4.7 (1M context)</span>
+              <span class="model-id">us.anthropic.claude-opus-4-7[1m]</span>
+              <span class="usage-total">287k → 95k tokens</span>
+
+              <div class="section-label">After /compact</div>
+              <div class="ctx-real__cat sys-prompt"><span class="glyph">⛁</span><span class="name">System prompt:</span><span class="tokens">6.2k (unchanged)</span></div>
+              <div class="ctx-real__cat memory"><span class="glyph">⛁</span><span class="name">Memory files:</span><span class="tokens">812 (unchanged)</span></div>
+              <div class="ctx-real__cat skills"><span class="glyph">⛁</span><span class="name">Skills:</span><span class="tokens">956 (unchanged)</span></div>
+              <div class="ctx-real__cat messages"><span class="glyph">⛁</span><span class="name">Messages (summarized):</span><span class="tokens">60k (was 269.5k)</span></div>
+              <p style="margin-top: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5;">Decisions, file states, and open questions preserved as summaries.</p>
+            </div>
+          </div>
+        </div>
+        <button class="kit-restage" onclick="restage(this)">Replay</button>
+      </div>
+
+      <!-- Old falling-tetris (kept for reference, not used on slides) -->
+      <div class="kit-example kit-dark" style="opacity: 0.5; margin-top: 3rem;">
+        <h3>Old falling-block concept (deprecated — replaced by the grid above)</h3>
+        <p class="kit-note">Keeping this visible only so the kit is complete; NOT applied to slides.</p>
+        <div class="ctx-stage ctx-falling-in">
+          <div class="ctx-label">/context</div>
+          <div class="ctx-grid">
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+          </div>
+          <div class="ctx-blocks">
+            <div class="ctx-block ctx-block--claudemd" style="--ctx-top: 8%; left: 6%; width: 22%; animation-delay: 0.2s;">CLAUDE.md</div>
+            <div class="ctx-block ctx-block--mcp" style="--ctx-top: 8%; left: 30%; width: 16%; animation-delay: 0.5s;">MCP</div>
+            <div class="ctx-block ctx-block--skill" style="--ctx-top: 40%; left: 6%; width: 14%; animation-delay: 0.8s;">skill</div>
+            <div class="ctx-block ctx-block--skill" style="--ctx-top: 40%; left: 22%; width: 14%; animation-delay: 1.0s;">skill</div>
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 40%; left: 38%; width: 28%; animation-delay: 1.3s;">history</div>
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 72%; left: 6%; width: 38%; animation-delay: 1.6s;">file reads</div>
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 72%; left: 46%; width: 22%; animation-delay: 1.9s;">tool output</div>
+          </div>
+          <div class="ctx-footer" style="padding: 0.5rem 0 0.25rem;"><span>35K / 200K used</span><span>18%</span></div>
+        </div>
+        <button class="kit-restage" onclick="restage(this)">Replay</button>
+      </div>
+
+      <div class="kit-example kit-dark">
+        <h3>Falling OUT — for the /clear slide</h3>
+        <p class="kit-note">Pre-filled grid. Blocks fall off the bottom and rotate as they drop.</p>
+        <div class="ctx-stage ctx-falling-out">
+          <div class="ctx-label">/clear</div>
+          <div class="ctx-grid">
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+          </div>
+          <div class="ctx-blocks">
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 8%; left: 6%; width: 38%; animation-delay: 0.05s;">file reads</div>
+            <div class="ctx-block ctx-block--skill" style="--ctx-top: 8%; left: 46%; width: 18%; animation-delay: 0.15s;">skill</div>
+            <div class="ctx-block ctx-block--mcp" style="--ctx-top: 40%; left: 6%; width: 22%; animation-delay: 0.25s;">MCP</div>
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 40%; left: 30%; width: 32%; animation-delay: 0.35s;">conversation</div>
+            <div class="ctx-block ctx-block--claudemd" style="--ctx-top: 72%; left: 6%; width: 22%; animation-delay: 0.45s;">CLAUDE.md</div>
+          </div>
+        </div>
+        <button class="kit-restage" onclick="restage(this)">Replay</button>
+      </div>
+
+      <div class="kit-example kit-dark">
+        <h3>Compact — for the /compact slide</h3>
+        <p class="kit-note">Detail blocks shrink away; summary blocks fade in. "47 turns to 3 summaries."</p>
+        <div class="ctx-stage ctx-compact">
+          <div class="ctx-label">/compact</div>
+          <div class="ctx-grid">
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+            <div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div><div class="ctx-cell"></div>
+          </div>
+          <div class="ctx-blocks">
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 8%; left: 6%; width: 14%;">turn 1</div>
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 8%; left: 22%; width: 14%;">turn 2</div>
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 8%; left: 38%; width: 14%;">turn 3</div>
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 8%; left: 54%; width: 14%;">turn 4</div>
+            <div class="ctx-block ctx-block--skill" style="--ctx-top: 40%; left: 6%; width: 14%;">skill</div>
+            <div class="ctx-block ctx-block--mcp" style="--ctx-top: 40%; left: 22%; width: 16%;">MCP call</div>
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 40%; left: 40%; width: 14%;">turn 5</div>
+            <div class="ctx-block ctx-block--history" style="--ctx-top: 40%; left: 56%; width: 14%;">turn 6</div>
+            <div class="ctx-block ctx-block--summary" style="--ctx-top: 72%; left: 6%; width: 28%;">decisions</div>
+            <div class="ctx-block ctx-block--summary" style="--ctx-top: 72%; left: 36%; width: 26%;">files modified</div>
+            <div class="ctx-block ctx-block--summary" style="--ctx-top: 72%; left: 64%; width: 26%;">open questions</div>
+          </div>
+        </div>
+        <button class="kit-restage" onclick="restage(this)">Replay</button>
+      </div>
+
+      <pre class="kit-snippet">&lt;div class="ctx-stage ctx-falling-in"&gt;         &lt;!-- or ctx-falling-out / ctx-compact --&gt;
+  &lt;div class="ctx-label"&gt;/context&lt;/div&gt;
+  &lt;div class="ctx-grid"&gt;&lt;!-- 20-30 .ctx-cell --&gt;&lt;/div&gt;
+  &lt;div class="ctx-blocks"&gt;
+    &lt;div class="ctx-block ctx-block--claudemd"
+         style="--ctx-top: 8%; left: 6%; width: 22%; animation-delay: 0.2s;"&gt;
+      CLAUDE.md
+    &lt;/div&gt;
+    &lt;!-- more .ctx-block rows --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+    </section>
+
+    <!-- ==================== FOLDER TREE ==================== -->
+    <section id="tree" class="kit-section">
+      <h2>Folder tree <span style="color: var(--medium-grey); font-weight: 300; font-size: 1rem; margin-left: 0.5rem;">.tree-*</span></h2>
+      <p class="kit-desc">Directory structure with optional grow-in animation. For the skill anatomy slide, "write your first skill," and any place we need to show file layout.</p>
+
+      <div class="kit-example">
+        <h3>Static tree — skill anatomy</h3>
+        <div class="tree">
+          <ul>
+            <li><span class="dir">~/.claude/skills/commit-message/</span>
+              <ul>
+                <li><span class="file tree-highlight">SKILL.md</span> <span class="meta">required entrypoint</span></li>
+                <li><span class="file">reference.md</span> <span class="meta">loaded on demand</span></li>
+                <li><span class="file">examples.md</span> <span class="meta">loaded on demand</span></li>
+                <li><span class="dir">scripts/</span>
+                  <ul>
+                    <li><span class="file">helper.py</span> <span class="meta">executed, never loaded</span></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="kit-example">
+        <h3>Growing tree — animated reveal</h3>
+        <p class="kit-note">Each item fades in top-down. Good for the "ship your first skill tonight" slide.</p>
+        <div class="tree tree-grow">
+          <ul>
+            <li><span class="dir">~/.claude/skills/explain-code/</span>
+              <ul>
+                <li><span class="file">SKILL.md</span></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <button class="kit-restage" onclick="restage(this)">Replay</button>
+      </div>
+
+      <div class="kit-example kit-dark">
+        <h3>Dark variant</h3>
+        <div class="tree tree-dark">
+          <ul>
+            <li><span class="dir">.claude/skills/</span>
+              <ul>
+                <li><span class="dir">deploy/</span>
+                  <ul>
+                    <li><span class="file tree-highlight">SKILL.md</span></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <pre class="kit-snippet">&lt;div class="tree tree-grow"&gt;         &lt;!-- omit .tree-grow for static --&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;span class="dir"&gt;~/.claude/skills/name/&lt;/span&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;span class="file tree-highlight"&gt;SKILL.md&lt;/span&gt;
+            &lt;span class="meta"&gt;required&lt;/span&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</pre>
+    </section>
+
+    <!-- ==================== CONTEXT-ROT GRAPH ==================== -->
+    <section id="graph" class="kit-section">
+      <h2>Context-rot graph <span style="color: var(--medium-grey); font-weight: 300; font-size: 1rem; margin-left: 0.5rem;">.graph-*</span></h2>
+      <p class="kit-desc">Hand-authored SVG. Two curves (Sonnet flat; typical model slopes down past 200K). Annotation callouts for the 200K inflection and the degradation zone. Path-draw animation on mount.</p>
+
+      <div class="kit-example">
+        <h3>Light variant — animated</h3>
+        <div class="graph graph-animate">
+          <svg viewBox="0 0 780 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Accuracy vs token count">
+            <rect class="zone-degrade" x="280" y="40" width="460" height="260"/>
+            <line class="axis-line" x1="80" y1="40" x2="80" y2="300"/>
+            <line class="axis-line" x1="80" y1="300" x2="760" y2="300"/>
+            <line class="axis-tick" x1="80" y1="100" x2="760" y2="100"/>
+            <line class="axis-tick" x1="80" y1="180" x2="760" y2="180"/>
+            <line class="axis-tick" x1="80" y1="260" x2="760" y2="260"/>
+            <text class="axis-title" x="80" y="28" text-anchor="start">ACCURACY</text>
+            <text class="axis-title" x="760" y="326" text-anchor="end">TOKEN COUNT →</text>
+            <text class="axis-text" x="80" y="320" text-anchor="middle">0</text>
+            <text class="axis-text" x="280" y="320" text-anchor="middle">200K</text>
+            <text class="axis-text" x="480" y="320" text-anchor="middle">500K</text>
+            <text class="axis-text" x="760" y="320" text-anchor="middle">1M</text>
+            <text class="axis-text" x="72" y="104" text-anchor="end">100%</text>
+            <text class="axis-text" x="72" y="184" text-anchor="end">75%</text>
+            <text class="axis-text" x="72" y="264" text-anchor="end">50%</text>
+            <path class="curve curve-flat" d="M 80 112 L 280 108 Q 420 108 540 120 T 760 135"/>
+            <path class="curve curve-slope" d="M 80 108 L 280 108 Q 420 108 540 170 T 760 255"/>
+            <text class="curve-label" x="150" y="90" fill="var(--captech-blue)">Sonnet 4.5 · ~flat</text>
+            <text class="curve-label" x="600" y="270" fill="var(--sky-blue)">typical · slopes</text>
+            <line class="annot-line" x1="280" y1="108" x2="280" y2="320"/>
+            <circle class="annot-dot" cx="280" cy="108" r="4"/>
+            <text class="annot-text strong" x="296" y="100">200K · inflection</text>
+            <text class="annot-text" x="510" y="62" text-anchor="middle">CONTEXT ROT ZONE</text>
+          </svg>
+        </div>
+        <button class="kit-restage" onclick="restage(this)">Replay</button>
+      </div>
+
+      <div class="kit-example kit-dark">
+        <h3>Dark variant</h3>
+        <div class="graph graph-dark graph-animate">
+          <svg viewBox="0 0 780 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Accuracy vs token count">
+            <rect class="zone-degrade" x="280" y="40" width="460" height="260"/>
+            <line class="axis-line" x1="80" y1="40" x2="80" y2="300"/>
+            <line class="axis-line" x1="80" y1="300" x2="760" y2="300"/>
+            <line class="axis-tick" x1="80" y1="100" x2="760" y2="100"/>
+            <line class="axis-tick" x1="80" y1="180" x2="760" y2="180"/>
+            <line class="axis-tick" x1="80" y1="260" x2="760" y2="260"/>
+            <text class="axis-title" x="80" y="28" text-anchor="start">ACCURACY</text>
+            <text class="axis-title" x="760" y="326" text-anchor="end">TOKEN COUNT →</text>
+            <text class="axis-text" x="280" y="320" text-anchor="middle">200K</text>
+            <text class="axis-text" x="760" y="320" text-anchor="middle">1M</text>
+            <path class="curve curve-flat" d="M 80 112 L 280 108 Q 420 108 540 120 T 760 135"/>
+            <path class="curve curve-slope" d="M 80 108 L 280 108 Q 420 108 540 170 T 760 255"/>
+            <line class="annot-line" x1="280" y1="108" x2="280" y2="320"/>
+            <circle class="annot-dot" cx="280" cy="108" r="4"/>
+            <text class="annot-text strong" x="296" y="100">200K · inflection</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== STAT DUO ==================== -->
+    <section id="stat" class="kit-section">
+      <h2>Stat duo <span style="color: var(--medium-grey); font-weight: 300; font-size: 1rem; margin-left: 0.5rem;">.stat-duo</span></h2>
+      <p class="kit-desc">Typography-first stat pairing. Bigger, more confident treatment for the 77.2 / 78.2 SWE-bench numbers. Hairline delta marker between the two.</p>
+
+      <div class="kit-example">
+        <h3>Light variant</h3>
+        <div class="stat-duo">
+          <div class="stat-duo__num">77.2<span class="unit">%</span><span class="sub">200K context</span></div>
+          <div class="stat-duo__delta">
+            <div class="stat-duo__delta-val" style="font-family: var(--font-mono); font-size: 1.4rem; color: var(--medium-grey); text-align: center;">Δ +1.0</div>
+            <div class="stat-duo__delta-hairline" style="width: 2px; height: 40px; background: rgba(0,0,0,0.15); margin: 0.5rem auto 0;"></div>
+          </div>
+          <div class="stat-duo__num">78.2<span class="unit">%</span><span class="sub">1M context</span></div>
+          <div class="stat-duo__caption">Sonnet 4.5 · SWE-bench Verified · essentially flat</div>
+        </div>
+      </div>
+
+      <div class="kit-example kit-dark">
+        <h3>Dark variant</h3>
+        <div class="stat-duo">
+          <div class="stat-duo__num">77.2<span class="unit">%</span><span class="sub">200K context</span></div>
+          <div class="stat-duo__delta">
+            <div class="stat-duo__delta-val" style="font-family: var(--font-mono); font-size: 1.4rem; text-align: center;">Δ +1.0</div>
+            <div class="stat-duo__delta-hairline" style="width: 2px; height: 40px; background: rgba(255,255,255,0.2); margin: 0.5rem auto 0;"></div>
+          </div>
+          <div class="stat-duo__num">78.2<span class="unit">%</span><span class="sub">1M context</span></div>
+          <div class="stat-duo__caption">Sonnet 4.5 · SWE-bench Verified · essentially flat</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TYPOGRAPHY ==================== -->
+    <section id="type" class="kit-section">
+      <h2>Typography utilities</h2>
+      <p class="kit-desc">For slides where the existing h1/h2 felt too big or too dull. Use <code>.display-xxl</code> as a hero thesis, <code>.display-quote-lg</code> as a pull-quote, <code>.eyebrow</code> as a cleaner kicker, and <code>.tag-pill</code> to inline command names in prose.</p>
+
+      <div class="kit-example">
+        <h3>.display-xxl — hero thesis</h3>
+        <p class="kit-note">For slide 3 (the one-sentence thesis). Replaces the current 2.75rem treatment with a confident display scale.</p>
+        <p class="display-xxl">Not autocomplete. <span class="accent">An agent.</span></p>
+      </div>
+
+      <div class="kit-example">
+        <h3>.display-quote-lg — pull-quote</h3>
+        <p class="kit-note">For slide 16 (the description rule). Narrower column, tighter leading, less overwhelming than the current h2.</p>
+        <p class="display-quote-lg">Descriptions say <span class="accent">when</span>, never <span class="accent">what</span>.</p>
+      </div>
+
+      <div class="kit-example">
+        <h3>.eyebrow and .tag-pill</h3>
+        <p class="kit-note">Cleaner alternatives to the all-caps <code>.label</code>. Pills for inline commands in prose.</p>
+        <p><span class="eyebrow">command 03 of 05</span></p>
+        <p style="margin-top: 1rem;">Reset context with <span class="tag-pill">/clear</span>, summarize with <span class="tag-pill tag-pill--sky">/compact</span>, restore with <span class="tag-pill tag-pill--yellow">/rewind</span>.</p>
+      </div>
+
+      <div class="kit-example kit-dark">
+        <h3>Dark variants</h3>
+        <p class="display-xxl">Three levers. <span class="accent">That's the talk.</span></p>
+        <p style="margin-top: 1.5rem;"><span class="eyebrow">section 02 · commands</span></p>
+      </div>
+
+      <pre class="kit-snippet">&lt;p class="display-xxl"&gt;Not autocomplete. &lt;span class="accent"&gt;An agent.&lt;/span&gt;&lt;/p&gt;
+&lt;p class="display-quote-lg"&gt;Descriptions say &lt;span class="accent"&gt;when&lt;/span&gt;.&lt;/p&gt;
+&lt;span class="eyebrow"&gt;command 03 of 05&lt;/span&gt;
+&lt;span class="tag-pill tag-pill--sky"&gt;/compact&lt;/span&gt;</pre>
+    </section>
+  </div>
+
+  <script>
+    // Replay animations by toggling the .term-typing / .term-output-lines
+    // / .ctx-* / .tree-grow / .graph-animate classes off and on again.
+    function restage(btn) {
+      const root = btn.closest('.kit-example');
+      if (!root) return;
+      const animated = root.querySelectorAll('.term, .ctx-stage, .ctx-real, .tree, .graph');
+      animated.forEach(el => {
+        const cls = [...el.classList];
+        el.classList.remove(...cls);
+        void el.offsetWidth; // force reflow
+        el.classList.add(...cls);
+      });
+    }
+
+    // Populate .ctx-real__grid elements from their data-fill attribute.
+    // Format: "category:count,category:count,..." — total should equal data-cells.
+    function populateCtxGrids() {
+      document.querySelectorAll('.ctx-real__grid').forEach(grid => {
+        if (grid.children.length > 0) return; // already populated
+        const total = parseInt(grid.dataset.cells || '200', 10);
+        const spec = grid.dataset.fill || '';
+        const segments = spec.split(',').map(s => {
+          const [cat, count] = s.split(':');
+          return { cat: cat.trim(), count: parseInt(count, 10) };
+        });
+        // Compact mode: first N messages cells become "summary" cells
+        // (stay filled; styled with inset ring). Default: 12 summaries.
+        const root = grid.closest('.ctx-real');
+        const isCompact = root && root.classList.contains('ctx-compact-real');
+        const summaryCount = parseInt(grid.dataset.summaryCount || '12', 10);
+
+        const frag = document.createDocumentFragment();
+        let placed = 0;
+        for (const seg of segments) {
+          for (let i = 0; i < seg.count && placed < total; i++, placed++) {
+            const c = document.createElement('div');
+            c.className = 'cell ' + seg.cat;
+            c.style.setProperty('--i', placed);
+            c.style.setProperty('--mi', i);
+            // Tag the first N messages cells as summaries when the grid
+            // is in compact mode. Keeps the CSS simple.
+            if (isCompact && seg.cat === 'messages' && i < summaryCount) {
+              c.classList.add('is-summary');
+            }
+            frag.appendChild(c);
+          }
+        }
+        // Pad with free cells if the fill spec under-counted.
+        while (placed < total) {
+          const c = document.createElement('div');
+          c.className = 'cell free';
+          c.style.setProperty('--i', placed);
+          frag.appendChild(c);
+          placed++;
+        }
+        grid.appendChild(frag);
+      });
+    }
+    populateCtxGrids();
+  </script>
+</body>
+</html>
