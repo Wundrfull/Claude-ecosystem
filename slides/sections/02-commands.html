@@ -1,76 +1,449 @@
-<section class="slide section-divider" data-section="9:00 — Command tour">
-  <span class="label">9:00 — 14:00</span>
-  <h1>The April 2026<br>command tour</h1>
-  <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); max-width: 50ch;">Commands the Claude Code team shipped in the last 90 days. Post-everyone's January knowledge cutoff.</p>
+<style>
+  /* Scoped animations for the commands section. Shared .pane-tag lives in
+     sections.css. Reduced-motion handled at the bottom. */
+  .cmd-anim { font-family: var(--font-mono); }
+
+  /* Plan Mode: two panes, arrow pulses between them */
+  .plan-mode-panes {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1.5rem;
+    align-items: stretch;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  .plan-pane {
+    background: #0F1419;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    color: #E6E6E6;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  .plan-pane.normal .pane-tag { color: var(--yellow); }
+  .plan-pane .ln { opacity: 0; animation: paneLine 7s infinite; }
+  .plan-pane .ln:nth-child(2) { animation-delay: 0.4s; }
+  .plan-pane .ln:nth-child(3) { animation-delay: 0.8s; }
+  .plan-pane .ln:nth-child(4) { animation-delay: 1.2s; }
+  .plan-pane.normal .ln { animation: paneLineNormal 7s infinite; }
+  .plan-pane.normal .ln:nth-child(1) { animation-delay: 3.4s; }
+  .plan-pane.normal .ln:nth-child(2) { animation-delay: 3.8s; }
+  .plan-pane.normal .ln:nth-child(3) { animation-delay: 4.2s; }
+  @keyframes paneLine {
+    0%, 45% { opacity: 0; transform: translateX(-6px); }
+    3%, 40% { opacity: 1; transform: translateX(0); }
+    50%, 100% { opacity: 0.3; }
+  }
+  @keyframes paneLineNormal {
+    0%, 45% { opacity: 0.1; }
+    50%, 95% { opacity: 1; }
+    100% { opacity: 0.1; }
+  }
+  .plan-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--captech-blue);
+    font-size: 2.5rem;
+    font-weight: 300;
+    animation: arrowPulse 7s infinite;
+  }
+  @keyframes arrowPulse {
+    0%, 45% { opacity: 0.35; transform: translateX(0); }
+    50%, 55% { opacity: 1; transform: translateX(4px); }
+    100% { opacity: 0.35; transform: translateX(0); }
+  }
+
+  /* /clear: token grid fills with junk, then empties */
+  .context-grid {
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    gap: 3px;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 1rem;
+    background: #0F1419;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .context-grid .tok-cell {
+    aspect-ratio: 1;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    animation: fillCell 6s infinite;
+  }
+  .context-grid .tok-cell:nth-child(3n) { animation-delay: 0.05s; }
+  .context-grid .tok-cell:nth-child(3n+1) { animation-delay: 0.1s; }
+  .context-grid .tok-cell:nth-child(5n) { animation-delay: 0.15s; }
+  .context-grid .tok-cell:nth-child(7n) { animation-delay: 0.2s; }
+  @keyframes fillCell {
+    0% { background: rgba(255,255,255,0.08); }
+    40% { background: var(--captech-blue); }
+    55% { background: var(--captech-blue); }
+    60% { background: rgba(255,255,255,0.08); }
+    100% { background: rgba(255,255,255,0.08); }
+  }
+  .clear-label {
+    display: block;
+    text-align: center;
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--yellow);
+    animation: clearFlash 6s infinite;
+    opacity: 0;
+  }
+  @keyframes clearFlash {
+    0%, 55% { opacity: 0; }
+    58%, 70% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cmd-anim *, .cmd-anim { animation: none !important; }
+    .plan-pane .ln { opacity: 1; }
+    .context-grid .tok-cell:nth-child(4n) { background: var(--captech-blue); }
+    .clear-label { opacity: 1; }
+  }
+</style>
+
+<section class="slide section-divider" data-section="4:30 — Commands">
+  <span class="label">4:30 — 10:00</span>
+  <h1>Commands worth<br>learning today</h1>
+  <p class="lede">Five Anthropic recommends. Start Monday morning.</p>
 </section>
 
-<section class="slide" data-section="9:00 — /ultrareview">
-  <span class="label">Headline 1 of 4</span>
-  <h2><code>/ultrareview</code></h2>
-  <p>Multi-agent cloud review with independent verification. Runs 5–10 minutes in a cloud sandbox.</p>
-  <div class="rulebox" style="margin-top: 1rem;">
-    <p><strong>Pricing:</strong> $5–$20 after 3 free runs. Free tier expires May 5.</p>
-    <p><strong>Auth:</strong> Requires claude.ai login. Not available on Bedrock, Vertex, or Foundry.</p>
-  </div>
-  <div class="stamp client-no"><span class="dot"></span>Client: No</div>
-  <p class="caption" style="margin-top: 1rem;">Use on CapTech side only for now.</p>
-  <aside class="notes"><p>75 seconds. Land the stamp: claude.ai auth is the disqualifier for client use today.</p></aside>
-</section>
+<section class="slide dark" data-section="4:30 — Plan Mode">
+  <span class="label">01 of 05 · Shift + Tab</span>
+  <h2>Plan Mode</h2>
+  <p class="body-dark">Read-only exploration, then implement. The recommended workflow for anything more than a one-line change.</p>
 
-<section class="slide" data-section="10:15 — /ultraplan">
-  <span class="label">Headline 2 of 4</span>
-  <h2><code>/ultraplan</code></h2>
-  <p>Draft a plan in the cloud. Review in a browser with inline comments.</p>
-  <ul class="clean" style="margin-top: 1rem;">
-    <li>Choose whether to execute in the cloud (opens a PR).</li>
-    <li>Or teleport back to the terminal and execute locally.</li>
-    <li>Plan lives in a shared URL your team can comment on.</li>
-  </ul>
-  <div class="stamp sandbox"><span class="dot"></span>Sandbox</div>
-  <aside class="notes"><p>75 seconds. Emphasize: planning in the cloud is a team collaboration pattern, not a solo one.</p></aside>
-</section>
-
-<section class="slide" data-section="11:30 — /autofix-pr">
-  <span class="label">Headline 3 of 4</span>
-  <h2><code>/autofix-pr</code></h2>
-  <p>Spawn a cloud session that watches a PR. Auto-fixes CI failures and review comments. Replies on your behalf.</p>
-  <div class="rulebox" style="background: rgba(253, 218, 36, 0.15); border-color: var(--yellow); margin-top: 1rem;">
-    <p><strong>Warning:</strong> Can trigger Atlantis or Terraform Cloud comment-based automation.</p>
-  </div>
-  <div class="stamp client-ready"><span class="dot"></span>With approval only</div>
-  <p class="caption">Client-ready stamp requires explicit per-client approval.</p>
-  <aside class="notes"><p>75 seconds. The scary part is comment-triggered infra automation. Say "Atlantis" out loud.</p></aside>
-</section>
-
-<section class="slide" data-section="12:45 — /context">
-  <span class="label">Headline 4 of 4</span>
-  <h2><code>/context</code></h2>
-  <p>Visualizes context usage as a colored grid.</p>
-  <ul class="clean" style="margin-top: 1rem;">
-    <li>No-op read. Safe to run anytime.</li>
-    <li>Shows where your tokens are going.</li>
-    <li>Sets up the context-hygiene decision rule 20 minutes from now.</li>
-  </ul>
-  <div class="stamp client-ready"><span class="dot"></span>Client-ready</div>
-  <aside class="notes"><p>Say: "Get in the habit of running /context before anything real. Cheapest diagnostic in the kit."</p></aside>
-</section>
-
-<section class="slide" data-section="13:30 — Also worth knowing">
-  <span class="label">Also worth a sentence each</span>
-  <h2>The rest of the new-ish surface</h2>
-  <div class="two-col" style="margin-top: 1rem;">
-    <div>
-      <h3><code>/effort</code></h3>
-      <p>New <code>xhigh</code> default as of April 2026. Breaking change. Everyone is burning more tokens per turn than they did in March. Turn it down for routine work.</p>
-      <h3 style="margin-top: 1.5rem;"><code>/rewind</code></h3>
-      <p>Checkpoint revert. Undo the last N turns cleanly.</p>
+  <div class="cmd-anim mt-lg">
+    <div class="plan-mode-panes">
+      <div class="plan-pane">
+        <span class="pane-tag">Plan Mode · read-only</span>
+        <div class="ln">read src/auth/session.ts</div>
+        <div class="ln">read src/auth/token.ts</div>
+        <div class="ln">grep -R "refreshToken"</div>
+        <div class="ln">propose plan →</div>
+      </div>
+      <div class="plan-arrow">→</div>
+      <div class="plan-pane normal">
+        <span class="pane-tag">Normal Mode · execute</span>
+        <div class="ln">edit session.ts</div>
+        <div class="ln">run npm test</div>
+        <div class="ln">commit &amp; push</div>
+      </div>
     </div>
-    <div>
-      <h3><code>/branch</code></h3>
-      <p>Fork the current conversation. Try two approaches without losing the first.</p>
-      <h3 style="margin-top: 1.5rem;"><code>/init</code></h3>
-      <p>Generate a starter CLAUDE.md from the current repo. Good first step on any new project.</p>
+  </div>
+
+  <p class="caption mt-md">Toggle with Shift+Tab. Open the plan in your editor with Ctrl+G before executing.</p>
+
+  <aside class="notes">
+    <p>45 seconds. Say: "This is Anthropic's recommended default workflow. You explore with Plan Mode — Claude can read but not edit — then switch to Normal Mode to execute."</p>
+    <p>Callback point: skip plan mode for one-line changes. Use it when scope is unclear or touches multiple files.</p>
+  </aside>
+</section>
+
+<section class="slide dark" data-section="5:30 — /clear">
+  <span class="label">02 of 05</span>
+  <h2><code class="cmd-name">/clear</code></h2>
+  <p class="body-dark">Reset context between unrelated tasks. The single most-recommended habit.</p>
+
+  <div class="cmd-anim mt-md">
+    <div class="context-grid" aria-label="Context window filling with tokens, then clearing">
+      <!-- 60 cells: 20 cols x 3 rows -->
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+      <div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div><div class="tok-cell"></div>
+    </div>
+    <code class="clear-label">&gt; /clear</code>
+  </div>
+
+  <p class="caption mt-sm">Anthropic: "Use <code>/clear</code> frequently between tasks to reset the context window entirely."</p>
+
+  <aside class="notes">
+    <p>60 seconds. Walk through: "Every file Claude reads, every command output, every turn — it all stacks in the context window. Performance degrades as it fills. `/clear` is how you get a fresh session without relaunching."</p>
+    <p>Rule of thumb: after two failed corrections on the same issue, `/clear` and rewrite the prompt with what you learned. Clean context beats accumulated corrections.</p>
+  </aside>
+</section>
+
+<section class="slide dark" data-section="6:30 — /compact">
+  <span class="label">03 of 05</span>
+  <h2><code class="cmd-name">/compact</code> <span class="cmd-arg">[instructions]</span></h2>
+  <p class="body-dark">Summarize the conversation to free context while keeping decisions. Pass optional instructions to bias the summary.</p>
+
+  <div class="cmd-anim compact-anim mt-lg">
+    <div class="compact-row">
+      <div class="compact-before">
+        <span class="pane-tag pane-tag-muted">Before · 47 turns</span>
+        <div class="turn-line"></div><div class="turn-line"></div><div class="turn-line"></div>
+        <div class="turn-line"></div><div class="turn-line"></div><div class="turn-line"></div>
+        <div class="turn-line"></div><div class="turn-line"></div><div class="turn-line"></div>
+        <div class="turn-line"></div><div class="turn-line"></div><div class="turn-line"></div>
+      </div>
+      <div class="compact-arrow">⇢</div>
+      <div class="compact-after">
+        <span class="pane-tag">After · 1 summary</span>
+        <div class="summary-line"><span>Decisions made</span></div>
+        <div class="summary-line"><span>Files modified</span></div>
+        <div class="summary-line"><span>Open questions</span></div>
+      </div>
     </div>
   </div>
-  <aside class="notes"><p>Speed through. One breath per command. The xhigh default is the one worth slowing for.</p></aside>
+
+  <p class="caption mt-md">Example: <code>/compact Focus on the API changes</code> preserves API context, drops the rest.</p>
+
+  <aside class="notes">
+    <p>45 seconds. Key distinction: `/clear` wipes everything; `/compact` preserves a summary. Use `/compact` when the work is related and you need continuity. Use `/clear` when it isn't.</p>
+    <p>The optional instructions argument is underused. If you just spent 20 turns on auth but now want to focus on billing, `/compact Focus on billing-related decisions` lets you keep the useful context and lose the noise.</p>
+  </aside>
 </section>
+
+<style>
+  .compact-anim { max-width: 880px; margin-left: auto; margin-right: auto; }
+  .pane-tag-muted { color: var(--medium-grey); }
+  .compact-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .compact-before, .compact-after {
+    background: #0F1419;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 1.25rem;
+    min-height: 200px;
+  }
+  .compact-before .turn-line {
+    height: 8px;
+    background: rgba(255,255,255,0.15);
+    margin: 6px 0;
+    border-radius: 2px;
+    animation: compactShrink 7s infinite;
+    transform-origin: left center;
+  }
+  .compact-before .turn-line:nth-child(2n) { width: 80%; }
+  .compact-before .turn-line:nth-child(3n) { width: 65%; }
+  .compact-before .turn-line:nth-child(4n) { width: 92%; }
+  @keyframes compactShrink {
+    0%, 40% { opacity: 1; transform: scaleY(1); }
+    50%, 100% { opacity: 0.15; transform: scaleY(0.3); }
+  }
+  .compact-after .summary-line {
+    padding: 0.5rem 0.75rem;
+    background: rgba(0, 165, 223, 0.12);
+    border-left: 3px solid var(--sky-blue);
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #E6E6E6;
+    opacity: 0;
+    animation: summaryAppear 7s infinite;
+  }
+  .compact-after .summary-line:nth-child(2) { animation-delay: 0.2s; }
+  .compact-after .summary-line:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes summaryAppear {
+    0%, 45% { opacity: 0; transform: translateX(-4px); }
+    55%, 95% { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; }
+  }
+  .compact-arrow {
+    color: var(--captech-blue);
+    font-size: 2.5rem;
+    text-align: center;
+    animation: arrowPulse 7s infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .compact-before .turn-line, .compact-after .summary-line, .compact-arrow { animation: none !important; opacity: 1 !important; transform: none !important; }
+  }
+</style>
+
+<section class="slide dark" data-section="7:30 — /rewind">
+  <span class="label">04 of 05 · Esc Esc</span>
+  <h2><code class="cmd-name">/rewind</code></h2>
+  <p class="body-dark">Every action is a checkpoint. Restore conversation, code, or both &mdash; to any previous point.</p>
+
+  <div class="cmd-anim rewind-anim mt-lg">
+    <div class="timeline">
+      <div class="timeline-track"></div>
+      <div class="checkpoint" style="left: 5%;" data-label="start"></div>
+      <div class="checkpoint" style="left: 22%;" data-label="read"></div>
+      <div class="checkpoint" style="left: 40%;" data-label="plan"></div>
+      <div class="checkpoint target" style="left: 58%;" data-label="edit"></div>
+      <div class="checkpoint" style="left: 76%;" data-label="test"></div>
+      <div class="checkpoint" style="left: 92%;" data-label="commit"></div>
+      <div class="rewind-cursor"></div>
+    </div>
+    <p class="rewind-restore">&#8634; restore to: edit</p>
+  </div>
+
+  <p class="caption mt-sm">Double-tap Esc. Checkpoints persist across sessions &mdash; rewind tomorrow if you need to.</p>
+
+  <aside class="notes">
+    <p>30 seconds. Say: "This changes how you experiment. You don't have to plan every move carefully. Tell Claude to try something risky — if it doesn't work, rewind."</p>
+    <p>Caveat: checkpoints track Claude's changes, not external processes. Not a replacement for git.</p>
+  </aside>
+</section>
+
+<style>
+  .rewind-anim { max-width: 900px; margin-left: auto; margin-right: auto; }
+  .rewind-restore {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    color: var(--yellow);
+    font-size: 0.95rem;
+  }
+  .timeline {
+    position: relative;
+    height: 80px;
+    padding: 30px 0;
+  }
+  .timeline-track {
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 2px;
+    background: rgba(255,255,255,0.2);
+  }
+  .checkpoint {
+    position: absolute;
+    top: calc(50% - 8px);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    transform: translateX(-50%);
+  }
+  .checkpoint::after {
+    content: attr(data-label);
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.55);
+    white-space: nowrap;
+  }
+  .checkpoint.target {
+    background: var(--yellow);
+    box-shadow: 0 0 0 6px rgba(253, 218, 36, 0.2);
+    animation: targetPulse 5s infinite;
+  }
+  @keyframes targetPulse {
+    0%, 100% { box-shadow: 0 0 0 6px rgba(253, 218, 36, 0.2); }
+    50% { box-shadow: 0 0 0 12px rgba(253, 218, 36, 0.35); }
+  }
+  .rewind-cursor {
+    position: absolute;
+    top: calc(50% - 14px);
+    left: 92%;
+    width: 2px;
+    height: 28px;
+    background: var(--sky-blue);
+    animation: rewindMove 5s infinite;
+  }
+  @keyframes rewindMove {
+    0% { left: 92%; opacity: 1; }
+    35%, 65% { left: 58%; opacity: 1; }
+    80% { left: 58%; opacity: 0.3; }
+    100% { left: 92%; opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .checkpoint.target, .rewind-cursor { animation: none !important; }
+    .rewind-cursor { left: 58%; }
+  }
+</style>
+
+<section class="slide dark" data-section="8:30 — /memory">
+  <span class="label">05 of 05</span>
+  <h2><code class="cmd-name">/memory</code></h2>
+  <p class="body-dark">View and edit what Claude remembers &mdash; the CLAUDE.md you wrote and the notes Claude wrote itself.</p>
+
+  <div class="cmd-anim memory-anim mt-lg">
+    <div class="mem-pair">
+      <div class="mem-card">
+        <span class="pane-tag pane-tag-blue">You wrote</span>
+        <div class="mem-file">CLAUDE.md</div>
+        <p class="mem-desc">Rules, conventions, build commands.</p>
+      </div>
+      <div class="mem-flow">
+        <div class="flow-arrow up">&uarr;</div>
+        <div class="flow-arrow down">&darr;</div>
+      </div>
+      <div class="mem-card">
+        <span class="pane-tag pane-tag-yellow">Claude wrote</span>
+        <div class="mem-file">MEMORY.md</div>
+        <p class="mem-desc">Learnings captured across sessions.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="caption mt-md">"Remember that..." &mdash; Claude saves it to auto memory. Open <code>/memory</code> to audit or edit.</p>
+
+  <aside class="notes">
+    <p>45 seconds. Auto memory is the newer half of this — v2.1.59+. Claude saves build commands, debugging insights, preferences as it discovers them. Stored per-project at <code>~/.claude/projects/&lt;project&gt;/memory/</code>.</p>
+    <p>Call out the two directions: you tell Claude "always use pnpm" and it writes to auto memory. You open `/memory` and browse what it's saved — plain markdown, editable anytime.</p>
+  </aside>
+</section>
+
+<style>
+  .memory-anim { max-width: 880px; margin-left: auto; margin-right: auto; }
+  .pane-tag-blue   { color: var(--captech-blue); }
+  .pane-tag-yellow { color: var(--yellow); }
+  .mem-pair {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  .mem-card {
+    background: #0F1419;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .mem-file {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    color: #E6E6E6;
+    margin: 0.75rem 0 0.5rem 0;
+  }
+  .mem-desc {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.65);
+    margin: 0;
+    font-family: var(--font-sans);
+  }
+  .mem-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1.75rem;
+    color: var(--sky-blue);
+  }
+  .flow-arrow {
+    animation: flowPulse 5s infinite;
+  }
+  .flow-arrow.down { animation-delay: 2.5s; }
+  @keyframes flowPulse {
+    0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
+    25% { opacity: 1; transform: translateY(-3px); }
+    50% { opacity: 0.35; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .flow-arrow { animation: none !important; opacity: 1 !important; }
+  }
+</style>

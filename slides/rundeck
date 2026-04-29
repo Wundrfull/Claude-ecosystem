@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -e
+
+PORT="${1:-8000}"
+cd "$(dirname "$0")"
+
+if lsof -ti:"$PORT" >/dev/null 2>&1; then
+  echo "Port $PORT is already in use (PID $(lsof -ti:"$PORT"))."
+  echo "  Kill it with: kill \$(lsof -ti:$PORT)"
+  echo "  Or pass a different port: ./rundeck 8080"
+  exit 1
+fi
+
+# Cache-bust on every launch so Chrome always picks up the latest slides/CSS.
+BUST="$(date +%s)"
+URL="http://localhost:$PORT/?v=$BUST"
+
+echo ""
+echo "  Claude Code Team Primer - slide deck (30-min version)"
+echo "  ------------------------------------------------------"
+echo "  Opening in Chrome: $URL"
+echo "  Stop server:       Ctrl-C"
+echo ""
+
+# --disable-application-cache forces a fresh fetch even if Chrome cached the
+# previous session. --new-window keeps the dev deck separate from normal tabs.
+(sleep 1 && open -na "Google Chrome" --args \
+  --new-window \
+  --disable-application-cache \
+  --disk-cache-size=1 \
+  "$URL") &
+
+# Serve with no-cache headers so every refresh gets the latest files.
+exec python3 -c "
+import http.server, socketserver, sys
+PORT = int(sys.argv[1])
+class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        self.send_header('Pragma', 'no-cache')
+        self.send_header('Expires', '0')
+        super().end_headers()
+with socketserver.TCPServer(('', PORT), NoCacheHandler) as httpd:
+    print(f'Serving with no-cache headers on port {PORT}')
+    httpd.serve_forever()
+" "$PORT"

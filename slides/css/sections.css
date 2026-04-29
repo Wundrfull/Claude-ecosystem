@@ -1,0 +1,238 @@
+/* Section-level utilities — shared across 00-10 section files.
+   Anything that repeats inline in multiple sections belongs here. */
+
+/* ============================================================
+   Type-scale promotions
+   Named variants that legitimately deviate from the h1/h2 scale. */
+
+/* Full-slide thesis copy (00 cold-open thesis slide). Between h2 and h1. */
+.display-quote {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 2.75rem;
+  line-height: 1.2;
+  margin: 1rem 0 0 0;
+  max-width: 30ch;
+  letter-spacing: -0.01em;
+}
+.slide.dark .display-quote { color: #fff; }
+.display-quote .accent {
+  color: var(--sky-blue);
+  font-weight: 500;
+}
+
+/* One-line hero quote (07 cite-the-line, 04 gqlgen one-liner).
+   Bigger than h2, smaller than h1; used when a single line IS the slide. */
+.mega-quote {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 2.5rem;
+  line-height: 1.25;
+  margin: 0.5rem 0 0 0;
+  max-width: 40ch;
+  letter-spacing: -0.01em;
+}
+.slide.dark .mega-quote { color: #fff; }
+.mega-quote code {
+  font-size: inherit;
+  color: var(--sky-blue);
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+/* Oversized h2 for "Cite the line" — same as h1 scale but keeps h2 semantics. */
+.h2-hero {
+  font-size: 5rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* ============================================================
+   Dark-slide body patterns
+   The deck has many dark slides with "h2 + supporting paragraph + caption".
+   These classes replace the inline color/max-width/font-size triplet. */
+
+.lede {
+  font-size: 1.5rem;
+  line-height: 1.45;
+  max-width: 52ch;
+  margin: 1rem 0 0 0;
+}
+.slide.dark .lede { color: rgba(255, 255, 255, 0.8); }
+
+.body-dark {
+  font-size: 1.5rem;
+  line-height: 1.45;
+  max-width: 60ch;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+/* A caption on a dark slide — lower-contrast, italic, sits under the hero. */
+.slide.dark .caption { color: rgba(255, 255, 255, 0.7); }
+
+/* Divider-slide supporting paragraph. Consistent across every section-divider. */
+.slide.section-divider .lede {
+  color: rgba(255, 255, 255, 0.8);
+  max-width: 50ch;
+  margin-top: 1rem;
+}
+
+/* ============================================================
+   Dark-slide label tinting
+   .slide.dark .label used to require inline style="color: var(--yellow)".
+   Standardize here so labels look identical across every dark slide. */
+.slide.dark .label { color: var(--yellow); }
+
+/* ============================================================
+   Vertical rhythm utilities
+   Replace ad-hoc margin-top inline styles with a single class. */
+.mt-sm { margin-top: 0.75rem; }
+.mt-md { margin-top: 1.25rem; }
+.mt-lg { margin-top: 1.75rem; }
+.mt-xl { margin-top: 2.5rem; }
+
+/* Light-slide body paragraph, max-width 60ch. Mirror of .body-dark. */
+.body-light {
+  font-size: 1.5rem;
+  line-height: 1.45;
+  max-width: 60ch;
+  margin: 0.5rem 0 0 0;
+}
+
+/* A smaller quote variant for embedded docs pullquotes.
+   Base .quote is 2rem; .quote-sm is 1.5rem. */
+.quote.quote-sm { font-size: 1.5rem; margin: 1rem 0 0 0; }
+
+/* Denser bulleted list variant — five-line CLAUDE.md and similar. */
+ul.clean.clean-lg li, ol.clean.clean-lg li { font-size: 1.4rem; }
+
+/* Colored h3 used in two-col comparisons. Mirrors the Copilot-vs-Claude
+   palette but reusable across sections. */
+.h3-blue { color: var(--captech-blue); }
+.h3-sky  { color: var(--sky-blue); }
+
+/* Inline color accents inside rulebox copy. */
+.accent-blue { color: var(--captech-blue); }
+.accent-dark { color: var(--dark-grey); }
+
+/* Caption at small display size (e.g. "200K context" label under a big-number). */
+.caption.caption-sm { font-size: 1rem; }
+
+/* Denser caption used in-line with title text. */
+.caption.caption-lg { font-size: 1.15rem; }
+
+.caption.caption-center { text-align: center; }
+
+/* Unit tag next to a big-number (e.g. "%"). */
+.big-number .unit { font-size: 3rem; }
+
+/* Hero-scale quote — used for the Anthropic context-rot pullquote. */
+.quote.quote-hero {
+  font-size: 2.5rem;
+  line-height: 1.25;
+}
+.slide.dark .quote.quote-hero { border-color: var(--sky-blue); color: #fff; }
+.slide.dark .quote.quote-hero cite { color: rgba(255, 255, 255, 0.7); }
+
+/* Denser rulebox copy (decision rule). */
+.rulebox.rulebox-lg p { font-size: 1.3rem; }
+
+/* Yellow warning rulebox (data-policy action item). */
+.rulebox.rulebox-warn {
+  background: rgba(253, 218, 36, 0.15);
+  border-color: var(--yellow);
+}
+
+/* Light-slide supporting paragraph one step below .lede — 1.4rem.
+   Used under the cite-the-line hero. */
+.lede-light {
+  font-size: 1.4rem;
+  line-height: 1.45;
+  max-width: 60ch;
+  margin: 0;
+}
+
+/* Medium-weight numbered list (five-things slide). */
+ul.clean.clean-md li, ol.clean.clean-md li { font-size: 1.3rem; }
+
+/* Extra gap above a code-header that sits under another code block. */
+.code-header.code-header-gap { margin-top: 1.5rem; }
+
+/* ============================================================
+   Command-section patterns
+   Shared primitives used by 02-commands.html. .pane-tag was duplicated in
+   every scoped block; consolidate here. */
+.pane-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sky-blue);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  display: block;
+}
+
+/* The inline code-as-command name (e.g. "/clear", "/compact") that sits
+   inside an h2 on a dark slide. */
+h2 code.cmd-name {
+  color: var(--sky-blue);
+  font-size: inherit;
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+
+/* Optional bracket arg next to a command name. */
+h2 .cmd-arg {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+  font-size: 2rem;
+  font-family: var(--font-sans);
+}
+
+/* ============================================================
+   Hero column for the cold-open
+   Scoped 00-cold-open styles promoted to a named class. */
+.cold-open-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+}
+.cold-open-hero .label {
+  color: var(--yellow);
+  margin-bottom: 0.5rem;
+}
+.cold-open-hero h1 {
+  color: #fff;
+  margin: 0 0 1.25rem 0;
+  text-align: left;
+}
+.cold-open-hero .anim-intro {
+  margin: 0;
+  max-width: 100%;
+}
+.cold-open-hero .hero-caption {
+  font-size: 1.35rem;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 1.25rem 0 0 0;
+  text-align: left;
+  max-width: 100%;
+}
+
+/* ============================================================
+   Reduced-motion: shared fallback
+   Each section's scoped block also honors this, but the shared intro and
+   loop animations live in animations.css / animations-loop.css and need
+   a global safety net. */
+@media (prefers-reduced-motion: reduce) {
+  .anim-intro .cmd { animation: none !important; width: 31ch !important; border-right: 0 !important; }
+  .anim-intro .tokens, .anim-intro .tokens .tok, .anim-intro .done { animation: none !important; opacity: 1 !important; }
+  .anim-loop .ring { animation: none !important; }
+  .anim-loop .n-plan, .anim-loop .n-tool, .anim-loop .n-obs,
+  .anim-loop .l-plan, .anim-loop .l-tool, .anim-loop .l-obs,
+  .anim-loop .a-1, .anim-loop .a-2, .anim-loop .a-3 { animation: none !important; }
+}

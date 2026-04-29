@@ -1,80 +1,40 @@
-<section class="slide section-divider" data-section="55:00 — Wrap">
-  <span class="label">55:00 — 60:00</span>
-  <h1>Agent teams, MCP,<br>and the wrap</h1>
-</section>
-
-<section class="slide" data-section="55:00 — Agent teams">
-  <span class="label">Aware-only</span>
-  <h2>Agent teams</h2>
-  <p>Like subagents, but teammates can message each other directly and share a task list.</p>
-  <div class="rulebox" style="margin-top: 1rem;">
-    <p>This presentation was built using one: six Sonnet 4.6 researchers, an Opus 4.7 lead.</p>
-  </div>
-  <div class="stamp client-no"><span class="dot"></span>Not expected on-client soon</div>
-  <p class="caption" style="margin-top: 1rem;">Experimental. Token-heavy. Name it so you recognize it later, then move on.</p>
-  <aside class="notes"><p>90 seconds. Show a one-line TeamCreate example and the architecture diagram. Do not dwell.</p></aside>
-</section>
-
-<section class="slide" data-section="56:30 — MCP">
-  <span class="label">Aware-only</span>
-  <h2>MCP</h2>
-  <p>Open standard for connecting AI to external data. Useful at CapTech. <strong>Client will not allow it.</strong></p>
-  <p style="margin-top: 1rem;">Mention the name so they recognize it later. Move on.</p>
-  <p class="caption" style="margin-top: 1rem;">Repo README has a link into Anthropic's MCP docs for anyone curious.</p>
-  <div class="stamp client-no"><span class="dot"></span>Not on client</div>
-  <aside class="notes"><p>60 seconds. Do not deep-dive. Name recognition only.</p></aside>
-</section>
-
-<section class="slide" data-section="57:30 — Three levers, reprise">
-  <span class="label">Three levers · final appearance</span>
+<section class="slide" data-section="25:00 — Three levers, final">
+  <span class="label">Three levers &middot; final appearance</span>
   <h2>The whole talk on one slide.</h2>
   <div class="three-levers">
     <div class="lever context">
-      <div class="lever-icon">01 · Context</div>
+      <div class="lever-icon">01 &middot; Context</div>
       <div class="lever-title">What you put in front of it</div>
-      <p>CLAUDE.md. Skills. /clear vs /compact. Cite the line.</p>
+      <p>CLAUDE.md. Auto memory. Skills. <code>/clear</code> vs <code>/compact</code>.</p>
     </div>
     <div class="lever capability">
-      <div class="lever-icon">02 · Capability</div>
+      <div class="lever-icon">02 &middot; Capability</div>
       <div class="lever-title">What you let it do</div>
-      <p>Permissions. Hooks. Subagents. Per-client approval.</p>
+      <p>Plan Mode. <code>/permissions</code>. Tool allowlists. Per-client approval.</p>
     </div>
     <div class="lever verification">
-      <div class="lever-icon">03 · Verification</div>
+      <div class="lever-icon">03 &middot; Verification</div>
       <div class="lever-title">How you check its work</div>
-      <p>Tests. /security-review. /ultrareview. Diff review.</p>
+      <p>Tests. <code>/review</code>, <code>/security-review</code>. Cite the line.</p>
     </div>
   </div>
-  <aside class="notes"><p>Third callback. The thesis. Land it.</p></aside>
-</section>
-
-<section class="slide" data-section="58:30 — Five things tonight">
-  <span class="label">Five things to install on your machine tonight</span>
-  <h2>Your Monday-morning starter kit.</h2>
-  <ol class="clean" style="font-size: 1.3rem;">
-    <li>Claude Code, if you don't have it.</li>
-    <li>The CapTech-standard starter CLAUDE.md (link in this repo).</li>
-    <li>Four superpowers skills: <code>test-driven-development</code>, <code>systematic-debugging</code>, <code>verification-before-completion</code>, <code>using-git-worktrees</code>.</li>
-    <li>The org feedback-disable setting, if you're an admin.</li>
-    <li>A habit of running <code>/context</code> at the start of anything real.</li>
-  </ol>
-  <div class="stamp client-ready"><span class="dot"></span>Ship-ready</div>
-  <aside class="notes"><p>2 minutes. Read the list. Say where each link lives in the repo.</p></aside>
-</section>
-
-<section class="slide dark" data-section="60:00 — Thanks">
-  <span class="label" style="color: var(--yellow);">The reference index</span>
-  <h1 style="color: #fff;">Questions?</h1>
-  <p style="font-size: 1.4rem; color: rgba(255,255,255,0.85); margin-top: 1rem;">Everything from this talk, plus the research that informed it, is in the repo. Motion clips in <code>motion/</code>. Scenario scripts in <code>demos/</code>.</p>
-  <p class="caption" style="color: rgba(255,255,255,0.6); margin-top: 2rem;">Claude Code Team Primer · CapTech Consulting · April 29-30 2026</p>
   <aside class="notes">
-    <p>Q&amp;A for 15 minutes. Seeded questions in rehearsal/qa-seeds.md.</p>
+    <p>45 seconds. Third and final callback. The thesis of the whole talk in three columns. Land it, then move to Q&amp;A.</p>
+  </aside>
+</section>
+
+<section class="slide dark" data-section="25:45 — Q&amp;A">
+  <span class="label">The reference index</span>
+  <h1>Questions?</h1>
+  <p class="caption mt-xl">Repo with slides, notes, and research lives in the team GitHub org. Claude Code Team Primer &middot; CapTech Consulting &middot; April 29-30 2026.</p>
+  <aside class="notes">
+    <p>Q&amp;A for ~10 minutes. Seeded questions:</p>
     <ul>
-      <li>What if the client won't install Claude Code org-wide?</li>
-      <li>How is it different from Cursor?</li>
+      <li>What if the client won&rsquo;t install Claude Code org-wide?</li>
+      <li>How is it different from Copilot / Cursor in practice?</li>
       <li>Can we version CLAUDE.md in the client repo?</li>
-      <li>Won't Claude hallucinate the gqlgen config?</li>
-      <li>Cheapest way to try /ultrareview on Bedrock?</li>
+      <li>Won&rsquo;t Claude hallucinate the gqlgen config?</li>
+      <li>How do we pick between Opus 4.7 and Sonnet 4.6 per task?</li>
     </ul>
   </aside>
 </section>

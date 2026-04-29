@@ -1,0 +1,121 @@
+/* ============================================================
+   02. AGENTIC LOOP — three nodes on a ring, pulse in sequence.
+   Drop-in for slide 01-what-is-claude-code "agentic loop" slide. */
+
+.anim-loop {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  aspect-ratio: 16 / 9;
+  margin: 1rem auto 0;
+}
+
+.anim-loop svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.anim-loop .ring {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 2;
+  stroke-dasharray: 6 8;
+  animation: spin 24s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.anim-loop .node {
+  fill: #1E252B;
+  stroke: rgba(255, 255, 255, 0.25);
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+.anim-loop .node-label {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  font-weight: 600;
+  fill: rgba(255, 255, 255, 0.7);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.anim-loop .node-sub {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: rgba(255, 255, 255, 0.5);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  letter-spacing: 0.08em;
+}
+
+.anim-loop .arrow {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 2;
+  marker-end: url(#arrowhead);
+}
+
+/* Sequential pulse: 3 nodes, 3s each, 9s total cycle */
+.anim-loop .n-plan   { animation: pulseNode 9s ease-in-out infinite 0s; }
+.anim-loop .n-tool   { animation: pulseNode 9s ease-in-out infinite 3s; }
+.anim-loop .n-obs    { animation: pulseNode 9s ease-in-out infinite 6s; }
+
+.anim-loop .l-plan   { animation: pulseLabel 9s ease-in-out infinite 0s; }
+.anim-loop .l-tool   { animation: pulseLabel 9s ease-in-out infinite 3s; }
+.anim-loop .l-obs    { animation: pulseLabel 9s ease-in-out infinite 6s; }
+
+@keyframes pulseNode {
+  0%, 22%, 100% { fill: #1E252B; stroke: rgba(255, 255, 255, 0.25); r: 52; }
+  11% { fill: var(--captech-blue); stroke: var(--sky-blue); r: 58; }
+}
+@keyframes pulseLabel {
+  0%, 22%, 100% { fill: rgba(255, 255, 255, 0.7); }
+  11% { fill: #fff; }
+}
+
+.anim-loop .a-1 { animation: flowArrow 9s ease-in-out infinite 0.5s; }
+.anim-loop .a-2 { animation: flowArrow 9s ease-in-out infinite 3.5s; }
+.anim-loop .a-3 { animation: flowArrow 9s ease-in-out infinite 6.5s; }
+
+@keyframes flowArrow {
+  0%, 25%, 100% { stroke: rgba(255, 255, 255, 0.2); stroke-width: 2; }
+  12% { stroke: var(--sky-blue); stroke-width: 3; }
+}
+
+/* Side comparison: Copilot accept/reject strip */
+.anim-loop-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1rem;
+  align-items: start;
+}
+.anim-loop-compare .col {
+  padding: 1rem 1.25rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.anim-loop-compare .col.claude {
+  border-color: var(--captech-blue);
+  background: rgba(0, 94, 184, 0.15);
+}
+.anim-loop-compare .col h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+.anim-loop-compare .col.claude h4 { color: var(--sky-blue); }
+.anim-loop-compare .col p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+}

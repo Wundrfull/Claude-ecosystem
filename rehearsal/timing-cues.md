@@ -1,6 +1,6 @@
-# Timing Cues - Claude Code Team Primer
+# Timing Cues - Claude Code Team Primer (30-minute cut)
 
-Single-page glance table for staying on schedule during the 60-minute presentation.
+Single-page glance table for staying on schedule during the 30-minute presentation (~20 min content + ~10 min Q&A). Hard stop at 40:00.
 
 ---
 
@@ -8,196 +8,100 @@ Single-page glance table for staying on schedule during the 60-minute presentati
 
 | Target Min | Section | Slide Range | Status Line |
 |----------:|---------|-------------|-------------|
-| 0:00 | Cold open | 1-3 | "You've all used Copilot. This is not Copilot." |
-| 3:00 | What Claude Code is | 4-12 | Play 20s agentic loop clip, introduce three levers |
-| 9:00 | Command tour | 13-20 | Headline four: ultrareview, ultraplan, autofix-pr, context |
-| 14:00 | Skills (writing/eval) | 21-28 | Show minimal skill anatomy, description gotcha, eval methodology |
-| 22:00 | CLAUDE.md contracts | 29-34 | Five lines that appear in most CLAUDE.md files |
-| 28:00 | Context hygiene | 35-42 | The number: 77.2% at 200K vs 78.2% at 1M (essentially flat) |
-| 35:00 | Subagents + hooks | 43-46 | Aware-only, 2.5 min each, show one concrete example |
-| 40:00 | Responsible use | 47-51 | One-slide policy, cite-the-line habit, ZDR note |
-| 45:00 | Scenario B live demo | 52-56 | Consumer field addition, 5 steps, fallback ready |
-| 52:00 | Scenario D screencast | 57-59 | CI/PR triage, 2 min video + 30s caveats |
-| 55:00 | Agent teams + MCP + wrap | 60-66 | 90s agent teams, 60s MCP, 2 min wrap with five takeaways |
-| 60:00 | Q&A | -- | Seeded questions ready if audience is quiet |
+| 0:00 | Cold open | 00 (2 slides) | "You've all used Copilot. This is not Copilot." |
+| 1:30 | What Claude Code is | 01 (divider + 3 slides) | Copilot vs Claude loop; agentic-loop animation; name the three levers |
+| 4:30 | Commands worth learning today | 02 (divider + 5 slides) | Plan Mode, /clear, /compact, /rewind, /memory — each with CSS-animated demo |
+| 10:00 | Skills — structure and writing your own | 03 (divider + 6 slides) | Anatomy, progressive disclosure, frontmatter card, write-your-own, subagents+hooks aside |
+| 16:30 | CLAUDE.md + auto memory | 04 (divider + 3 slides) | Behavior contract; five lines; auto-memory is new |
+| 19:00 | Context hygiene | 05 (divider + 4 slides) | Anthropic quote; decision rule; 5K/25K cap; tokenizer gotcha |
+| 22:30 | Responsible use + start today | 07 (divider + 3 slides) | Data policy; cite-the-line; five things to install tonight |
+| 25:00 | Wrap | 10 (1 slide) | Three levers final callback, then Q&A |
+| 26:00 | Q&A | — | Seeded questions ready if the room goes quiet |
+| 40:00 | Hard stop | — | Recording ends |
 
 ---
 
 ## Gate Buffers (Checkpoints)
 
-These are the moments to glance at the clock and confirm you are on pace.
+Glance at the clock at each gate. If you're outside the acceptable range, apply the recovery action.
 
-| Gate | Ideal Time | Acceptable Range | Status |
-|------|------------|------------------|--------|
-| End of cold open | 3:00 | 2:30-3:30 | If past 3:30, skip one command in tour (drop /rewind or /branch) |
-| End of command tour | 14:00 | 13:30-15:00 | Most flexible section - can compress or expand |
-| End of skills section | 22:00 | 21:30-22:30 | If past 22:30, shorten hooks section to 90s instead of 2.5 min |
-| End of CLAUDE.md | 28:00 | 27:30-28:30 | On track |
-| End of context hygiene | 35:00 | 34:30-36:00 | If past 36:00, drop hooks entirely and jump to responsible use |
-| Start of Scenario B | 45:00 | 44:00-46:00 | CRITICAL GATE - must start demo by 46:00 or cut to 4 min |
-| End of Scenario B | 52:00 | 50:00-53:00 | Narrowest buffer - if past 53:00, skip Scenario D |
-| Start of wrap | 55:00 | 54:00-56:00 | Must leave 4-5 min for wrap to land properly |
-| Start of Q&A | 60:00 | 59:00-61:00 | Hard stop at 75:00 |
-
----
-
-## If You Are 2 Minutes Ahead
-
-You have breathing room. Expand these sections to fill time and add depth:
-
-### Option 1: Expand Skills Section (minute 14-22)
-
-- Show the chunked-write pattern from `skills-lab/02-chunked-write/`
-- Walk through the golden-task JSON structure in `skills-lab/03-eval-harness/test-prompts.json`
-- Discuss the description gotcha with a second example from superpowers
-
-**How:** After showing minimal skill anatomy (minute 16), say "Let's look at one more real example" and pull up chunked-write skill.
-
-### Option 2: Expand CLAUDE.md Section (minute 22-28)
-
-- Show per-subdirectory CLAUDE.md example (graph/CLAUDE.md, loader/CLAUDE.md)
-- Walk through the memory iteration pattern: ask Claude to propose edits at end of session
-- Demonstrate `/init` command to generate starter CLAUDE.md
-
-**How:** After five common lines (minute 24), say "Let me show you how to organize CLAUDE.md across a multi-domain subgraph."
-
-### Option 3: Expand Command Tour (minute 9-14)
-
-- Demonstrate `/effort` with xhigh default and show token burn rate
-- Show `/rewind` by creating a checkpoint and reverting
-- Walk through `/context` output in detail (colored grid, token breakdown)
-
-**How:** After headline four (minute 12), say "Let's actually run /context and see what it shows."
+| Gate | Ideal | Acceptable | Recovery Action |
+|------|------:|-----------:|-----------------|
+| End of cold open | 1:30 | 1:15–1:45 | If past 1:45, shorten the thesis pause; skip one beat of terminal narration |
+| End of What Claude Code is | 4:30 | 4:15–4:45 | If past 4:45, drop the compare-shift line and move straight to the loop animation |
+| End of Commands tour | 10:00 | 9:30–10:30 | If past 10:30, compress /rewind to 20 seconds; skip the checkpoint caveat |
+| End of Skills | 16:30 | 16:00–17:00 | If past 17:00, drop the write-your-own walkthrough; keep frontmatter card |
+| End of CLAUDE.md + memory | 19:00 | 18:30–19:15 | If past 19:15, cut the per-subdirectory slide; keep the five lines |
+| End of Context hygiene | 22:30 | 22:00–22:45 | If past 22:45, drop the tokenizer gotcha; keep the decision rule |
+| End of Responsible use | 25:00 | 24:30–25:30 | If past 25:30, skip hygiene checklist recap; deliver cite-the-line only |
+| Start of Q&A | 26:00 | 25:30–26:30 | If past 26:30, compress wrap to "three levers — questions?" |
+| End of Q&A | 40:00 sharp | — | Hard stop, recording ends |
 
 ---
 
-## If You Are 2 Minutes Behind
+## If You Are 1 Minute Ahead
 
-You need to trim content. Cut these sections in priority order (cut #1 first, then #2 if still behind):
+You have a little breathing room. Apply in this priority order.
 
-### Cut #1: Hooks Example (minute 37-38)
+1. **Let the agentic-loop animation play a full 9-second cycle in silence** (section 01). It sells the concept harder than any line you can add.
+2. **Add a second example to `/compact`** (section 02): show `/compact Focus on the API changes` and narrate why you'd bias the summary.
+3. **Expand the skills write-your-own walkthrough** (section 03): add the "descriptions are behavior, not metadata" beat from the Superpowers finding.
+4. **Read the five CLAUDE.md lines more slowly** (section 04). These are cultural; the room needs time.
 
-**Original:** Show PreToolUse hook that blocks git push --force.
-
-**Trimmed:** Mention hooks exist, show filename (`~/.claude/hooks/pre-tool-use.sh`), describe in one sentence, move on.
-
-**Recovery:** "Hooks let you run shell commands before tool calls. Example: block force-push without a flag. Details in the repo README."
-
-**Time saved:** 90 seconds
-
-### Cut #2: Subagents Deep Dive (minute 35-37)
-
-**Original:** Show one example of spawning a code reviewer subagent, inspect result.
-
-**Trimmed:** Describe subagents in 60 seconds, mention token cost, skip live example.
-
-**Recovery:** "Subagents are focused helper agents with their own context. Useful for quality gates. Token-expensive. Details in R1 research file."
-
-**Time saved:** 90 seconds
-
-### Cut #3: Command Tour Extras (minute 12-14)
-
-**Original:** "Also worth a sentence each" - /effort, /rewind, /branch, /init
-
-**Trimmed:** Skip these entirely. Jump from headline four directly to skills section.
-
-**Recovery:** No mention needed - these are bonus content.
-
-**Time saved:** 2 minutes
-
-### Cut #4: Scenario D Screencast (minute 52-55)
-
-**Original:** 2-minute pre-recorded screencast + 30s caveats.
-
-**Trimmed:** Skip screencast, show one screenshot of /ultrareview output, narrate in 60 seconds.
-
-**Recovery:** "Here's the output from /ultrareview - multi-agent review with cited line numbers. This is cite-the-line, automated."
-
-**Time saved:** 90 seconds
+Do NOT expand Q&A preemptively. If you finish early, pause at the thesis slide, repeat "three levers — questions?" and let silence work.
 
 ---
 
-## If Scenario B Demo Runs Long
+## If You Are 1 Minute Behind
 
-The live demo (minute 45-52) is the highest-risk section for time overrun. If you hit 50:00 and are still on step 3 of 5, abort.
+Trim in this priority order. Cut #1 first, then #2, then #3 only if you are still behind at the next gate.
 
-### Abort Phrase
+### Cut #1: Skills write-your-own walkthrough (section 03, ~60s)
 
-"OK, let's skip ahead. The key takeaway here is that Claude navigated the codebase, respected the CLAUDE.md rules, and used dataloaders to avoid N+1 queries."
+Keep the frontmatter card. Skip the live-narrated skill scaffold. Say: "The scaffold is in the repo — `skills-lab/01-minimal/`. Copy it and rename."
 
-### Jump Target
+### Cut #2: Tokenizer gotcha (section 05, ~30s)
 
-- Close Claude Code session
-- Advance slides to Scenario D (slide 57)
-- Say: "Let's move to the CI triage scenario."
+Skip the 35% tokenizer slide. The decision rule is the load-bearing content, not the tokenizer line. Say: "One footnote — the new tokenizer uses more tokens per string; details in the repo."
 
-### What to Show from Fallback
+### Cut #3: Hygiene checklist recap (section 07, ~30s)
 
-Pull up `fallback/expected-output-step-3-resolver.md` on second monitor, show audience for 10 seconds, narrate:
-
-"This is the resolver implementation we'd expect. Notice `loaders.LoaderFromContext(ctx)` - that's the dataloader pattern. Instead of calling ReviewsClient in a loop, we batch all Load() calls into one API request."
-
-**Time cost of abort:** 45 seconds (vs 7 minutes for full demo)
+Do not recite the six items. Point at the slide and say: "Six hygiene rules on screen. Placeholders for secrets, no `git add -A`, scrub logs, scope bash, exports are deliverables, `/security-review` on auth PRs."
 
 ---
 
 ## Section Transition Signals
 
-Use these verbal cues to signal section boundaries. Helps audience follow structure.
+Verbal cues to signal section boundaries. Helps the audience follow structure.
 
 | Transition | Say This |
 |------------|----------|
-| Cold open to What Claude Code Is | "Let me reset the mental model." |
-| What Claude Code Is to Command Tour | "Now let's get current - here's what shipped in the last 90 days." |
-| Command Tour to Skills | "Let's go deeper on skills - this is one of the more powerful extension points." |
-| Skills to CLAUDE.md | "Skills are per-task workflows. CLAUDE.md is a behavior contract for the entire codebase." |
-| CLAUDE.md to Context Hygiene | "Now the part that matters most on the client side: context hygiene." |
-| Context Hygiene to Subagents/Hooks | "Two more capabilities worth knowing about, briefly." |
-| Subagents/Hooks to Responsible Use | "Let's talk about the policy side." |
-| Responsible Use to Scenario B | "OK, enough theory. Let's see this in action." |
-| Scenario B to Scenario D | "Same subgraph, different workflow." |
-| Scenario D to Wrap | "Two more topics, then we wrap." |
-| Wrap to Q&A | "Questions?" |
+| Cold open → What Claude Code is | "Let me reset the mental model." |
+| What Claude Code is → Commands | "Let's start with the lever you touch most: context. And the commands that decide what Claude sees." |
+| Commands → Skills | "Commands are the knobs Anthropic shipped. Skills are the knobs you build yourself." |
+| Skills → CLAUDE.md | "Skills are per-task. CLAUDE.md is the behavior contract for the whole codebase." |
+| CLAUDE.md → Context hygiene | "Now the part that matters most on the client side." |
+| Context hygiene → Responsible use | "One slide of policy. If you leave today with only one artifact, this is the one." |
+| Responsible use → Wrap | "Three levers, one more time." |
+| Wrap → Q&A | "Questions." |
 
 ---
 
 ## Hard Stops
 
-These are non-negotiable time limits.
-
 | Event | Hard Stop | Why |
-|-------|-----------|-----|
-| Start Q&A | 61:00 latest | Must leave 14 min for Q&A (contracted 15 min) |
-| End Q&A | 75:00 sharp | Recording ends, audience has next meeting |
-| End Scenario B demo | 53:00 latest | Allows 2 min for Scenario D, 3 min for wrap, 2 min buffer |
+|-------|----------:|-----|
+| Start Q&A | 26:30 latest | Must leave ~13 minutes for questions |
+| End Q&A | 40:00 sharp | Recording ends, audience has next meeting |
 
-If you hit a hard stop and are not at the target section, skip all intermediate content and jump directly.
-
-**Example:** It is 61:00 and you are still in the wrap. Stop mid-sentence, say "Let's open it up for questions," advance to Q&A slide.
-
----
-
-## Narrowest Time Buffer
-
-**Minute 45-52: Scenario B live demo.**
-
-This 7-minute block has the least flexibility. The demo has 5 required steps, and if any step stalls (Claude takes 90 seconds instead of 30 seconds, codegen fails, need to troubleshoot), the buffer evaporates instantly.
-
-**Mitigation:**
-- Have fallback resolver code ready to paste (step 3)
-- If step 1 or 2 takes longer than 2 minutes total, compress step 4 (tests) - just show test file without running tests
-- If you reach minute 50 and are not on step 5 (commit), abort and jump to Scenario D
-
-**Presenter warning:** The most likely skip is "running the tests live." You can show the test file and say "these would pass in production" without running `go test`. Saves 60-90 seconds.
+If you hit 26:30 mid-section, stop mid-sentence, say "Let's open it up for questions," advance to the thesis slide, take questions.
 
 ---
 
 ## Timing Notes
 
-- Total content: 60 minutes
-- Q&A: 15 minutes
-- Hard stop: 75 minutes
-- Narrowest buffer: Scenario B demo (minute 45-52)
-- Most compressible section: Command tour (minute 9-14) or hooks (minute 37-38)
-- Least compressible section: Context hygiene (minute 28-35) - this is load-bearing content
-- Ideal gate check times: 3:00, 14:00, 28:00, 45:00, 52:00, 60:00
+- Total content: ~25 minutes. Q&A: ~13 minutes. Hard stop: 40 minutes.
+- Most compressible: skills write-your-own walkthrough.
+- Least compressible: context hygiene decision rule, five CLAUDE.md lines, thesis callbacks.
+- Ideal gate check times: 1:30, 4:30, 10:00, 16:30, 22:30, 26:00.
+- Say "three levers" out loud exactly three times: minute ~4, minute ~22, minute ~25. Do not skip.

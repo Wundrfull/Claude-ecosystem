@@ -1,0 +1,105 @@
+/* Inline slide animations — replaces Remotion motion clips.
+   Each animation is scoped to a class and runs when the slide is .active. */
+
+/* ============================================================
+   Shared: pause animations until the slide is active so they
+   don't desync while offscreen. Covers every animated primitive
+   used anywhere in the deck. */
+.slide:not(.active) .anim-intro,
+.slide:not(.active) .anim-intro *,
+.slide:not(.active) .anim-loop,
+.slide:not(.active) .anim-loop *,
+.slide:not(.active) .cmd-anim,
+.slide:not(.active) .cmd-anim *,
+.slide:not(.active) .pd-stage,
+.slide:not(.active) .pd-stage * {
+  animation-play-state: paused !important;
+}
+
+/* ============================================================
+   01. INTRO — terminal typing + code tokens flashing in.
+   Drop-in for slide 00 cold-open. */
+.anim-intro {
+  width: 100%;
+  max-width: 880px;
+  margin: 1rem auto 0;
+  background: #0F1419;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 1.5rem 1.75rem;
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  color: #E6E6E6;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  text-align: left;
+}
+.anim-intro .dots {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.anim-intro .dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #444;
+}
+.anim-intro .dots span:nth-child(1) { background: #FF5F57; }
+.anim-intro .dots span:nth-child(2) { background: #FEBC2E; }
+.anim-intro .dots span:nth-child(3) { background: #28C840; }
+
+.anim-intro .line {
+  white-space: nowrap;
+  overflow: hidden;
+  color: #E6E6E6;
+}
+.anim-intro .prompt { color: var(--sky-blue); }
+.anim-intro .cmd {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  border-right: 2px solid var(--yellow);
+  width: 0;
+  animation: typeCmd 2.2s steps(31, end) 0.4s forwards,
+             blinkCaret 0.8s step-end 2.8s 3;
+}
+@keyframes typeCmd {
+  from { width: 0; }
+  to   { width: 31ch; }
+}
+@keyframes blinkCaret {
+  50% { border-color: transparent; }
+}
+
+.anim-intro .tokens {
+  margin-top: 1rem;
+  opacity: 0;
+  animation: fadeIn 0.4s ease 3.4s forwards;
+}
+.anim-intro .tokens .tok {
+  opacity: 0;
+  animation: tokenPop 0.3s ease forwards;
+}
+.anim-intro .tokens .tok:nth-child(1) { animation-delay: 3.6s; color: #C678DD; }
+.anim-intro .tokens .tok:nth-child(2) { animation-delay: 3.8s; color: #E6E6E6; }
+.anim-intro .tokens .tok:nth-child(3) { animation-delay: 4.0s; color: var(--sky-blue); }
+.anim-intro .tokens .tok:nth-child(4) { animation-delay: 4.2s; color: #E6E6E6; }
+.anim-intro .tokens .tok:nth-child(5) { animation-delay: 4.4s; color: #98C379; }
+.anim-intro .tokens .tok:nth-child(6) { animation-delay: 4.6s; color: #E6E6E6; }
+.anim-intro .tokens .tok:nth-child(7) { animation-delay: 4.8s; color: var(--yellow); }
+
+.anim-intro .done {
+  color: #98C379;
+  margin-top: 0.75rem;
+  opacity: 0;
+  animation: fadeIn 0.4s ease 5.2s forwards;
+}
+
+@keyframes tokenPop {
+  0%   { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}

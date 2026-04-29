@@ -1,98 +1,288 @@
-<section class="slide section-divider" data-section="14:00 — Skills">
-  <span class="label">14:00 — 22:00</span>
-  <h1>Skills<br>Writing and evaluating them</h1>
-  <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); max-width: 50ch;">Two halves: how to write one, and how to know it works.</p>
+<style>
+  /* Small utilities local to this section (shared ones live in sections.css). */
+  .muted { color: var(--medium-grey); }
+  .note { font-size: 1.1rem; }
+  .note.muted { font-size: 1rem; }
+  .steps-dense { font-size: 1.15rem; }
+
+  /* Progressive disclosure visual */
+  .pd-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    margin: 2rem auto;
+    max-width: 900px;
+  }
+  .pd-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+  }
+  .pd-layer {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .pd-layer-label {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    display: block;
+  }
+  .pd-always {
+    background: rgba(0, 94, 184, 0.12);
+    border-left: 3px solid var(--captech-blue);
+    color: var(--dark-grey);
+  }
+  .pd-always .pd-layer-label { color: var(--captech-blue); }
+  .pd-lazy {
+    background: rgba(136, 139, 141, 0.1);
+    border-left: 3px solid var(--medium-grey);
+    color: var(--medium-grey);
+    opacity: 0.55;
+    animation: lazyLoad 5s infinite;
+  }
+  .pd-lazy .pd-layer-label { color: var(--medium-grey); }
+  @keyframes lazyLoad {
+    0%, 60% { opacity: 0.4; border-left-color: var(--medium-grey); background: rgba(136, 139, 141, 0.08); }
+    70%, 90% { opacity: 1; border-left-color: var(--sky-blue); background: rgba(0, 165, 223, 0.15); color: var(--dark-grey); }
+    100% { opacity: 0.4; }
+  }
+  .pd-trigger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: var(--font-mono);
+    color: var(--sky-blue);
+    font-size: 1rem;
+    animation: triggerPulse 5s infinite;
+  }
+  .pd-trigger-arrow { font-size: 2rem; margin-top: 0.5rem; }
+  @keyframes triggerPulse {
+    0%, 55% { opacity: 0.35; transform: translateX(0); }
+    65%, 85% { opacity: 1; transform: translateX(6px); }
+    100% { opacity: 0.35; transform: translateX(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pd-lazy, .pd-trigger { animation: none !important; opacity: 1 !important; }
+  }
+
+  /* Frontmatter reference table */
+  table.fm-ref {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+    margin-top: 1rem;
+  }
+  table.fm-ref td {
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--light-grey);
+    vertical-align: top;
+  }
+  table.fm-ref td:first-child {
+    font-family: var(--font-mono);
+    color: var(--captech-blue);
+    white-space: nowrap;
+    width: 34%;
+    font-weight: 500;
+  }
+  table.fm-ref td:last-child { font-size: 1rem; line-height: 1.4; }
+</style>
+
+<section class="slide section-divider skills-section" data-section="10:00 — Skills">
+  <span class="label">10:00 — 16:30</span>
+  <h1>Skills</h1>
+  <p class="lede">Write your own. Ship them today.</p>
 </section>
 
-<section class="slide" data-section="14:00 — Skill anatomy">
-  <span class="label">Part A · What a skill is</span>
-  <h2>Frontmatter plus markdown</h2>
-  <ul class="clean">
-    <li>Lives in <code>~/.claude/skills/&lt;name&gt;.md</code> (user) or <code>.claude/skills/</code> (project).</li>
-    <li>Invoked by slash command (explicit) or matched by description (implicit).</li>
-    <li>Body is a plain markdown document. No DSL, no sandbox.</li>
-  </ul>
-  <div class="code-header">skills-lab/01-minimal/SKILL.md</div>
+<section class="slide skills-section" data-section="10:00 — What a skill is">
+  <span class="label">What it actually is</span>
+  <h2>A skill is a directory with <code>SKILL.md</code> — nothing more.</h2>
+
+  <div class="code-header">~/.claude/skills/commit-message/</div>
+<pre>commit-message/
+└── SKILL.md    <span class="muted"># required entrypoint</span></pre>
+
+  <div class="code-header code-header-gap">commit-message/SKILL.md</div>
 <pre>---
-name: commit-message
-description: Use when the user asks for a commit message for staged changes. Reads git diff --cached and produces a short conventional-commits summary.
+description: Use when the user asks for a commit message for
+  staged changes. Reads git diff --cached and produces a
+  short conventional-commits summary.
 ---
 
-Read the staged diff. Summarize in one line using conventional commits.
-Body stays under 200 lines. Reference the diff directly; do not restate it.</pre>
-  <div class="stamp sandbox"><span class="dot"></span>Authoring happens CapTech-side</div>
-  <aside class="notes"><p>90 seconds. Point out: frontmatter + body. That's all a skill is.</p></aside>
-</section>
+Read the staged diff. Summarize in one line using
+conventional commits. Reference the diff; don't restate it.</pre>
 
-<section class="slide" data-section="15:30 — The surprising rule">
-  <span class="label">Part B · The counterintuitive rule</span>
-  <h2>The <code>description</code> is a behavior lever, not metadata.</h2>
-  <p style="margin-top: 1rem;">If the description summarizes the <em>workflow</em>, Claude follows the description and skips the skill body entirely.</p>
-  <div class="quote" style="margin-top: 1.5rem;">
-    Superpowers proved this empirically. A description reading "code review between tasks" caused Claude to do one review despite the body mandating two.
-    <cite>obra/superpowers, writing-skills findings</cite>
-  </div>
-  <aside class="notes"><p>This is the surprising bit that gets people talking. Slow down. Let the quote land.</p></aside>
-</section>
+  <p class="caption mt-sm">Directory name becomes the slash-command. Drop this in, type <code>/commit-message</code>, done.</p>
 
-<section class="slide" data-section="16:30 — The rule">
-  <span class="label">The rule</span>
-  <div class="rulebox" style="margin-top: 2rem;">
-    <p><strong>Descriptions describe <span style="color: var(--captech-blue);">when to use</span> the skill.</strong></p>
-    <p>Third-person triggers. Symptoms. "Use when..." sentences.</p>
-    <p><strong>Never <span style="color: var(--dark-grey);">what the skill does</span>.</strong></p>
-    <p>The body does that.</p>
-  </div>
-  <aside class="notes"><p>Read the rule twice. Once fast, once slow.</p></aside>
-</section>
-
-<section class="slide" data-section="17:30 — Evaluating skills">
-  <span class="label">Part C · How to know a skill works</span>
-  <h2>The community has no formal framework. Here is a minimal one.</h2>
-  <ol class="clean" style="margin-top: 1rem;">
-    <li>Write three golden tasks with plain-English expected-behavior bullets <em>before</em> writing the skill.</li>
-    <li>Run them without the skill in a fresh session. Capture transcripts. RED baseline.</li>
-    <li>Write the skill to target the baseline failures.</li>
-    <li>Re-run the golden tasks. Require GREEN on the previously-failing bullets.</li>
-    <li>Pressure-test: run each golden task 3 times to check for nondeterminism.</li>
-  </ol>
   <aside class="notes">
-    <p>3 minutes on this slide. This is the part people came for.</p>
-    <p>Mention promptfoo as adjacent — runs a skill body as a regression harness, but cannot test whether Claude <em>chooses</em> to load the skill.</p>
+    <p>60 seconds. Reframe from the existing mental model: "You do not need a plugin, you do not need a manifest, you do not need to register anything. A folder with a markdown file. That is the entire contract."</p>
+    <p>Live change detection: save the file, the skill is live in the next turn.</p>
   </aside>
 </section>
 
-<section class="slide" data-section="19:30 — Eval harness">
-  <span class="label">What the harness looks like on disk</span>
-  <h2>skills-lab/03-eval-harness/</h2>
-  <div class="code-header">test-prompts.json</div>
-<pre>{
-  "id": "commit-message-01",
-  "prompt": "Write a commit message for the staged changes.",
-  "expected": "one-line conventional commit, type prefix, under 72 chars",
-  "tests": [
-    { "contains_regex": "^(feat|fix|chore|refactor|docs|test)(\\([^)]+\\))?: " },
-    { "max_length_first_line": 72 }
-  ]
-}</pre>
-  <p class="caption">Four fields: id, prompt, expected, tests. Modeled on huashu-design's pattern.</p>
-  <aside class="notes"><p>Do not deep-dive. Point out the shape, move on.</p></aside>
+<section class="slide skills-section" data-section="11:00 — Progressive disclosure">
+  <span class="label">The core idea — why skills are cheap</span>
+  <h2>Progressive disclosure</h2>
+
+  <div class="pd-stage">
+    <div class="pd-column">
+      <div class="pd-layer pd-always">
+        <span class="pd-layer-label">Always in context</span>
+        /commit-message<br>/explain-code<br>/deploy
+      </div>
+      <div class="pd-layer pd-always">
+        <span class="pd-layer-label">Always in context</span>
+        description: "Use when..."<br><span class="muted">(1,536 char cap each)</span>
+      </div>
+    </div>
+    <div class="pd-trigger">
+      <div>invoke</div>
+      <div class="pd-trigger-arrow">→</div>
+    </div>
+    <div class="pd-column">
+      <div class="pd-layer pd-lazy">
+        <span class="pd-layer-label">Loads on invoke</span>
+        SKILL.md body<br><span class="muted">(up to ~500 lines)</span>
+      </div>
+      <div class="pd-layer pd-lazy">
+        <span class="pd-layer-label">Loads on demand</span>
+        reference.md<br>examples.md<br>scripts/*
+      </div>
+    </div>
+  </div>
+
+  <p class="caption caption-center mt-sm">Long skills are free until you use them. A 2,000-line skill costs almost nothing until Claude invokes it.</p>
+
+  <aside class="notes">
+    <p>90 seconds. This is the concept to land. Why can you have 30 skills installed and not pay a context penalty? Because only the names and one-line descriptions are always there. The body loads on invoke.</p>
+    <p>Corollary: your description IS the activation lever. If it's vague, Claude will not pick your skill when it matters.</p>
+  </aside>
 </section>
 
-<section class="slide" data-section="20:30 — A real skill we use">
-  <span class="label">Part D · A working example</span>
-  <h2>The chunked-write pattern</h2>
-  <div class="code-header">~/.claude/skills/graphqlstagereport.md</div>
+<section class="slide skills-section" data-section="12:00 — Frontmatter reference">
+  <span class="label">The fields that matter</span>
+  <h2>Only <code>description</code> is recommended. The rest tune behavior.</h2>
+
+  <table class="fm-ref">
+    <tr>
+      <td>description</td>
+      <td>What it does AND when to use it. First 1,536 chars are the whole index entry. Front-load the "use when" trigger.</td>
+    </tr>
+    <tr>
+      <td>disable-model-invocation: true</td>
+      <td>Manual-only. Use for side-effect workflows like <code>/deploy</code>, <code>/commit</code>, <code>/send-slack</code>.</td>
+    </tr>
+    <tr>
+      <td>allowed-tools</td>
+      <td>Pre-approve tools while the skill is active. <code>Bash(git add *) Bash(git commit *)</code></td>
+    </tr>
+    <tr>
+      <td>context: fork</td>
+      <td>Run the skill body as the prompt to an isolated subagent. Pair with <code>agent:</code>.</td>
+    </tr>
+    <tr>
+      <td>agent: Explore | Plan | general-purpose</td>
+      <td>Which subagent type executes the forked context. Explore is read-only; Plan is planning-focused.</td>
+    </tr>
+    <tr>
+      <td>paths</td>
+      <td>Glob patterns. Skill auto-loads only when Claude touches matching files.</td>
+    </tr>
+  </table>
+
+  <aside class="notes">
+    <p>90 seconds. Walk the table top to bottom. The two that matter most for this team today: <code>disable-model-invocation</code> for anything with side effects, and <code>allowed-tools</code> to stop the approval-prompt spam.</p>
+  </aside>
+</section>
+
+<section class="slide skills-section" data-section="13:30 — Writing your first skill">
+  <span class="label">Ship your first skill tonight</span>
+  <h2>Five steps. Ten minutes.</h2>
+
+  <div class="two-col mt-sm">
+    <div>
+      <ol class="clean steps-dense">
+        <li><code>mkdir -p ~/.claude/skills/explain-code</code></li>
+        <li>Create <code>SKILL.md</code> &mdash; frontmatter plus body.</li>
+        <li>Write the description as <em>"Use when..."</em> &mdash; triggers and symptoms, not what it does.</li>
+        <li>Save. Live change detection picks it up without restarting.</li>
+        <li>Invoke with <code>/explain-code</code> &mdash; or let Claude match it from your prompt.</li>
+      </ol>
+    </div>
+    <div>
+      <div class="code-header">~/.claude/skills/explain-code/SKILL.md</div>
 <pre>---
-name: graphqlstagereport
-description: Use when producing a long staged report whose total length
-  risks hitting the 4096 output-token cap mid-response. Symptoms:
-  truncation, "..." endings, or files cut off.
+description: Explains code with diagrams and
+  analogies. Use when the user asks
+  "how does this work" or is onboarding
+  to an unfamiliar file.
 ---
 
-Produce each section as its own Write call. Stop between sections.
-Never combine sections in a single output. Cap each file at ~2500 tokens.</pre>
-  <p style="margin-top: 1rem;">Community-evolved. Not in Anthropic's docs. Dodges the <code>CLAUDE_CODE_MAX_OUTPUT_TOKENS=4096</code> cap.</p>
-  <div class="stamp client-ready"><span class="dot"></span>Validated skills travel</div>
-  <aside class="notes"><p>60 seconds. Point out: this is the same pattern that built this slide deck. Chunked writes.</p></aside>
+When explaining code:
+1. Start with an analogy from everyday life.
+2. Draw an ASCII diagram of the flow.
+3. Walk through the code step by step.
+4. Highlight one gotcha or misconception.</pre>
+    </div>
+  </div>
+
+  <aside class="notes">
+    <p>120 seconds. This is the "do it Monday" slide. Walk the left column as a checklist. Show the right as the actual artifact.</p>
+    <p>The `.claude/skills/` variant (project-level) goes in the repo and ships with the team. The `~/.claude/skills/` variant (personal) is just for you.</p>
+  </aside>
+</section>
+
+<section class="slide skills-section" data-section="15:00 — Subagents and hooks">
+  <span class="label">Two knobs that extend skills · 60s aside</span>
+  <h2>Where subagents and hooks fit</h2>
+
+  <div class="two-col mt-sm">
+    <div>
+      <h3 class="h3-blue">Subagents</h3>
+      <p class="note">Add <code>context: fork</code> + <code>agent: Explore</code> to your SKILL.md. The skill body becomes the task; an isolated context window does the work.</p>
+      <p class="note muted">Use for: research, code review, anything that would pollute your main conversation.</p>
+    </div>
+    <div>
+      <h3 class="h3-sky">Hooks</h3>
+      <p class="note">Shell commands that run on tool events. Deterministic, unlike CLAUDE.md instructions. Configured in <code>.claude/settings.json</code>.</p>
+      <p class="note muted">Use for: block force-push without a flag, run lint after every edit, enforce what CLAUDE.md only requests.</p>
+    </div>
+  </div>
+
+  <div class="rulebox mt-lg">
+    <p><strong>Mental model:</strong> Skills are the playbook. Subagents are where it can run. Hooks are the guarantee.</p>
+  </div>
+
+  <aside class="notes">
+    <p>60 seconds flat. Do not deep-dive. The job here is name recognition so "subagent" and "hook" are not foreign words when they come up later on the job.</p>
+  </aside>
+</section>
+
+<section class="slide skills-section" data-section="16:00 — The description rule">
+  <span class="label">The one rule that breaks most skills</span>
+  <h2>Descriptions say <em>when</em>, never <em>what</em>.</h2>
+
+  <div class="rulebox mt-lg">
+    <p><strong>Descriptions describe <span class="accent-blue">when</span> to use the skill.</strong></p>
+    <p>Third-person triggers. Symptoms. "Use when the user asks..."</p>
+    <p><strong>Never describe <span class="accent-dark">what</span> the skill does.</strong></p>
+    <p>That's the body's job.</p>
+  </div>
+
+  <p class="caption caption-lg mt-md">If the description summarizes the workflow, Claude follows the description and skips the body entirely. Proven empirically &mdash; the Superpowers "code review between tasks" bug.</p>
+
+  <aside class="notes">
+    <p>60 seconds. Read the rulebox twice — once fast, once slow. End on the concrete failure mode: if your description says "do X then Y," Claude may do just X and never read the body.</p>
+  </aside>
 </section>

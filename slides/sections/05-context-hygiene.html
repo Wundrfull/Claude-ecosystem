@@ -1,91 +1,79 @@
-<section class="slide section-divider" data-section="28:00 — Context hygiene">
-  <span class="label">28:00 — 35:00</span>
-  <h1>Context hygiene<br>The load-bearing numbers</h1>
-  <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); max-width: 50ch;">Concrete numbers. One decision rule you can apply Monday morning.</p>
+<section class="slide section-divider" data-section="19:00 — Context hygiene">
+  <span class="label">19:00 — 22:30</span>
+  <h1>Context hygiene</h1>
+  <p class="lede">The load-bearing numbers.</p>
 </section>
 
-<section class="slide" data-section="28:00 — The numbers">
-  <span class="label">Sonnet 4.5 · SWE-bench Verified</span>
+<section class="slide" data-section="19:15 — The numbers">
+  <span class="label">Sonnet 4.5 &middot; SWE-bench Verified</span>
   <h2>Essentially flat from 200K to 1M.</h2>
-  <div class="number-pair" style="margin: 2rem 0;">
+  <div class="number-pair">
     <div>
-      <div class="big-number">77.2<span style="font-size: 3rem;">%</span></div>
-      <p class="caption" style="font-size: 1rem;">200K context</p>
+      <div class="big-number">77.2<span class="unit">%</span></div>
+      <p class="caption caption-sm">200K context</p>
     </div>
     <div>
-      <div class="big-number">78.2<span style="font-size: 3rem;">%</span></div>
-      <p class="caption" style="font-size: 1rem;">1M context</p>
+      <div class="big-number">78.2<span class="unit">%</span></div>
+      <p class="caption caption-sm">1M context</p>
     </div>
   </div>
   <p>You are paying for 1M tokens and cashing in usable performance on a much smaller slice.</p>
   <p class="caption">Source: anthropic.com/news/claude-sonnet-4-5</p>
   <aside class="notes">
-    <p>Say aloud: "Sonnet 4.5 scored 77.2% on SWE-bench Verified at 200K context and 78.2% at 1M context. Essentially flat."</p>
+    <p>60 seconds. Say aloud: "Sonnet 4.5 scored 77.2% on SWE-bench Verified at 200K context and 78.2% at 1M context. Essentially flat." Let the numbers land.</p>
+    <p>Point: the 1M window is a ceiling, not a target. Performance does not improve by filling it; it mostly just costs more.</p>
   </aside>
 </section>
 
-<section class="slide dark" data-section="29:00 — Context rot, verbatim">
-  <span class="label" style="color: var(--yellow);">Anthropic's own documentation</span>
-  <div class="quote" style="color: #fff; border-color: var(--sky-blue); font-size: 2.5rem;">
-    "As token count grows, accuracy and recall degrade, a phenomenon known as context rot."
-    <cite style="color: rgba(255,255,255,0.7);">platform.claude.com/docs/en/build-with-claude/context-windows</cite>
+<section class="slide dark" data-section="20:00 — Context rot, verbatim">
+  <span class="label">Anthropic&rsquo;s own documentation</span>
+  <div class="quote quote-hero">
+    &ldquo;As token count grows, accuracy and recall degrade, a phenomenon known as context rot.&rdquo;
+    <cite>platform.claude.com/docs/en/build-with-claude/context-windows</cite>
   </div>
-  <aside class="notes"><p>Read verbatim. This is Anthropic, not me, not you. Let it sit.</p></aside>
+  <aside class="notes">
+    <p>30 seconds. Read verbatim. This is Anthropic, not me, not you. Let it sit. "Context rot" is the term &mdash; use it when you talk to the team.</p>
+  </aside>
 </section>
 
-<section class="slide" data-section="29:30 — Context awareness">
-  <span class="label">What Claude sees internally</span>
-  <h2>The token-budget snippet</h2>
-  <div class="code-header">system prompt injection (Sonnet 4.5+, Haiku 4.5)</div>
-<pre>&lt;budget:token_budget&gt;1000000&lt;/budget:token_budget&gt;
-&lt;system_warning&gt;Token usage: 35000/1000000; 965000 remaining&lt;/system_warning&gt;</pre>
-  <p style="margin-top: 1rem;">The model is trained to use this awareness to pace long-running work. Opus 4.7 does not get it yet.</p>
-  <aside class="notes"><p>Point out: the model can literally see how much context is left. It uses that to decide how aggressive to be.</p></aside>
-</section>
-
-<section class="slide dark" data-section="30:00 — Performance gradient">
-  <div class="motion-placeholder" data-clip="context-rot">[Remotion: context-rot 20s — accuracy flat then slopes down as token count grows]</div>
-  <p style="margin-top: 2rem; font-size: 1.5rem; max-width: 50ch;">A slope, not a cliff. That is why you cannot just watch for a failure and react.</p>
-  <aside class="notes"><p>20 second clip. Silence.</p></aside>
-</section>
-
-<section class="slide" data-section="30:30 — Decision rule">
+<section class="slide" data-section="20:45 — Decision rule">
   <span class="label">The rule. Read it. Put it on a sticky note.</span>
-  <h2>When to /clear, when to /compact, when to /context.</h2>
-  <div class="rulebox" style="margin-top: 1rem; font-size: 1.3rem;">
-    <p>If the next thing you are going to do is <strong>unrelated</strong> to what you just did → <code>/clear</code>.</p>
-    <p>If it is <strong>related</strong> and you need continuity → <code>/compact</code>.</p>
-    <p>If you are <strong>not sure</strong> → <code>/context</code> first, then decide.</p>
+  <h2>When to <code>/clear</code>, when to <code>/compact</code>, when to <code>/context</code>.</h2>
+  <div class="rulebox rulebox-lg mt-sm">
+    <p>If the next thing you are going to do is <strong>unrelated</strong> to what you just did &rarr; <code>/clear</code>.</p>
+    <p>If it is <strong>related</strong> and you need continuity &rarr; <code>/compact</code>.</p>
+    <p>If you are <strong>not sure</strong> &rarr; <code>/context</code> first, then decide.</p>
     <p><strong>Quit and re-launch</strong> only when you suspect the session picked up a bad assumption. <code>/compact</code> will summarize the bad assumption into the summary and it persists.</p>
   </div>
-  <aside class="notes"><p>90 seconds. Read the rule line by line. Don't paraphrase.</p></aside>
+  <aside class="notes">
+    <p>75 seconds. Read the rule line by line. Don&rsquo;t paraphrase. The quit-and-relaunch line is the one most people skip &mdash; /compact can bake a wrong turn into the summary, and then you&rsquo;re stuck with it.</p>
+  </aside>
 </section>
 
-<section class="slide" data-section="32:00 — What survives">
-  <span class="label">What survives compaction</span>
+<section class="slide" data-section="21:45 — Survives + tokenizer">
+  <span class="label">What survives &middot; and one budgeting gotcha</span>
   <h2>Not as much as you think.</h2>
-  <ul class="clean">
-    <li>Skills re-attach, but each is capped at the <strong>first 5K tokens</strong> post-compaction.</li>
-    <li>Inside a <strong>25K total budget</strong> for skill re-hydration.</li>
-    <li>Huge skill files lose their tails. Keep skills short.</li>
-  </ul>
-  <aside class="notes"><p>30 seconds. This is why skills short-by-design wins.</p></aside>
-</section>
-
-<section class="slide" data-section="32:45 — Auto-compaction trigger">
-  <span class="label">Auto-compaction</span>
-  <h2>Fires at <span class="big-number small" style="font-size: 3rem; display: inline;">~95%</span> of context.</h2>
-  <p>Override earlier via:</p>
-  <div class="code-header">shell / settings.json</div>
-<pre>CLAUDE_CODE_AUTOCOMPACT_PCT_OVERRIDE=80</pre>
-  <p style="margin-top: 1rem;">80 is a sensible value for long-running work. Forces summarization before you hit the wall.</p>
-  <aside class="notes"><p>30 seconds.</p></aside>
-</section>
-
-<section class="slide" data-section="33:30 — Tokenizer gotcha">
-  <span class="label">Opus 4.7 tokenizer gotcha</span>
-  <h2>Up to <span style="color: var(--captech-blue); font-weight: 600;">35% more tokens</span> for the same text.</h2>
-  <p style="margin-top: 1rem;">The new tokenizer is chunkier than Opus 4.6. If you migrated, your daily spend went up by default. Budget for it.</p>
-  <div class="stamp client-ready"><span class="dot"></span>Tokens budgeted client-side</div>
-  <aside class="notes"><p>30 seconds. This is the number that surprises people with a bill at month end.</p></aside>
+  <div class="two-col mt-lg">
+    <div>
+      <h3 class="h3-blue">What survives <code>/compact</code></h3>
+      <ul class="clean">
+        <li>Skills re-attach, but each is capped at the <strong>first 5K tokens</strong>.</li>
+        <li>Inside a <strong>25K total budget</strong> for skill re-hydration.</li>
+        <li>Huge skill files lose their tails. Keep skills short.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="h3-blue">Opus 4.7 tokenizer</h3>
+      <ul class="clean">
+        <li>Up to <strong>35% more tokens</strong> for the same text vs 4.6.</li>
+        <li>The new tokenizer is chunkier. Daily spend went up by default.</li>
+        <li>Budget for it.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="caption mt-lg">Auto-compaction fires at ~95% of context. Override earlier with <code>CLAUDE_CODE_AUTOCOMPACT_PCT_OVERRIDE=80</code>.</p>
+  <aside class="notes">
+    <p>75 seconds. Two takeaways on one slide. Left: /compact is not free &mdash; big skills get their tails cut. Right: if you migrated from 4.6 to 4.7 and your bill jumped, this is why.</p>
+    <p>The override at the bottom: 80 is a sensible value for long-running work. Forces summarization before you hit the wall.</p>
+  </aside>
 </section>

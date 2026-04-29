@@ -7,10 +7,7 @@ const SECTION_FILES = [
   "sections/03-skills.html",
   "sections/04-claude-md.html",
   "sections/05-context-hygiene.html",
-  "sections/06-subagents-hooks.html",
   "sections/07-responsible-use.html",
-  "sections/08-scenario-b.html",
-  "sections/09-scenario-d.html",
   "sections/10-wrap.html",
 ];
 

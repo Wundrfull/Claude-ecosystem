@@ -1,73 +1,134 @@
-<section class="slide section-divider" data-section="3:00 — What Claude Code is">
-  <span class="label">3:00 — 9:00</span>
+<style>
+  /* Scoped layout for the Copilot vs Claude Code comparison slide. */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 1.5rem;
+    max-width: 980px;
+  }
+  .compare-col {
+    padding: 1.5rem 1.75rem;
+    border-radius: 6px;
+    border-top: 4px solid;
+    background: rgba(0, 0, 0, 0.03);
+  }
+  .compare-col.copilot {
+    border-color: var(--medium-grey);
+  }
+  .compare-col.claude {
+    border-color: var(--captech-blue);
+    background: rgba(0, 94, 184, 0.06);
+  }
+  .compare-col h3 {
+    margin: 0 0 0.3rem 0;
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+  .compare-col.copilot h3 { color: var(--medium-grey); }
+  .compare-col.claude h3 { color: var(--captech-blue); }
+  .compare-col .lede {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    color: var(--dark-grey);
+    font-style: italic;
+  }
+  .compare-col ul.clean li {
+    font-size: 1.15rem;
+    padding: 0.25rem 0 0.25rem 1.5rem;
+  }
+  .compare-shift {
+    margin-top: 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    color: var(--dark-grey);
+    letter-spacing: 0.02em;
+  }
+  .compare-shift .from { color: var(--medium-grey); }
+  .compare-shift .to   { color: var(--captech-blue); font-weight: 600; }
+  .compare-shift .arrow {
+    color: var(--sky-blue);
+    margin: 0 0.75rem;
+    font-weight: 600;
+  }
+</style>
+
+<section class="slide section-divider" data-section="1:30 — What Claude Code is">
+  <span class="label">1:30 — 4:30</span>
   <h1>What Claude Code is<br>(and isn't)</h1>
-  <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); max-width: 50ch;">Reset the mental model from inline completion to agentic loop. The single most important concept shift for this audience.</p>
+  <p class="lede">
+    Reset the mental model from inline completion to agentic loop. The single most important concept shift for this room.
+  </p>
 </section>
 
-<section class="slide" data-section="3:00 — The Copilot model">
-  <span class="label">The model you know</span>
-  <h2>Copilot</h2>
-  <div class="two-col">
-    <div>
+<section class="slide" data-section="1:45 — Copilot vs Claude Code">
+  <span class="label">The mental-model shift</span>
+  <h2>Copilot is not the model</h2>
+  <div class="compare-grid">
+    <div class="compare-col copilot">
+      <h3>Copilot</h3>
+      <p class="lede">A very fast tab-complete with taste.</p>
       <ul class="clean">
-        <li>Engineer types. Ghost text appears.</li>
-        <li>Accept or reject, inline.</li>
-        <li>Single file, single buffer.</li>
-        <li>No state beyond a few lines of context.</li>
+        <li>You type. Ghost text appears.</li>
+        <li>Accept or reject, one buffer.</li>
+        <li>No state beyond the visible window.</li>
       </ul>
     </div>
-    <div>
-      <p class="caption">Think: a very fast tab-complete with taste.</p>
+    <div class="compare-col claude">
+      <h3>Claude Code</h3>
+      <p class="lede">An agent, not a completion engine.</p>
+      <ul class="clean">
+        <li>You delegate. It plans, reads, edits, runs, reflects.</li>
+        <li>Operates across the codebase, not one file.</li>
+        <li>Persists across sessions through CLAUDE.md and memory.</li>
+      </ul>
     </div>
   </div>
-  <aside class="notes"><p>30 seconds. Keep it short. The audience already lives here.</p></aside>
-</section>
-
-<section class="slide" data-section="3:30 — The Claude Code model">
-  <span class="label">The model you are moving to</span>
-  <h2>Claude Code</h2>
-  <ul class="clean">
-    <li>You delegate a task. It plans.</li>
-    <li>It reads files. It edits files. It runs commands. It reflects. It iterates.</li>
-    <li>Operates across the codebase, not one file.</li>
-    <li>Lives across sessions through CLAUDE.md and memory.</li>
-  </ul>
-  <p class="caption" style="margin-top: 1.5rem;">An agent, not a completion engine.</p>
-  <div class="stamp client-ready"><span class="dot"></span>Client-ready</div>
+  <p class="compare-shift">
+    <span class="from">next line</span><span class="arrow">&rarr;</span><span class="to">next pull request</span>
+  </p>
   <aside class="notes">
-    <p>90 seconds. This is the reset. Land it before the motion clip.</p>
+    <p>90 seconds. The whole reframe sits in the one-liner: Copilot writes the next line; Claude Code writes the next pull request. Say it out loud. Let it sit.</p>
+    <p>Do not claim Claude Code is better. Claim it is different. Let the audience draw the conclusion. If someone asks about Cursor, defer to Q&amp;A.</p>
+    <p>Exit line: "The shape of that difference is a loop — plan, act, observe. Let me show you."</p>
   </aside>
 </section>
 
-<section class="slide dark" data-section="3:30 — The agentic loop">
-  <span class="label" style="color: var(--yellow);">The agent loop</span>
-  <h2 style="color: #fff;">Plan → Tool use → Observe → Plan → Done</h2>
-  <div class="motion-placeholder" data-clip="agentic-loop" style="margin-top: 2rem;">[Remotion: agentic-loop 20s — plan/tool/observe loop beside Copilot accept/reject]</div>
-  <aside class="notes"><p>20 second clip. Let it play. Silence during the clip is fine.</p></aside>
-</section>
-
-<section class="slide" data-section="5:30 — Surfaces">
-  <span class="label">One session, many surfaces</span>
-  <h2>Terminal is primary. Claude Code is everywhere.</h2>
-  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem;">
-    <div class="rulebox" style="background: rgba(0, 94, 184, 0.08); border-color: var(--captech-blue);">
-      <p style="font-weight: 600; color: var(--captech-blue);">Terminal</p>
-      <p style="font-size: 1rem;">Primary surface. Where the agent loop lives.</p>
-    </div>
-    <div class="rulebox" style="background: rgba(0, 94, 184, 0.08); border-color: var(--captech-blue);">
-      <p style="font-weight: 600; color: var(--captech-blue);">IDE</p>
-      <p style="font-size: 1rem;">VS Code extension, JetBrains plugin.</p>
-    </div>
-    <div class="rulebox" style="background: rgba(0, 94, 184, 0.08); border-color: var(--captech-blue);">
-      <p style="font-weight: 600; color: var(--captech-blue);">Web + mobile</p>
-      <p style="font-size: 1rem;">claude.ai/code, Desktop, iOS.</p>
-    </div>
+<section class="slide dark" data-section="2:45 — The agentic loop">
+  <span class="label">The agent loop</span>
+  <h2>Plan &rarr; Tool use &rarr; Observe &rarr; Plan &rarr; Done</h2>
+  <div class="anim-loop mt-md">
+    <svg viewBox="0 0 720 405" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agentic loop: plan, tool use, observe">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 9 3, 0 6" fill="rgba(255,255,255,0.4)"/>
+        </marker>
+      </defs>
+      <circle class="ring" cx="360" cy="202" r="130"/>
+      <path class="arrow a-1" d="M 440 140 A 130 130 0 0 1 440 265"/>
+      <path class="arrow a-2" d="M 400 290 A 130 130 0 0 1 280 202"/>
+      <path class="arrow a-3" d="M 280 202 A 130 130 0 0 1 400 115"/>
+      <circle class="node n-plan" cx="360" cy="72" r="52"/>
+      <text class="node-label l-plan" x="360" y="66">Plan</text>
+      <text class="node-sub" x="360" y="88">DECIDE</text>
+      <circle class="node n-tool" cx="473" cy="267" r="52"/>
+      <text class="node-label l-tool" x="473" y="261">Tool use</text>
+      <text class="node-sub" x="473" y="283">READ · EDIT · RUN</text>
+      <circle class="node n-obs" cx="247" cy="267" r="52"/>
+      <text class="node-label l-obs" x="247" y="261">Observe</text>
+      <text class="node-sub" x="247" y="283">REFLECT</text>
+    </svg>
   </div>
-  <p style="margin-top: 2rem;"><code>claude --teleport</code> pulls a web session into the terminal. One session, many surfaces.</p>
-  <aside class="notes"><p>60 seconds. Don't dwell. The payoff is the "one session, many surfaces" line.</p></aside>
+  <p class="caption" style="text-align: center;">
+    Claude iterates until done. Your job is to shape what it sees, what it can do, and how it checks itself.
+  </p>
+  <aside class="notes">
+    <p>45 seconds. Let the animation breathe. Silence while it pulses is fine — the shape is the point.</p>
+    <p>Land the teaching line on the caption: the loop exists, and the handles on the loop are the three levers coming up next. Do not name them yet; build the tension.</p>
+  </aside>
 </section>
 
-<section class="slide" data-section="7:00 — Three levers (first appearance)">
+<section class="slide" data-section="3:30 — Three levers (first appearance)">
   <span class="label">The slide the whole talk hangs on</span>
   <h2>Three levers</h2>
   <div class="three-levers">
@@ -87,8 +148,9 @@
       <p>Tests, review, /security-review, cite the line.</p>
     </div>
   </div>
-  <p class="caption" style="margin-top: 1.5rem;">Everything else in this talk is a variation on these three. Say that out loud.</p>
+  <p class="caption mt-lg">Everything else in the next 25 minutes is a variation on these three. Say that out loud.</p>
   <aside class="notes">
-    <p>This slide reappears at minute 40 and minute 59. Same colors, same icons. Name them explicitly here.</p>
+    <p>60 seconds. Name each lever, point at each column. This slide reappears at minute ~22 (responsible use) and minute ~29 (wrap). Same colors, same icons. Let the audience notice the repetition; do not announce it.</p>
+    <p>Exit line: "Let's start with the lever you touch most: context. And the commands that decide what Claude sees."</p>
   </aside>
 </section>
