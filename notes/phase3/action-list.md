@@ -54,3 +54,7 @@ Before applying fixes, confirm:
 - `.levers-hero` markup + CSS is loaded consistently across slides 6 and 34 (same bug, same fix).
 - `.stamp`, `.tag-pill`, `.eyebrow`, `.caption` are the canonical utilities.
 - No file has local inline `<style>` that shadows kit.css / sections.css.
+
+## Cross-section requests
+
+- **Slide 13 — add `/grug` terminal gag.** Author the skills agent's new slide 13 to include a small `.term-sm term-session` typing `/grug explain promises` with output like: `matched: grug` / `reading SKILL.md...` / `✓ Promise is rock you get later. Rock maybe good, maybe bad. You wait. You no block fire.` / caption: "From The Grug Brained Developer. Skills can be serious. They can also be for the bit."

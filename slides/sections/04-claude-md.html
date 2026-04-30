@@ -39,32 +39,29 @@
   .mem-caption { font-size: 1.05rem; color: var(--medium-grey); margin-top: 1rem; max-width: 60ch; }
   .divider-visual { margin-top: 1.5rem; display: flex; justify-content: center; }
   .divider-visual .tree { max-width: 520px; }
-  .gql-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
-  .gql-wrap .term { width: 100%; max-width: 820px; }
-  .gql-why { color: rgba(255,255,255,0.72); font-size: 1.05rem; max-width: 58ch; text-align: center; margin: 0.25rem auto 0; }
+  .gql-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 0.85rem; }
+  .gql-head { display: flex; align-items: center; gap: 0.85rem; flex-wrap: wrap; }
+  .gql-head .eyebrow { color: rgba(255,255,255,0.72); }
+  .gql-head .stamp { position: static; margin: 0; }
+  .gql-rule { color: #fff; font-size: 2.5rem; line-height: 1.1; font-weight: 600; letter-spacing: -0.01em; margin: 0.1rem 0 0.3rem; }
+  .gql-why { color: rgba(255,255,255,0.74); font-size: 1.08rem; line-height: 1.45; max-width: 70ch; margin: 0; }
+  .gql-why code { font-family: var(--font-mono); font-size: 0.92em; background: rgba(255,255,255,0.08); padding: 0 0.3em; border-radius: 3px; color: #fff; }
+  .gql-split { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; width: 100%; margin-top: 0.9rem; align-items: start; }
+  .gql-split .term { margin: 0; width: 100%; max-width: none; }
+  .term-col-label { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin: 0 0 0.45rem; }
+  /* CLAUDE.md excerpt is static content — force visible regardless of .term-ln default opacity. */
+  .gql-md .term-ln { opacity: 1; }
+  .gql-md .term-ln.md-h { color: rgba(255,255,255,0.55); }
+  .gql-md .term-ln.md-rule { color: #fff; font-weight: 600; }
+  .gql-md .term-ln.md-body { color: rgba(255,255,255,0.78); }
+  .gql-md .term-ln.md-cmd { color: var(--sky-blue); }
+  .gql-md .term-ln.md-forbid { color: #ff9d8a; }
 </style>
 
-<section class="slide slide--top-aligned section-divider" data-section="16:30 — CLAUDE.md + memory">
+<section class="slide section-divider" data-section="16:30 — CLAUDE.md + memory">
   <span class="label">16:30 — 19:00</span>
   <h1>CLAUDE.md<br>and auto memory</h1>
   <p class="lede">The two files that persist between sessions.</p>
-  <div class="divider-visual">
-    <div class="tree tree-grow" aria-label="Where CLAUDE.md and MEMORY.md live on disk">
-      <ul>
-        <li><span class="dir">~/project/</span>
-          <ul>
-            <li><span class="file tree-highlight">CLAUDE.md</span> <span class="meta">behavior contract, in the repo</span></li>
-            <li><span class="file">src/</span></li>
-          </ul>
-        </li>
-        <li><span class="dir">~/.claude/projects/&lt;project&gt;/memory/</span>
-          <ul>
-            <li><span class="file tree-highlight">MEMORY.md</span> <span class="meta">auto-written notes, local</span></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
 </section>
 
 <section class="slide slide--top-aligned" data-section="16:45 — The five-line CLAUDE.md">
@@ -141,25 +138,52 @@
   </aside>
 </section>
 
-<section class="slide dark" data-section="18:15 — gqlgen one-liner">
-  <span class="label">The one CLAUDE.md line that pays for itself on day one</span>
+<section class="slide slide--top-aligned dark" data-section="18:15 — gqlgen one-liner">
   <div class="gql-wrap">
-    <div class="term term-lg term-session term-typing term-output-lines" style="--term-typed-steps: 48; --term-typed-width: 48ch;">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">CLAUDE.md · line 14</span></div>
-      <div class="term-body">
-        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="go run github.com/99designs/gqlgen generate"></span></div>
-        <div class="term-output">
-          <div class="term-ln ok term-check">generated.go rebuilt from schema.graphql</div>
-          <div class="term-ln warn">Rule: never edit generated files by hand.</div>
-          <div class="term-ln dim">Hand-edits get clobbered on the next regen.</div>
+    <div class="gql-head">
+      <span class="eyebrow">CLAUDE.md &middot; rule 14 &middot; prevents one bug class</span>
+      <div class="stamp client-ready"><span class="dot"></span>Template travels</div>
+    </div>
+    <h2 class="gql-rule">Never edit generated files by hand.</h2>
+    <p class="gql-why">gqlgen regenerates <code>generated.go</code> from <code>schema.graphql</code> on every run. Hand-edits get clobbered silently &mdash; and the symptom shows up as a random bug three files away.</p>
+    <div class="gql-split">
+      <div>
+        <p class="term-col-label">The rule, as it lives in CLAUDE.md</p>
+        <div class="term term-md term-session gql-md">
+          <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">CLAUDE.md &middot; line 14</span></div>
+          <div class="term-body">
+            <div class="term-output">
+              <div class="term-ln md-h">## Codegen</div>
+              <div class="term-ln md-rule">- Never edit generated files by hand.</div>
+              <div class="term-ln md-body">&nbsp;&nbsp;&nbsp;&nbsp;Regenerate with:</div>
+              <div class="term-ln md-cmd">&nbsp;&nbsp;&nbsp;&nbsp;`go run github.com/99designs/gqlgen generate`</div>
+              <div class="term-ln md-body">&nbsp;&nbsp;&nbsp;&nbsp;Forbidden paths:</div>
+              <div class="term-ln md-forbid">&nbsp;&nbsp;&nbsp;&nbsp;- graph/generated.go</div>
+              <div class="term-ln md-forbid">&nbsp;&nbsp;&nbsp;&nbsp;- graph/model/models_gen.go</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="term-col-label">Without the rule</p>
+        <div class="term term-md term-session term-typing term-output-lines" style="--term-typed-steps: 48; --term-typed-width: 48ch;">
+          <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/client &middot; next regen</span></div>
+          <div class="term-body">
+            <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="go run github.com/99designs/gqlgen generate"></span></div>
+            <div class="term-output">
+              <div class="term-ln ok term-check">generated.go rebuilt from schema.graphql</div>
+              <div class="term-ln warn">hand-edits in generated.go: overwritten</div>
+              <div class="term-ln dim">tests pass. prod surfaces the bug next Tuesday.</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <p class="gql-why">One line. Prevents the most common catastrophic mistake on a gqlgen project. Say it twice in the talk.</p>
   </div>
-  <div class="stamp client-ready"><span class="dot"></span>Template travels</div>
   <aside class="notes">
-    <p>45 seconds. Say the command twice. Say why: gqlgen regenerates generated.go on every schema change. A hand-edit gets silently overwritten and the symptom looks like a bug somewhere else entirely.</p>
-    <p>This is the single line I would copy into every engagement CLAUDE.md before anything else.</p>
+    <p>45 seconds. Three beats.</p>
+    <p>One: gqlgen is the GraphQL codegen tool this client uses. Every schema change, you run <code>go run github.com/99designs/gqlgen generate</code> and it rewrites generated.go and models_gen.go from schema.graphql.</p>
+    <p>Two: if Claude or a human hand-edits those files, the edit gets clobbered silently on the next regen. The symptom surfaces later as a bug three files away &mdash; expensive to chase.</p>
+    <p>Three: this one line &mdash; "never edit generated files by hand" plus the regen command &mdash; goes in every engagement CLAUDE.md before anything else. Same rule travels to any gqlgen, protobuf, or OpenAPI codegen project. Say <code>go run github.com/99designs/gqlgen generate</code> twice out loud so the team hears it.</p>
   </aside>
 </section>

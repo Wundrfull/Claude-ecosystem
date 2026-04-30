@@ -48,7 +48,14 @@
     font-weight: 600;
   }
   .skill-card .code-header { margin-top: 0; }
-  .skill-card pre { margin-top: 0.35rem; }
+  .skill-card pre {
+    margin-top: 0.35rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow: visible;
+  }
 
   /* Slide 15 + 17: 180px label gutter grid */
   .pd-row {
@@ -105,7 +112,7 @@
     box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     line-height: 1.55;
     opacity: 0;
-    animation: pd-body-in 0.5s ease 4.9s forwards;
+    animation: pd-body-in 0.5s ease 2.2s forwards;
   }
   .pd-body .pd-fm { color: #8A949E; font-size: 0.82rem; }
   .pd-body .pd-fm .k { color: var(--sky-blue); }
@@ -193,7 +200,7 @@
     position: relative;
   }
   .term-output-lines .term-ln.fire {
-    animation: term-fade-in 0.35s ease forwards, fire-flash 1.6s ease 3.9s 2;
+    animation: term-fade-in 0.35s ease forwards, fire-flash 1.6s ease 2.9s 2;
   }
   @keyframes fire-flash {
     0%, 100% { color: var(--yellow); }
@@ -243,10 +250,27 @@
   <span class="label">10:00 — 16:30</span>
   <h1>Skills</h1>
   <p class="lede">Write one tonight. Ship it Monday.</p>
+
+  <div class="term term-sm term-session term-typing term-output-lines"
+       style="--term-typed-steps: 21; --term-typed-width: 21ch; margin: 1.5rem auto 0; max-width: 560px;">
+    <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7</span></div>
+    <div class="term-body">
+      <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/grug explain promises"></span></div>
+      <div class="term-output">
+        <div class="term-ln dim">matched: grug</div>
+        <div class="term-ln dim">reading SKILL.md...</div>
+        <div class="term-ln ok term-check">Promise is rock you get later.</div>
+        <div class="term-ln accent">Rock maybe good, maybe bad. You wait.</div>
+        <div class="term-ln warn">You no block fire.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="caption caption-center" style="margin-top: 0.9rem; font-style: italic;">From <em>The Grug Brained Developer</em>. Skills can be serious. They can also be for the bit.</p>
 </section>
 
 
-<section class="slide skills-section" data-section="10:00 — What a skill is">
+<section class="slide slide--top-aligned skills-section" data-section="10:00 — What a skill is">
   <span class="label">What it actually is</span>
   <h2 class="skill-headline">
     A skill is a folder
@@ -283,87 +307,7 @@ conventional commits. Reference the diff; do not restate it.</pre>
   </aside>
 </section>
 
-<section class="slide skills-section" data-section="11:00 — Progressive disclosure">
-  <span class="label">Why skills are cheap</span>
-  <h2>Progressive disclosure</h2>
-
-  <div class="pd-row">
-    <p class="pd-pane-label">Trigger</p>
-    <div class="term term-md term-session term-typing term-output-lines"
-         style="--term-typed-steps: 15; --term-typed-width: 15ch; margin: 0;">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7 · 18k/1M</span></div>
-      <div class="term-body">
-        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/commit-message"></span></div>
-        <div class="term-output">
-          <div class="term-ln dim">matched description · loading body</div>
-          <div class="term-ln ok term-check">SKILL.md loaded (142 lines)</div>
-          <div class="term-ln accent">reading staged diff...</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="pd-row">
-    <p class="pd-pane-label">Body loads on invoke</p>
-    <div class="pd-body code-card" style="margin: 0;">
-      <div class="pd-fm">---<br>
-        <span class="k">description:</span> Use when the user asks for a commit message...<br>
-        <span class="k">allowed-tools:</span> Bash(git diff:*), Bash(git log:*)<br>
-        ---
-      </div>
-      <div class="pd-body-hr"></div>
-      <div>Read the staged diff with <span style="color: var(--sky-blue);">git diff --cached</span>.</div>
-      <div>Summarize in one line using conventional commits.</div>
-      <div>Reference the diff; do not restate it.</div>
-      <div style="color: #8A949E; margin-top: 0.45rem;"># ... 130 more lines, loaded only now ...</div>
-    </div>
-  </div>
-
-  <p class="footnote" style="text-align: center;">Names and one-line descriptions live in context. The body only loads when Claude picks the skill. A 2,000-line skill costs you nothing until you need it.</p>
-
-  <aside class="notes">
-    <p>90 seconds. This is the idea that unlocks the rest. You can install 30 skills and not pay a context tax, because only the names plus a 1,536-character description sit in context. The body comes in on invoke.</p>
-    <p>Corollary for later: the description is the activation lever. Vague description, Claude skips the skill. We will come back to this.</p>
-  </aside>
-</section>
-
-<section class="slide skills-section" data-section="12:00 — Frontmatter reference">
-  <span class="eyebrow">Frontmatter reference</span>
-  <p class="display-quote-lg" style="margin-top: 0.6rem;"><code style="font-family: var(--font-mono); font-size: 0.85em; color: var(--captech-blue);">description</code> is the only one you need. The rest are <span class="accent">tuning knobs</span>.</p>
-
-  <table class="fm-ref">
-    <tr>
-      <td>description</td>
-      <td>What it does and when to use it. The first 1,536 characters are the whole index entry. Lead with the "use when" trigger.</td>
-    </tr>
-    <tr>
-      <td>disable-model-invocation: true</td>
-      <td>Manual-only. Good for anything with side effects: <code>/deploy</code>, <code>/commit</code>, <code>/send-slack</code>.</td>
-    </tr>
-    <tr>
-      <td>allowed-tools</td>
-      <td>Pre-approve tools while the skill is active. <code>Bash(git add *), Bash(git commit *)</code> stops the approval spam.</td>
-    </tr>
-    <tr>
-      <td>context: fork</td>
-      <td>Run the body as the prompt to an isolated subagent. Pair with <code>agent:</code>.</td>
-    </tr>
-    <tr>
-      <td>agent: Explore | Plan | general-purpose</td>
-      <td>Which subagent type executes the forked context. Explore is read-only; Plan is planning-focused.</td>
-    </tr>
-    <tr>
-      <td>paths</td>
-      <td>Glob patterns. The skill auto-loads only when Claude touches matching files.</td>
-    </tr>
-  </table>
-
-  <aside class="notes">
-    <p>90 seconds. Walk top to bottom. For this team today, the two that matter most: <code>disable-model-invocation</code> on anything with side effects, and <code>allowed-tools</code> to stop the approval-prompt spam mid-demo.</p>
-  </aside>
-</section>
-
-<section class="slide skills-section" data-section="13:30 — Writing your first skill">
+<section class="slide slide--top-aligned skills-section" data-section="11:00 — Write one tonight">
   <span class="label">Ship your first skill tonight</span>
   <h2>Five steps. Ten minutes.</h2>
 
@@ -414,7 +358,112 @@ conventional commits. Reference the diff; do not restate it.</pre>
   </aside>
 </section>
 
-<section class="slide skills-section" data-section="15:00 — Subagents and hooks">
+<section class="slide slide--top-aligned skills-section" data-section="12:00 — Why skills are cheap">
+  <span class="label">Why skills are cheap</span>
+  <h2>Names in context. Body on demand.</h2>
+  <p class="caption caption-center" style="margin-top: 0.3rem;">This is <em>progressive disclosure</em> — only the name + 1,536-char description live in context; the body loads when Claude picks the skill.</p>
+
+  <div class="pd-row">
+    <p class="pd-pane-label">Trigger</p>
+    <div class="term term-md term-session term-typing term-output-lines"
+         style="--term-typed-steps: 15; --term-typed-width: 15ch; margin: 0;">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7 · 18k/1M</span></div>
+      <div class="term-body">
+        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/commit-message"></span></div>
+        <div class="term-output">
+          <div class="term-ln dim">matched description · loading body</div>
+          <div class="term-ln ok term-check">SKILL.md loaded (142 lines)</div>
+          <div class="term-ln accent">reading staged diff...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pd-row">
+    <p class="pd-pane-label">Body loads on invoke</p>
+    <div class="pd-body code-card" style="margin: 0;">
+      <div class="pd-fm">---<br>
+        <span class="k">description:</span> Use when the user asks for a commit message...<br>
+        <span class="k">allowed-tools:</span> Bash(git diff:*), Bash(git log:*)<br>
+        ---
+      </div>
+      <div class="pd-body-hr"></div>
+      <div>Read the staged diff with <span style="color: var(--sky-blue);">git diff --cached</span>.</div>
+      <div>Summarize in one line using conventional commits.</div>
+      <div>Reference the diff; do not restate it.</div>
+      <div style="color: #8A949E; margin-top: 0.45rem;"># ... 130 more lines, loaded only now ...</div>
+    </div>
+  </div>
+
+  <p class="footnote" style="text-align: center;">A 2,000-line skill costs you nothing until you need it. Install thirty; pay for one.</p>
+
+  <aside class="notes">
+    <p>90 seconds. Define progressive disclosure explicitly now that the team has built one. You can install 30 skills and not pay a context tax, because only the names plus a 1,536-character description sit in context. The body comes in on invoke.</p>
+    <p>Corollary for the next slide: the description is the activation lever. Vague description, Claude skips the skill.</p>
+  </aside>
+</section>
+
+<section class="slide slide--top-aligned skills-section" data-section="13:30 — The description rule">
+  <span class="label">The one rule that breaks most skills</span>
+  <p class="display-quote-lg">Descriptions say <span class="accent">when</span>, never <span class="accent">what</span>.</p>
+
+  <div class="desc-rule-stage">
+    <div class="desc-rule-pair">
+      <div class="desc-card bad">
+        <div class="tag">what — skipped</div>
+        <p>description: Reviews code for bugs, suggests refactors, and writes a summary.</p>
+      </div>
+      <div class="desc-card">
+        <div class="tag">when — invoked</div>
+        <p>description: Use when the user asks for a code review or says "look over this diff."</p>
+      </div>
+    </div>
+
+    <p class="caption caption-center" style="margin-top: 0.5rem;">If the description summarizes the workflow, Claude follows the description and never reads the body. This is how the Superpowers "code review between tasks" bug happened.</p>
+  </div>
+
+  <aside class="notes">
+    <p>60 seconds. Read the quote twice — once fast, once slow. Then land the failure mode: if your description says "do X then Y," Claude may do just X and never open the body.</p>
+    <p>Third-person triggers. Symptoms. "Use when the user asks..." That is the pattern.</p>
+  </aside>
+</section>
+
+<section class="slide slide--top-aligned skills-section" data-section="14:30 — Frontmatter reference">
+  <span class="eyebrow">Frontmatter reference</span>
+  <p class="display-quote-lg" style="margin-top: 0.6rem;">Tuning knobs worth knowing.</p>
+
+  <table class="fm-ref">
+    <tr>
+      <td>disable-model-invocation: true</td>
+      <td>Manual-only. Good for anything with side effects: <code>/deploy</code>, <code>/commit</code>, <code>/send-slack</code>.</td>
+    </tr>
+    <tr>
+      <td>allowed-tools</td>
+      <td>Pre-approve tools while the skill is active. <code>Bash(git add *), Bash(git commit *)</code> stops the approval spam.</td>
+    </tr>
+    <tr>
+      <td>context: fork</td>
+      <td>Run the body as the prompt to an isolated subagent. Pair with <code>agent:</code>.</td>
+    </tr>
+    <tr>
+      <td>agent: Explore | Plan | general-purpose</td>
+      <td>Which subagent type executes the forked context. Explore is read-only; Plan is planning-focused.</td>
+    </tr>
+    <tr>
+      <td>paths</td>
+      <td>Glob patterns. The skill auto-loads only when Claude touches matching files.</td>
+    </tr>
+  </table>
+
+  <p class="footnote" style="text-align: center;"><code>description</code> lives in every SKILL.md — see the previous slide for how to write it.</p>
+
+  <aside class="notes">
+    <p>90 seconds. These are the other knobs beyond <code>description</code>. For this team today, the two that matter most: <code>disable-model-invocation</code> on anything with side effects, and <code>allowed-tools</code> to stop the approval-prompt spam mid-demo.</p>
+    <p><code>context: fork</code> and <code>agent:</code> are the bridge into the next slide on subagents.</p>
+  </aside>
+</section>
+
+<section class="slide skills-section" data-section="15:30 — Subagents and hooks">
   <span class="label">Two knobs that extend skills · 60s aside</span>
   <h2>Where subagents and hooks fit</h2>
 
@@ -462,27 +511,3 @@ conventional commits. Reference the diff; do not restate it.</pre>
   </aside>
 </section>
 
-<section class="slide slide--top-aligned skills-section" data-section="16:00 — The description rule">
-  <span class="label">The one rule that breaks most skills</span>
-  <p class="display-quote-lg">Descriptions say <span class="accent">when</span>, never <span class="accent">what</span>.</p>
-
-  <div class="desc-rule-stage">
-    <div class="desc-rule-pair">
-      <div class="desc-card bad">
-        <div class="tag">what — skipped</div>
-        <p>description: Reviews code for bugs, suggests refactors, and writes a summary.</p>
-      </div>
-      <div class="desc-card">
-        <div class="tag">when — invoked</div>
-        <p>description: Use when the user asks for a code review or says "look over this diff."</p>
-      </div>
-    </div>
-
-    <p class="caption caption-center" style="margin-top: 0.5rem;">If the description summarizes the workflow, Claude follows the description and never reads the body. This is how the Superpowers "code review between tasks" bug happened.</p>
-  </div>
-
-  <aside class="notes">
-    <p>60 seconds. Read the quote twice — once fast, once slow. Then land the failure mode: if your description says "do X then Y," Claude may do just X and never open the body.</p>
-    <p>Third-person triggers. Symptoms. "Use when the user asks..." That is the pattern.</p>
-  </aside>
-</section>

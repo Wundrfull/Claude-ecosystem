@@ -83,71 +83,161 @@
   .ctx-pair .ctx-real { max-width: 100%; }
   .ctx-pair .term { max-width: 100%; }
 
-  /* Slide 11 — checkpoint timeline. Sits above the terminal. */
-  .rewind-stack {
+  /* Slide 11 — /rewind menu. Prompt list + action menu in two columns. */
+  .rewind-pair {
     display: grid;
-    gap: 1.25rem;
-    max-width: 900px;
+    grid-template-columns: 1.25fr 0.9fr;
+    gap: 1.5rem;
+    align-items: stretch;
+    max-width: 1120px;
     margin: 0 auto;
   }
-  .checkpoints {
-    position: relative;
-    padding: 1.5rem 1.25rem 2rem;
+  .rewind-card {
     background: #0F1419;
     border: 1px solid rgba(255,255,255,0.12);
     border-radius: 10px;
+    padding: 1.1rem 1.2rem 1.2rem;
+    font-family: var(--font-mono);
+    display: flex;
+    flex-direction: column;
   }
-  .checkpoints-track {
-    position: relative;
-    height: 2px;
-    background: rgba(255,255,255,0.18);
-    margin: 0.75rem 1.25rem 0;
+  .rewind-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.6);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding-bottom: 0.55rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.03em;
   }
-  .checkpoint-dot {
-    position: absolute;
-    top: 50%;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.5);
-    transform: translate(-50%, -50%);
+  .rewind-card__head .rw-title {
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
   }
-  .checkpoint-dot[data-label]::after {
-    content: attr(data-label);
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+  .rewind-card__head .rw-hint {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.45);
+  }
+  .rewind-list { display: grid; gap: 0.5rem; }
+  .rw-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.015);
+    color: rgba(255,255,255,0.82);
+    font-size: 0.92rem;
+  }
+  .rw-row .rw-marker {
+    color: rgba(255,255,255,0.35);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+  .rw-row .rw-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rw-row .rw-meta {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.45);
+    font-family: var(--font-mono);
+    padding: 0.15rem 0.5rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+    letter-spacing: 0.02em;
+  }
+  .rw-row.is-selected {
+    background: rgba(253, 218, 36, 0.08);
+    border-color: rgba(253, 218, 36, 0.55);
+    color: var(--yellow);
+    box-shadow: 0 0 0 1px rgba(253, 218, 36, 0.25);
+  }
+  .rw-row.is-selected .rw-marker { color: var(--yellow); }
+  .rw-row.is-selected .rw-meta {
+    background: rgba(253, 218, 36, 0.14);
+    color: var(--yellow);
+  }
+  .rewind-list .rw-row { animation: rw-row-in 0.45s ease forwards; opacity: 0; transform: translateY(6px); }
+  .rewind-list .rw-row:nth-child(1) { animation-delay: 0.15s; }
+  .rewind-list .rw-row:nth-child(2) { animation-delay: 0.3s; }
+  .rewind-list .rw-row:nth-child(3) { animation-delay: 0.45s; }
+  .rewind-list .rw-row:nth-child(4) { animation-delay: 0.6s; }
+  @keyframes rw-row-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .rewind-actions { display: grid; gap: 0.5rem; }
+  .rw-action {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.6rem 0.7rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.78);
+  }
+  .rw-action .rw-key {
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.7);
+    padding: 0.1rem 0.45rem;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.08);
+    min-width: 1.2rem;
+    text-align: center;
+  }
+  .rw-action .rw-caret {
+    color: rgba(255,255,255,0.25);
+    font-size: 0.95rem;
+  }
+  .rw-action.is-selected {
+    background: rgba(0, 165, 223, 0.12);
+    border-color: rgba(0, 165, 223, 0.5);
+    color: #E6F3FB;
+  }
+  .rw-action.is-selected .rw-caret { color: var(--sky-blue); }
+  .rw-action.is-selected .rw-key {
+    background: rgba(0, 165, 223, 0.22);
+    border-color: rgba(0, 165, 223, 0.5);
+    color: var(--sky-blue);
+  }
+
+  .rewind-caveat {
+    max-width: 1120px;
+    margin: 1rem auto 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.7rem 0.95rem;
+    background: rgba(253, 218, 36, 0.07);
+    border-left: 3px solid rgba(253, 218, 36, 0.55);
+    border-radius: 4px;
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.82);
+  }
+  .rewind-caveat strong { color: var(--yellow); font-weight: 600; }
+
+  .rewind-chord {
+    display: inline-flex;
+    gap: 0.35rem;
+    align-items: center;
     font-family: var(--font-mono);
     font-size: 0.78rem;
-    color: rgba(255,255,255,0.6);
-    white-space: nowrap;
+    color: rgba(255,255,255,0.65);
   }
-  .checkpoint-dot.target {
-    background: var(--yellow);
-    width: 18px;
-    height: 18px;
-    box-shadow: 0 0 0 5px rgba(253, 218, 36, 0.22);
-    animation: cp-pulse 3.2s ease-in-out infinite;
-  }
-  .checkpoint-dot.target[data-label]::after { color: var(--yellow); }
-  @keyframes cp-pulse {
-    0%, 100% { box-shadow: 0 0 0 5px rgba(253, 218, 36, 0.22); }
-    50%      { box-shadow: 0 0 0 11px rgba(253, 218, 36, 0.36); }
-  }
-  .rewind-arrow {
-    position: absolute;
-    top: 50%;
-    width: 2px;
-    height: 28px;
-    background: var(--sky-blue);
-    transform: translate(-50%, -50%);
-    animation: rw-travel 5s ease-in-out infinite;
-  }
-  @keyframes rw-travel {
-    0%        { left: 92%; opacity: 0.9; }
-    40%, 60%  { left: 55%; opacity: 1;  }
-    100%      { left: 92%; opacity: 0;  }
+  .rewind-chord kbd {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    padding: 0.1rem 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.85);
   }
 
   /* Slide 12 — memory. Tree + small card pair showing the two files. */
@@ -205,10 +295,8 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cmd-pill-grid .tag-pill,
-    .checkpoint-dot.target,
-    .rewind-arrow { animation: none !important; opacity: 1 !important; transform: translate(-50%, -50%); }
-    .rewind-arrow { left: 55%; }
+    .cmd-pill-grid .tag-pill { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .rewind-list .rw-row { animation: none !important; opacity: 1 !important; transform: none !important; }
   }
 </style>
 
@@ -273,23 +361,6 @@
   <p class="body-dark">Reset the context between unrelated tasks. The single habit Anthropic recommends most.</p>
 
   <div class="cmd-anim mt-md ctx-pair">
-    <div class="ctx-real ctx-clear">
-      <div class="ctx-real__title">/clear <span class="sub">Context Usage</span></div>
-      <div class="ctx-real__layout">
-        <div class="ctx-real__grid" data-cells="200"
-             data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:54,free:138,autocompact:3"
-             aria-label="Context grid clearing"><div class="cell sys-prompt" style="--i:0;--mi:0"></div><div class="cell sys-tools" style="--i:1;--mi:0"></div><div class="cell sys-tools" style="--i:2;--mi:1"></div><div class="cell memory" style="--i:3;--mi:0"></div><div class="cell skills" style="--i:4;--mi:0"></div><div class="cell messages" style="--i:5;--mi:0"></div><div class="cell messages" style="--i:6;--mi:1"></div><div class="cell messages" style="--i:7;--mi:2"></div><div class="cell messages" style="--i:8;--mi:3"></div><div class="cell messages" style="--i:9;--mi:4"></div><div class="cell messages" style="--i:10;--mi:5"></div><div class="cell messages" style="--i:11;--mi:6"></div><div class="cell messages" style="--i:12;--mi:7"></div><div class="cell messages" style="--i:13;--mi:8"></div><div class="cell messages" style="--i:14;--mi:9"></div><div class="cell messages" style="--i:15;--mi:10"></div><div class="cell messages" style="--i:16;--mi:11"></div><div class="cell messages" style="--i:17;--mi:12"></div><div class="cell messages" style="--i:18;--mi:13"></div><div class="cell messages" style="--i:19;--mi:14"></div><div class="cell messages" style="--i:20;--mi:15"></div><div class="cell messages" style="--i:21;--mi:16"></div><div class="cell messages" style="--i:22;--mi:17"></div><div class="cell messages" style="--i:23;--mi:18"></div><div class="cell messages" style="--i:24;--mi:19"></div><div class="cell messages" style="--i:25;--mi:20"></div><div class="cell messages" style="--i:26;--mi:21"></div><div class="cell messages" style="--i:27;--mi:22"></div><div class="cell messages" style="--i:28;--mi:23"></div><div class="cell messages" style="--i:29;--mi:24"></div><div class="cell messages" style="--i:30;--mi:25"></div><div class="cell messages" style="--i:31;--mi:26"></div><div class="cell messages" style="--i:32;--mi:27"></div><div class="cell messages" style="--i:33;--mi:28"></div><div class="cell messages" style="--i:34;--mi:29"></div><div class="cell messages" style="--i:35;--mi:30"></div><div class="cell messages" style="--i:36;--mi:31"></div><div class="cell messages" style="--i:37;--mi:32"></div><div class="cell messages" style="--i:38;--mi:33"></div><div class="cell messages" style="--i:39;--mi:34"></div><div class="cell messages" style="--i:40;--mi:35"></div><div class="cell messages" style="--i:41;--mi:36"></div><div class="cell messages" style="--i:42;--mi:37"></div><div class="cell messages" style="--i:43;--mi:38"></div><div class="cell messages" style="--i:44;--mi:39"></div><div class="cell messages" style="--i:45;--mi:40"></div><div class="cell messages" style="--i:46;--mi:41"></div><div class="cell messages" style="--i:47;--mi:42"></div><div class="cell messages" style="--i:48;--mi:43"></div><div class="cell messages" style="--i:49;--mi:44"></div><div class="cell messages" style="--i:50;--mi:45"></div><div class="cell messages" style="--i:51;--mi:46"></div><div class="cell messages" style="--i:52;--mi:47"></div><div class="cell messages" style="--i:53;--mi:48"></div><div class="cell messages" style="--i:54;--mi:49"></div><div class="cell messages" style="--i:55;--mi:50"></div><div class="cell messages" style="--i:56;--mi:51"></div><div class="cell messages" style="--i:57;--mi:52"></div><div class="cell messages" style="--i:58;--mi:53"></div><div class="cell free" style="--i:59;--mi:0"></div><div class="cell free" style="--i:60;--mi:1"></div><div class="cell free" style="--i:61;--mi:2"></div><div class="cell free" style="--i:62;--mi:3"></div><div class="cell free" style="--i:63;--mi:4"></div><div class="cell free" style="--i:64;--mi:5"></div><div class="cell free" style="--i:65;--mi:6"></div><div class="cell free" style="--i:66;--mi:7"></div><div class="cell free" style="--i:67;--mi:8"></div><div class="cell free" style="--i:68;--mi:9"></div><div class="cell free" style="--i:69;--mi:10"></div><div class="cell free" style="--i:70;--mi:11"></div><div class="cell free" style="--i:71;--mi:12"></div><div class="cell free" style="--i:72;--mi:13"></div><div class="cell free" style="--i:73;--mi:14"></div><div class="cell free" style="--i:74;--mi:15"></div><div class="cell free" style="--i:75;--mi:16"></div><div class="cell free" style="--i:76;--mi:17"></div><div class="cell free" style="--i:77;--mi:18"></div><div class="cell free" style="--i:78;--mi:19"></div><div class="cell free" style="--i:79;--mi:20"></div><div class="cell free" style="--i:80;--mi:21"></div><div class="cell free" style="--i:81;--mi:22"></div><div class="cell free" style="--i:82;--mi:23"></div><div class="cell free" style="--i:83;--mi:24"></div><div class="cell free" style="--i:84;--mi:25"></div><div class="cell free" style="--i:85;--mi:26"></div><div class="cell free" style="--i:86;--mi:27"></div><div class="cell free" style="--i:87;--mi:28"></div><div class="cell free" style="--i:88;--mi:29"></div><div class="cell free" style="--i:89;--mi:30"></div><div class="cell free" style="--i:90;--mi:31"></div><div class="cell free" style="--i:91;--mi:32"></div><div class="cell free" style="--i:92;--mi:33"></div><div class="cell free" style="--i:93;--mi:34"></div><div class="cell free" style="--i:94;--mi:35"></div><div class="cell free" style="--i:95;--mi:36"></div><div class="cell free" style="--i:96;--mi:37"></div><div class="cell free" style="--i:97;--mi:38"></div><div class="cell free" style="--i:98;--mi:39"></div><div class="cell free" style="--i:99;--mi:40"></div><div class="cell free" style="--i:100;--mi:41"></div><div class="cell free" style="--i:101;--mi:42"></div><div class="cell free" style="--i:102;--mi:43"></div><div class="cell free" style="--i:103;--mi:44"></div><div class="cell free" style="--i:104;--mi:45"></div><div class="cell free" style="--i:105;--mi:46"></div><div class="cell free" style="--i:106;--mi:47"></div><div class="cell free" style="--i:107;--mi:48"></div><div class="cell free" style="--i:108;--mi:49"></div><div class="cell free" style="--i:109;--mi:50"></div><div class="cell free" style="--i:110;--mi:51"></div><div class="cell free" style="--i:111;--mi:52"></div><div class="cell free" style="--i:112;--mi:53"></div><div class="cell free" style="--i:113;--mi:54"></div><div class="cell free" style="--i:114;--mi:55"></div><div class="cell free" style="--i:115;--mi:56"></div><div class="cell free" style="--i:116;--mi:57"></div><div class="cell free" style="--i:117;--mi:58"></div><div class="cell free" style="--i:118;--mi:59"></div><div class="cell free" style="--i:119;--mi:60"></div><div class="cell free" style="--i:120;--mi:61"></div><div class="cell free" style="--i:121;--mi:62"></div><div class="cell free" style="--i:122;--mi:63"></div><div class="cell free" style="--i:123;--mi:64"></div><div class="cell free" style="--i:124;--mi:65"></div><div class="cell free" style="--i:125;--mi:66"></div><div class="cell free" style="--i:126;--mi:67"></div><div class="cell free" style="--i:127;--mi:68"></div><div class="cell free" style="--i:128;--mi:69"></div><div class="cell free" style="--i:129;--mi:70"></div><div class="cell free" style="--i:130;--mi:71"></div><div class="cell free" style="--i:131;--mi:72"></div><div class="cell free" style="--i:132;--mi:73"></div><div class="cell free" style="--i:133;--mi:74"></div><div class="cell free" style="--i:134;--mi:75"></div><div class="cell free" style="--i:135;--mi:76"></div><div class="cell free" style="--i:136;--mi:77"></div><div class="cell free" style="--i:137;--mi:78"></div><div class="cell free" style="--i:138;--mi:79"></div><div class="cell free" style="--i:139;--mi:80"></div><div class="cell free" style="--i:140;--mi:81"></div><div class="cell free" style="--i:141;--mi:82"></div><div class="cell free" style="--i:142;--mi:83"></div><div class="cell free" style="--i:143;--mi:84"></div><div class="cell free" style="--i:144;--mi:85"></div><div class="cell free" style="--i:145;--mi:86"></div><div class="cell free" style="--i:146;--mi:87"></div><div class="cell free" style="--i:147;--mi:88"></div><div class="cell free" style="--i:148;--mi:89"></div><div class="cell free" style="--i:149;--mi:90"></div><div class="cell free" style="--i:150;--mi:91"></div><div class="cell free" style="--i:151;--mi:92"></div><div class="cell free" style="--i:152;--mi:93"></div><div class="cell free" style="--i:153;--mi:94"></div><div class="cell free" style="--i:154;--mi:95"></div><div class="cell free" style="--i:155;--mi:96"></div><div class="cell free" style="--i:156;--mi:97"></div><div class="cell free" style="--i:157;--mi:98"></div><div class="cell free" style="--i:158;--mi:99"></div><div class="cell free" style="--i:159;--mi:100"></div><div class="cell free" style="--i:160;--mi:101"></div><div class="cell free" style="--i:161;--mi:102"></div><div class="cell free" style="--i:162;--mi:103"></div><div class="cell free" style="--i:163;--mi:104"></div><div class="cell free" style="--i:164;--mi:105"></div><div class="cell free" style="--i:165;--mi:106"></div><div class="cell free" style="--i:166;--mi:107"></div><div class="cell free" style="--i:167;--mi:108"></div><div class="cell free" style="--i:168;--mi:109"></div><div class="cell free" style="--i:169;--mi:110"></div><div class="cell free" style="--i:170;--mi:111"></div><div class="cell free" style="--i:171;--mi:112"></div><div class="cell free" style="--i:172;--mi:113"></div><div class="cell free" style="--i:173;--mi:114"></div><div class="cell free" style="--i:174;--mi:115"></div><div class="cell free" style="--i:175;--mi:116"></div><div class="cell free" style="--i:176;--mi:117"></div><div class="cell free" style="--i:177;--mi:118"></div><div class="cell free" style="--i:178;--mi:119"></div><div class="cell free" style="--i:179;--mi:120"></div><div class="cell free" style="--i:180;--mi:121"></div><div class="cell free" style="--i:181;--mi:122"></div><div class="cell free" style="--i:182;--mi:123"></div><div class="cell free" style="--i:183;--mi:124"></div><div class="cell free" style="--i:184;--mi:125"></div><div class="cell free" style="--i:185;--mi:126"></div><div class="cell free" style="--i:186;--mi:127"></div><div class="cell free" style="--i:187;--mi:128"></div><div class="cell free" style="--i:188;--mi:129"></div><div class="cell free" style="--i:189;--mi:130"></div><div class="cell free" style="--i:190;--mi:131"></div><div class="cell free" style="--i:191;--mi:132"></div><div class="cell free" style="--i:192;--mi:133"></div><div class="cell free" style="--i:193;--mi:134"></div><div class="cell free" style="--i:194;--mi:135"></div><div class="cell free" style="--i:195;--mi:136"></div><div class="cell free" style="--i:196;--mi:137"></div><div class="cell autocompact" style="--i:197;--mi:0"></div><div class="cell autocompact" style="--i:198;--mi:1"></div><div class="cell autocompact" style="--i:199;--mi:2"></div></div>
-        <div class="ctx-real__info">
-          <span class="model-name">Opus 4.7 (1M context)</span>
-          <span class="model-id">us.anthropic.claude-opus-4-7[1m]</span>
-          <span class="usage-total">287k &rarr; 17.1k tokens</span>
-          <div class="section-label">After /clear</div>
-          <div class="ctx-real__cat free"><span class="glyph">&#9142;</span><span class="name">Free space:</span><span class="tokens">980.9k (98.1%)</span></div>
-          <div class="ctx-real__cat autocompact"><span class="glyph">&#9149;</span><span class="name">Autocompact buffer:</span><span class="tokens">17.1k (1.7%)</span></div>
-        </div>
-      </div>
-    </div>
-
     <div>
       <div class="term term-md term-session term-typing" style="--term-typed-steps: 6; --term-typed-width: 6ch;">
         <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/captech/primer</span></div>
@@ -308,6 +379,23 @@
       </div>
       <p class="caption mt-md" style="text-align:left;">Anthropic: "Use <code>/clear</code> frequently between tasks to reset the context window entirely."</p>
     </div>
+
+    <div class="ctx-real ctx-clear">
+      <div class="ctx-real__title">/clear <span class="sub">Context Usage</span></div>
+      <div class="ctx-real__layout">
+        <div class="ctx-real__grid" data-cells="200"
+             data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:54,free:138,autocompact:3"
+             aria-label="Context grid clearing"><div class="cell sys-prompt" style="--i:0;--mi:0"></div><div class="cell sys-tools" style="--i:1;--mi:0"></div><div class="cell sys-tools" style="--i:2;--mi:1"></div><div class="cell memory" style="--i:3;--mi:0"></div><div class="cell skills" style="--i:4;--mi:0"></div><div class="cell messages" style="--i:5;--mi:0"></div><div class="cell messages" style="--i:6;--mi:1"></div><div class="cell messages" style="--i:7;--mi:2"></div><div class="cell messages" style="--i:8;--mi:3"></div><div class="cell messages" style="--i:9;--mi:4"></div><div class="cell messages" style="--i:10;--mi:5"></div><div class="cell messages" style="--i:11;--mi:6"></div><div class="cell messages" style="--i:12;--mi:7"></div><div class="cell messages" style="--i:13;--mi:8"></div><div class="cell messages" style="--i:14;--mi:9"></div><div class="cell messages" style="--i:15;--mi:10"></div><div class="cell messages" style="--i:16;--mi:11"></div><div class="cell messages" style="--i:17;--mi:12"></div><div class="cell messages" style="--i:18;--mi:13"></div><div class="cell messages" style="--i:19;--mi:14"></div><div class="cell messages" style="--i:20;--mi:15"></div><div class="cell messages" style="--i:21;--mi:16"></div><div class="cell messages" style="--i:22;--mi:17"></div><div class="cell messages" style="--i:23;--mi:18"></div><div class="cell messages" style="--i:24;--mi:19"></div><div class="cell messages" style="--i:25;--mi:20"></div><div class="cell messages" style="--i:26;--mi:21"></div><div class="cell messages" style="--i:27;--mi:22"></div><div class="cell messages" style="--i:28;--mi:23"></div><div class="cell messages" style="--i:29;--mi:24"></div><div class="cell messages" style="--i:30;--mi:25"></div><div class="cell messages" style="--i:31;--mi:26"></div><div class="cell messages" style="--i:32;--mi:27"></div><div class="cell messages" style="--i:33;--mi:28"></div><div class="cell messages" style="--i:34;--mi:29"></div><div class="cell messages" style="--i:35;--mi:30"></div><div class="cell messages" style="--i:36;--mi:31"></div><div class="cell messages" style="--i:37;--mi:32"></div><div class="cell messages" style="--i:38;--mi:33"></div><div class="cell messages" style="--i:39;--mi:34"></div><div class="cell messages" style="--i:40;--mi:35"></div><div class="cell messages" style="--i:41;--mi:36"></div><div class="cell messages" style="--i:42;--mi:37"></div><div class="cell messages" style="--i:43;--mi:38"></div><div class="cell messages" style="--i:44;--mi:39"></div><div class="cell messages" style="--i:45;--mi:40"></div><div class="cell messages" style="--i:46;--mi:41"></div><div class="cell messages" style="--i:47;--mi:42"></div><div class="cell messages" style="--i:48;--mi:43"></div><div class="cell messages" style="--i:49;--mi:44"></div><div class="cell messages" style="--i:50;--mi:45"></div><div class="cell messages" style="--i:51;--mi:46"></div><div class="cell messages" style="--i:52;--mi:47"></div><div class="cell messages" style="--i:53;--mi:48"></div><div class="cell messages" style="--i:54;--mi:49"></div><div class="cell messages" style="--i:55;--mi:50"></div><div class="cell messages" style="--i:56;--mi:51"></div><div class="cell messages" style="--i:57;--mi:52"></div><div class="cell messages" style="--i:58;--mi:53"></div><div class="cell free" style="--i:59;--mi:0"></div><div class="cell free" style="--i:60;--mi:1"></div><div class="cell free" style="--i:61;--mi:2"></div><div class="cell free" style="--i:62;--mi:3"></div><div class="cell free" style="--i:63;--mi:4"></div><div class="cell free" style="--i:64;--mi:5"></div><div class="cell free" style="--i:65;--mi:6"></div><div class="cell free" style="--i:66;--mi:7"></div><div class="cell free" style="--i:67;--mi:8"></div><div class="cell free" style="--i:68;--mi:9"></div><div class="cell free" style="--i:69;--mi:10"></div><div class="cell free" style="--i:70;--mi:11"></div><div class="cell free" style="--i:71;--mi:12"></div><div class="cell free" style="--i:72;--mi:13"></div><div class="cell free" style="--i:73;--mi:14"></div><div class="cell free" style="--i:74;--mi:15"></div><div class="cell free" style="--i:75;--mi:16"></div><div class="cell free" style="--i:76;--mi:17"></div><div class="cell free" style="--i:77;--mi:18"></div><div class="cell free" style="--i:78;--mi:19"></div><div class="cell free" style="--i:79;--mi:20"></div><div class="cell free" style="--i:80;--mi:21"></div><div class="cell free" style="--i:81;--mi:22"></div><div class="cell free" style="--i:82;--mi:23"></div><div class="cell free" style="--i:83;--mi:24"></div><div class="cell free" style="--i:84;--mi:25"></div><div class="cell free" style="--i:85;--mi:26"></div><div class="cell free" style="--i:86;--mi:27"></div><div class="cell free" style="--i:87;--mi:28"></div><div class="cell free" style="--i:88;--mi:29"></div><div class="cell free" style="--i:89;--mi:30"></div><div class="cell free" style="--i:90;--mi:31"></div><div class="cell free" style="--i:91;--mi:32"></div><div class="cell free" style="--i:92;--mi:33"></div><div class="cell free" style="--i:93;--mi:34"></div><div class="cell free" style="--i:94;--mi:35"></div><div class="cell free" style="--i:95;--mi:36"></div><div class="cell free" style="--i:96;--mi:37"></div><div class="cell free" style="--i:97;--mi:38"></div><div class="cell free" style="--i:98;--mi:39"></div><div class="cell free" style="--i:99;--mi:40"></div><div class="cell free" style="--i:100;--mi:41"></div><div class="cell free" style="--i:101;--mi:42"></div><div class="cell free" style="--i:102;--mi:43"></div><div class="cell free" style="--i:103;--mi:44"></div><div class="cell free" style="--i:104;--mi:45"></div><div class="cell free" style="--i:105;--mi:46"></div><div class="cell free" style="--i:106;--mi:47"></div><div class="cell free" style="--i:107;--mi:48"></div><div class="cell free" style="--i:108;--mi:49"></div><div class="cell free" style="--i:109;--mi:50"></div><div class="cell free" style="--i:110;--mi:51"></div><div class="cell free" style="--i:111;--mi:52"></div><div class="cell free" style="--i:112;--mi:53"></div><div class="cell free" style="--i:113;--mi:54"></div><div class="cell free" style="--i:114;--mi:55"></div><div class="cell free" style="--i:115;--mi:56"></div><div class="cell free" style="--i:116;--mi:57"></div><div class="cell free" style="--i:117;--mi:58"></div><div class="cell free" style="--i:118;--mi:59"></div><div class="cell free" style="--i:119;--mi:60"></div><div class="cell free" style="--i:120;--mi:61"></div><div class="cell free" style="--i:121;--mi:62"></div><div class="cell free" style="--i:122;--mi:63"></div><div class="cell free" style="--i:123;--mi:64"></div><div class="cell free" style="--i:124;--mi:65"></div><div class="cell free" style="--i:125;--mi:66"></div><div class="cell free" style="--i:126;--mi:67"></div><div class="cell free" style="--i:127;--mi:68"></div><div class="cell free" style="--i:128;--mi:69"></div><div class="cell free" style="--i:129;--mi:70"></div><div class="cell free" style="--i:130;--mi:71"></div><div class="cell free" style="--i:131;--mi:72"></div><div class="cell free" style="--i:132;--mi:73"></div><div class="cell free" style="--i:133;--mi:74"></div><div class="cell free" style="--i:134;--mi:75"></div><div class="cell free" style="--i:135;--mi:76"></div><div class="cell free" style="--i:136;--mi:77"></div><div class="cell free" style="--i:137;--mi:78"></div><div class="cell free" style="--i:138;--mi:79"></div><div class="cell free" style="--i:139;--mi:80"></div><div class="cell free" style="--i:140;--mi:81"></div><div class="cell free" style="--i:141;--mi:82"></div><div class="cell free" style="--i:142;--mi:83"></div><div class="cell free" style="--i:143;--mi:84"></div><div class="cell free" style="--i:144;--mi:85"></div><div class="cell free" style="--i:145;--mi:86"></div><div class="cell free" style="--i:146;--mi:87"></div><div class="cell free" style="--i:147;--mi:88"></div><div class="cell free" style="--i:148;--mi:89"></div><div class="cell free" style="--i:149;--mi:90"></div><div class="cell free" style="--i:150;--mi:91"></div><div class="cell free" style="--i:151;--mi:92"></div><div class="cell free" style="--i:152;--mi:93"></div><div class="cell free" style="--i:153;--mi:94"></div><div class="cell free" style="--i:154;--mi:95"></div><div class="cell free" style="--i:155;--mi:96"></div><div class="cell free" style="--i:156;--mi:97"></div><div class="cell free" style="--i:157;--mi:98"></div><div class="cell free" style="--i:158;--mi:99"></div><div class="cell free" style="--i:159;--mi:100"></div><div class="cell free" style="--i:160;--mi:101"></div><div class="cell free" style="--i:161;--mi:102"></div><div class="cell free" style="--i:162;--mi:103"></div><div class="cell free" style="--i:163;--mi:104"></div><div class="cell free" style="--i:164;--mi:105"></div><div class="cell free" style="--i:165;--mi:106"></div><div class="cell free" style="--i:166;--mi:107"></div><div class="cell free" style="--i:167;--mi:108"></div><div class="cell free" style="--i:168;--mi:109"></div><div class="cell free" style="--i:169;--mi:110"></div><div class="cell free" style="--i:170;--mi:111"></div><div class="cell free" style="--i:171;--mi:112"></div><div class="cell free" style="--i:172;--mi:113"></div><div class="cell free" style="--i:173;--mi:114"></div><div class="cell free" style="--i:174;--mi:115"></div><div class="cell free" style="--i:175;--mi:116"></div><div class="cell free" style="--i:176;--mi:117"></div><div class="cell free" style="--i:177;--mi:118"></div><div class="cell free" style="--i:178;--mi:119"></div><div class="cell free" style="--i:179;--mi:120"></div><div class="cell free" style="--i:180;--mi:121"></div><div class="cell free" style="--i:181;--mi:122"></div><div class="cell free" style="--i:182;--mi:123"></div><div class="cell free" style="--i:183;--mi:124"></div><div class="cell free" style="--i:184;--mi:125"></div><div class="cell free" style="--i:185;--mi:126"></div><div class="cell free" style="--i:186;--mi:127"></div><div class="cell free" style="--i:187;--mi:128"></div><div class="cell free" style="--i:188;--mi:129"></div><div class="cell free" style="--i:189;--mi:130"></div><div class="cell free" style="--i:190;--mi:131"></div><div class="cell free" style="--i:191;--mi:132"></div><div class="cell free" style="--i:192;--mi:133"></div><div class="cell free" style="--i:193;--mi:134"></div><div class="cell free" style="--i:194;--mi:135"></div><div class="cell free" style="--i:195;--mi:136"></div><div class="cell free" style="--i:196;--mi:137"></div><div class="cell autocompact" style="--i:197;--mi:0"></div><div class="cell autocompact" style="--i:198;--mi:1"></div><div class="cell autocompact" style="--i:199;--mi:2"></div></div>
+        <div class="ctx-real__info">
+          <span class="model-name">Opus 4.7 (1M context)</span>
+          <span class="model-id">us.anthropic.claude-opus-4-7[1m]</span>
+          <span class="usage-total">287k &rarr; 17.1k tokens</span>
+          <div class="section-label">After /clear</div>
+          <div class="ctx-real__cat free"><span class="glyph">&#9142;</span><span class="name">Free space:</span><span class="tokens">980.9k (98.1%)</span></div>
+          <div class="ctx-real__cat autocompact"><span class="glyph">&#9149;</span><span class="name">Autocompact buffer:</span><span class="tokens">17.1k (1.7%)</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <aside class="notes">
@@ -322,25 +410,6 @@
   <p class="body-dark">Summarize the conversation to free context while keeping the decisions. Pass optional instructions to bias what the summary preserves.</p>
 
   <div class="cmd-anim mt-md ctx-pair">
-    <div class="ctx-real ctx-compact-real">
-      <div class="ctx-real__title">/compact <span class="sub">Context Usage</span></div>
-      <div class="ctx-real__layout">
-        <div class="ctx-real__grid" data-cells="200"
-             data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:66,free:126,autocompact:3"
-             aria-label="Context grid compacting"><div class="cell sys-prompt" style="--i:0;--mi:0"></div><div class="cell sys-tools" style="--i:1;--mi:0"></div><div class="cell sys-tools" style="--i:2;--mi:1"></div><div class="cell memory" style="--i:3;--mi:0"></div><div class="cell skills" style="--i:4;--mi:0"></div><div class="cell messages is-summary" style="--i:5;--mi:0"></div><div class="cell messages is-summary" style="--i:6;--mi:1"></div><div class="cell messages is-summary" style="--i:7;--mi:2"></div><div class="cell messages is-summary" style="--i:8;--mi:3"></div><div class="cell messages is-summary" style="--i:9;--mi:4"></div><div class="cell messages is-summary" style="--i:10;--mi:5"></div><div class="cell messages is-summary" style="--i:11;--mi:6"></div><div class="cell messages is-summary" style="--i:12;--mi:7"></div><div class="cell messages is-summary" style="--i:13;--mi:8"></div><div class="cell messages is-summary" style="--i:14;--mi:9"></div><div class="cell messages is-summary" style="--i:15;--mi:10"></div><div class="cell messages is-summary" style="--i:16;--mi:11"></div><div class="cell messages" style="--i:17;--mi:12"></div><div class="cell messages" style="--i:18;--mi:13"></div><div class="cell messages" style="--i:19;--mi:14"></div><div class="cell messages" style="--i:20;--mi:15"></div><div class="cell messages" style="--i:21;--mi:16"></div><div class="cell messages" style="--i:22;--mi:17"></div><div class="cell messages" style="--i:23;--mi:18"></div><div class="cell messages" style="--i:24;--mi:19"></div><div class="cell messages" style="--i:25;--mi:20"></div><div class="cell messages" style="--i:26;--mi:21"></div><div class="cell messages" style="--i:27;--mi:22"></div><div class="cell messages" style="--i:28;--mi:23"></div><div class="cell messages" style="--i:29;--mi:24"></div><div class="cell messages" style="--i:30;--mi:25"></div><div class="cell messages" style="--i:31;--mi:26"></div><div class="cell messages" style="--i:32;--mi:27"></div><div class="cell messages" style="--i:33;--mi:28"></div><div class="cell messages" style="--i:34;--mi:29"></div><div class="cell messages" style="--i:35;--mi:30"></div><div class="cell messages" style="--i:36;--mi:31"></div><div class="cell messages" style="--i:37;--mi:32"></div><div class="cell messages" style="--i:38;--mi:33"></div><div class="cell messages" style="--i:39;--mi:34"></div><div class="cell messages" style="--i:40;--mi:35"></div><div class="cell messages" style="--i:41;--mi:36"></div><div class="cell messages" style="--i:42;--mi:37"></div><div class="cell messages" style="--i:43;--mi:38"></div><div class="cell messages" style="--i:44;--mi:39"></div><div class="cell messages" style="--i:45;--mi:40"></div><div class="cell messages" style="--i:46;--mi:41"></div><div class="cell messages" style="--i:47;--mi:42"></div><div class="cell messages" style="--i:48;--mi:43"></div><div class="cell messages" style="--i:49;--mi:44"></div><div class="cell messages" style="--i:50;--mi:45"></div><div class="cell messages" style="--i:51;--mi:46"></div><div class="cell messages" style="--i:52;--mi:47"></div><div class="cell messages" style="--i:53;--mi:48"></div><div class="cell messages" style="--i:54;--mi:49"></div><div class="cell messages" style="--i:55;--mi:50"></div><div class="cell messages" style="--i:56;--mi:51"></div><div class="cell messages" style="--i:57;--mi:52"></div><div class="cell messages" style="--i:58;--mi:53"></div><div class="cell messages" style="--i:59;--mi:54"></div><div class="cell messages" style="--i:60;--mi:55"></div><div class="cell messages" style="--i:61;--mi:56"></div><div class="cell messages" style="--i:62;--mi:57"></div><div class="cell messages" style="--i:63;--mi:58"></div><div class="cell messages" style="--i:64;--mi:59"></div><div class="cell messages" style="--i:65;--mi:60"></div><div class="cell messages" style="--i:66;--mi:61"></div><div class="cell messages" style="--i:67;--mi:62"></div><div class="cell messages" style="--i:68;--mi:63"></div><div class="cell messages" style="--i:69;--mi:64"></div><div class="cell messages" style="--i:70;--mi:65"></div><div class="cell free" style="--i:71;--mi:0"></div><div class="cell free" style="--i:72;--mi:1"></div><div class="cell free" style="--i:73;--mi:2"></div><div class="cell free" style="--i:74;--mi:3"></div><div class="cell free" style="--i:75;--mi:4"></div><div class="cell free" style="--i:76;--mi:5"></div><div class="cell free" style="--i:77;--mi:6"></div><div class="cell free" style="--i:78;--mi:7"></div><div class="cell free" style="--i:79;--mi:8"></div><div class="cell free" style="--i:80;--mi:9"></div><div class="cell free" style="--i:81;--mi:10"></div><div class="cell free" style="--i:82;--mi:11"></div><div class="cell free" style="--i:83;--mi:12"></div><div class="cell free" style="--i:84;--mi:13"></div><div class="cell free" style="--i:85;--mi:14"></div><div class="cell free" style="--i:86;--mi:15"></div><div class="cell free" style="--i:87;--mi:16"></div><div class="cell free" style="--i:88;--mi:17"></div><div class="cell free" style="--i:89;--mi:18"></div><div class="cell free" style="--i:90;--mi:19"></div><div class="cell free" style="--i:91;--mi:20"></div><div class="cell free" style="--i:92;--mi:21"></div><div class="cell free" style="--i:93;--mi:22"></div><div class="cell free" style="--i:94;--mi:23"></div><div class="cell free" style="--i:95;--mi:24"></div><div class="cell free" style="--i:96;--mi:25"></div><div class="cell free" style="--i:97;--mi:26"></div><div class="cell free" style="--i:98;--mi:27"></div><div class="cell free" style="--i:99;--mi:28"></div><div class="cell free" style="--i:100;--mi:29"></div><div class="cell free" style="--i:101;--mi:30"></div><div class="cell free" style="--i:102;--mi:31"></div><div class="cell free" style="--i:103;--mi:32"></div><div class="cell free" style="--i:104;--mi:33"></div><div class="cell free" style="--i:105;--mi:34"></div><div class="cell free" style="--i:106;--mi:35"></div><div class="cell free" style="--i:107;--mi:36"></div><div class="cell free" style="--i:108;--mi:37"></div><div class="cell free" style="--i:109;--mi:38"></div><div class="cell free" style="--i:110;--mi:39"></div><div class="cell free" style="--i:111;--mi:40"></div><div class="cell free" style="--i:112;--mi:41"></div><div class="cell free" style="--i:113;--mi:42"></div><div class="cell free" style="--i:114;--mi:43"></div><div class="cell free" style="--i:115;--mi:44"></div><div class="cell free" style="--i:116;--mi:45"></div><div class="cell free" style="--i:117;--mi:46"></div><div class="cell free" style="--i:118;--mi:47"></div><div class="cell free" style="--i:119;--mi:48"></div><div class="cell free" style="--i:120;--mi:49"></div><div class="cell free" style="--i:121;--mi:50"></div><div class="cell free" style="--i:122;--mi:51"></div><div class="cell free" style="--i:123;--mi:52"></div><div class="cell free" style="--i:124;--mi:53"></div><div class="cell free" style="--i:125;--mi:54"></div><div class="cell free" style="--i:126;--mi:55"></div><div class="cell free" style="--i:127;--mi:56"></div><div class="cell free" style="--i:128;--mi:57"></div><div class="cell free" style="--i:129;--mi:58"></div><div class="cell free" style="--i:130;--mi:59"></div><div class="cell free" style="--i:131;--mi:60"></div><div class="cell free" style="--i:132;--mi:61"></div><div class="cell free" style="--i:133;--mi:62"></div><div class="cell free" style="--i:134;--mi:63"></div><div class="cell free" style="--i:135;--mi:64"></div><div class="cell free" style="--i:136;--mi:65"></div><div class="cell free" style="--i:137;--mi:66"></div><div class="cell free" style="--i:138;--mi:67"></div><div class="cell free" style="--i:139;--mi:68"></div><div class="cell free" style="--i:140;--mi:69"></div><div class="cell free" style="--i:141;--mi:70"></div><div class="cell free" style="--i:142;--mi:71"></div><div class="cell free" style="--i:143;--mi:72"></div><div class="cell free" style="--i:144;--mi:73"></div><div class="cell free" style="--i:145;--mi:74"></div><div class="cell free" style="--i:146;--mi:75"></div><div class="cell free" style="--i:147;--mi:76"></div><div class="cell free" style="--i:148;--mi:77"></div><div class="cell free" style="--i:149;--mi:78"></div><div class="cell free" style="--i:150;--mi:79"></div><div class="cell free" style="--i:151;--mi:80"></div><div class="cell free" style="--i:152;--mi:81"></div><div class="cell free" style="--i:153;--mi:82"></div><div class="cell free" style="--i:154;--mi:83"></div><div class="cell free" style="--i:155;--mi:84"></div><div class="cell free" style="--i:156;--mi:85"></div><div class="cell free" style="--i:157;--mi:86"></div><div class="cell free" style="--i:158;--mi:87"></div><div class="cell free" style="--i:159;--mi:88"></div><div class="cell free" style="--i:160;--mi:89"></div><div class="cell free" style="--i:161;--mi:90"></div><div class="cell free" style="--i:162;--mi:91"></div><div class="cell free" style="--i:163;--mi:92"></div><div class="cell free" style="--i:164;--mi:93"></div><div class="cell free" style="--i:165;--mi:94"></div><div class="cell free" style="--i:166;--mi:95"></div><div class="cell free" style="--i:167;--mi:96"></div><div class="cell free" style="--i:168;--mi:97"></div><div class="cell free" style="--i:169;--mi:98"></div><div class="cell free" style="--i:170;--mi:99"></div><div class="cell free" style="--i:171;--mi:100"></div><div class="cell free" style="--i:172;--mi:101"></div><div class="cell free" style="--i:173;--mi:102"></div><div class="cell free" style="--i:174;--mi:103"></div><div class="cell free" style="--i:175;--mi:104"></div><div class="cell free" style="--i:176;--mi:105"></div><div class="cell free" style="--i:177;--mi:106"></div><div class="cell free" style="--i:178;--mi:107"></div><div class="cell free" style="--i:179;--mi:108"></div><div class="cell free" style="--i:180;--mi:109"></div><div class="cell free" style="--i:181;--mi:110"></div><div class="cell free" style="--i:182;--mi:111"></div><div class="cell free" style="--i:183;--mi:112"></div><div class="cell free" style="--i:184;--mi:113"></div><div class="cell free" style="--i:185;--mi:114"></div><div class="cell free" style="--i:186;--mi:115"></div><div class="cell free" style="--i:187;--mi:116"></div><div class="cell free" style="--i:188;--mi:117"></div><div class="cell free" style="--i:189;--mi:118"></div><div class="cell free" style="--i:190;--mi:119"></div><div class="cell free" style="--i:191;--mi:120"></div><div class="cell free" style="--i:192;--mi:121"></div><div class="cell free" style="--i:193;--mi:122"></div><div class="cell free" style="--i:194;--mi:123"></div><div class="cell free" style="--i:195;--mi:124"></div><div class="cell free" style="--i:196;--mi:125"></div><div class="cell autocompact" style="--i:197;--mi:0"></div><div class="cell autocompact" style="--i:198;--mi:1"></div><div class="cell autocompact" style="--i:199;--mi:2"></div></div>
-        <div class="ctx-real__info">
-          <span class="model-name">Opus 4.7 (1M context)</span>
-          <span class="model-id">us.anthropic.claude-opus-4-7[1m]</span>
-          <span class="usage-total">287k &rarr; 95k tokens</span>
-          <div class="section-label">After /compact</div>
-          <div class="ctx-real__cat sys-prompt"><span class="glyph">&#9153;</span><span class="name">System prompt:</span><span class="tokens">6.2k (unchanged)</span></div>
-          <div class="ctx-real__cat memory"><span class="glyph">&#9153;</span><span class="name">Memory files:</span><span class="tokens">812 (unchanged)</span></div>
-          <div class="ctx-real__cat skills"><span class="glyph">&#9153;</span><span class="name">Skills:</span><span class="tokens">956 (unchanged)</span></div>
-          <div class="ctx-real__cat messages"><span class="glyph">&#9153;</span><span class="name">Messages (summarized):</span><span class="tokens">60k (was 269.5k)</span></div>
-        </div>
-      </div>
-    </div>
-
     <div>
       <div class="term term-md term-session term-typing" style="--term-typed-steps: 30; --term-typed-width: 30ch;">
         <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/captech/primer</span></div>
@@ -360,6 +429,25 @@
       </div>
       <p class="caption mt-md" style="text-align:left;"><code>/clear</code> wipes. <code>/compact</code> summarizes. Pick based on whether the next task is related to the last one.</p>
     </div>
+
+    <div class="ctx-real ctx-compact-real">
+      <div class="ctx-real__title">/compact <span class="sub">Context Usage</span></div>
+      <div class="ctx-real__layout">
+        <div class="ctx-real__grid" data-cells="200"
+             data-fill="sys-prompt:1,sys-tools:2,memory:1,skills:1,messages:66,free:126,autocompact:3"
+             aria-label="Context grid compacting"><div class="cell sys-prompt" style="--i:0;--mi:0"></div><div class="cell sys-tools" style="--i:1;--mi:0"></div><div class="cell sys-tools" style="--i:2;--mi:1"></div><div class="cell memory" style="--i:3;--mi:0"></div><div class="cell skills" style="--i:4;--mi:0"></div><div class="cell messages is-summary" style="--i:5;--mi:0"></div><div class="cell messages is-summary" style="--i:6;--mi:1"></div><div class="cell messages is-summary" style="--i:7;--mi:2"></div><div class="cell messages is-summary" style="--i:8;--mi:3"></div><div class="cell messages is-summary" style="--i:9;--mi:4"></div><div class="cell messages is-summary" style="--i:10;--mi:5"></div><div class="cell messages is-summary" style="--i:11;--mi:6"></div><div class="cell messages is-summary" style="--i:12;--mi:7"></div><div class="cell messages is-summary" style="--i:13;--mi:8"></div><div class="cell messages is-summary" style="--i:14;--mi:9"></div><div class="cell messages is-summary" style="--i:15;--mi:10"></div><div class="cell messages is-summary" style="--i:16;--mi:11"></div><div class="cell messages" style="--i:17;--mi:12"></div><div class="cell messages" style="--i:18;--mi:13"></div><div class="cell messages" style="--i:19;--mi:14"></div><div class="cell messages" style="--i:20;--mi:15"></div><div class="cell messages" style="--i:21;--mi:16"></div><div class="cell messages" style="--i:22;--mi:17"></div><div class="cell messages" style="--i:23;--mi:18"></div><div class="cell messages" style="--i:24;--mi:19"></div><div class="cell messages" style="--i:25;--mi:20"></div><div class="cell messages" style="--i:26;--mi:21"></div><div class="cell messages" style="--i:27;--mi:22"></div><div class="cell messages" style="--i:28;--mi:23"></div><div class="cell messages" style="--i:29;--mi:24"></div><div class="cell messages" style="--i:30;--mi:25"></div><div class="cell messages" style="--i:31;--mi:26"></div><div class="cell messages" style="--i:32;--mi:27"></div><div class="cell messages" style="--i:33;--mi:28"></div><div class="cell messages" style="--i:34;--mi:29"></div><div class="cell messages" style="--i:35;--mi:30"></div><div class="cell messages" style="--i:36;--mi:31"></div><div class="cell messages" style="--i:37;--mi:32"></div><div class="cell messages" style="--i:38;--mi:33"></div><div class="cell messages" style="--i:39;--mi:34"></div><div class="cell messages" style="--i:40;--mi:35"></div><div class="cell messages" style="--i:41;--mi:36"></div><div class="cell messages" style="--i:42;--mi:37"></div><div class="cell messages" style="--i:43;--mi:38"></div><div class="cell messages" style="--i:44;--mi:39"></div><div class="cell messages" style="--i:45;--mi:40"></div><div class="cell messages" style="--i:46;--mi:41"></div><div class="cell messages" style="--i:47;--mi:42"></div><div class="cell messages" style="--i:48;--mi:43"></div><div class="cell messages" style="--i:49;--mi:44"></div><div class="cell messages" style="--i:50;--mi:45"></div><div class="cell messages" style="--i:51;--mi:46"></div><div class="cell messages" style="--i:52;--mi:47"></div><div class="cell messages" style="--i:53;--mi:48"></div><div class="cell messages" style="--i:54;--mi:49"></div><div class="cell messages" style="--i:55;--mi:50"></div><div class="cell messages" style="--i:56;--mi:51"></div><div class="cell messages" style="--i:57;--mi:52"></div><div class="cell messages" style="--i:58;--mi:53"></div><div class="cell messages" style="--i:59;--mi:54"></div><div class="cell messages" style="--i:60;--mi:55"></div><div class="cell messages" style="--i:61;--mi:56"></div><div class="cell messages" style="--i:62;--mi:57"></div><div class="cell messages" style="--i:63;--mi:58"></div><div class="cell messages" style="--i:64;--mi:59"></div><div class="cell messages" style="--i:65;--mi:60"></div><div class="cell messages" style="--i:66;--mi:61"></div><div class="cell messages" style="--i:67;--mi:62"></div><div class="cell messages" style="--i:68;--mi:63"></div><div class="cell messages" style="--i:69;--mi:64"></div><div class="cell messages" style="--i:70;--mi:65"></div><div class="cell free" style="--i:71;--mi:0"></div><div class="cell free" style="--i:72;--mi:1"></div><div class="cell free" style="--i:73;--mi:2"></div><div class="cell free" style="--i:74;--mi:3"></div><div class="cell free" style="--i:75;--mi:4"></div><div class="cell free" style="--i:76;--mi:5"></div><div class="cell free" style="--i:77;--mi:6"></div><div class="cell free" style="--i:78;--mi:7"></div><div class="cell free" style="--i:79;--mi:8"></div><div class="cell free" style="--i:80;--mi:9"></div><div class="cell free" style="--i:81;--mi:10"></div><div class="cell free" style="--i:82;--mi:11"></div><div class="cell free" style="--i:83;--mi:12"></div><div class="cell free" style="--i:84;--mi:13"></div><div class="cell free" style="--i:85;--mi:14"></div><div class="cell free" style="--i:86;--mi:15"></div><div class="cell free" style="--i:87;--mi:16"></div><div class="cell free" style="--i:88;--mi:17"></div><div class="cell free" style="--i:89;--mi:18"></div><div class="cell free" style="--i:90;--mi:19"></div><div class="cell free" style="--i:91;--mi:20"></div><div class="cell free" style="--i:92;--mi:21"></div><div class="cell free" style="--i:93;--mi:22"></div><div class="cell free" style="--i:94;--mi:23"></div><div class="cell free" style="--i:95;--mi:24"></div><div class="cell free" style="--i:96;--mi:25"></div><div class="cell free" style="--i:97;--mi:26"></div><div class="cell free" style="--i:98;--mi:27"></div><div class="cell free" style="--i:99;--mi:28"></div><div class="cell free" style="--i:100;--mi:29"></div><div class="cell free" style="--i:101;--mi:30"></div><div class="cell free" style="--i:102;--mi:31"></div><div class="cell free" style="--i:103;--mi:32"></div><div class="cell free" style="--i:104;--mi:33"></div><div class="cell free" style="--i:105;--mi:34"></div><div class="cell free" style="--i:106;--mi:35"></div><div class="cell free" style="--i:107;--mi:36"></div><div class="cell free" style="--i:108;--mi:37"></div><div class="cell free" style="--i:109;--mi:38"></div><div class="cell free" style="--i:110;--mi:39"></div><div class="cell free" style="--i:111;--mi:40"></div><div class="cell free" style="--i:112;--mi:41"></div><div class="cell free" style="--i:113;--mi:42"></div><div class="cell free" style="--i:114;--mi:43"></div><div class="cell free" style="--i:115;--mi:44"></div><div class="cell free" style="--i:116;--mi:45"></div><div class="cell free" style="--i:117;--mi:46"></div><div class="cell free" style="--i:118;--mi:47"></div><div class="cell free" style="--i:119;--mi:48"></div><div class="cell free" style="--i:120;--mi:49"></div><div class="cell free" style="--i:121;--mi:50"></div><div class="cell free" style="--i:122;--mi:51"></div><div class="cell free" style="--i:123;--mi:52"></div><div class="cell free" style="--i:124;--mi:53"></div><div class="cell free" style="--i:125;--mi:54"></div><div class="cell free" style="--i:126;--mi:55"></div><div class="cell free" style="--i:127;--mi:56"></div><div class="cell free" style="--i:128;--mi:57"></div><div class="cell free" style="--i:129;--mi:58"></div><div class="cell free" style="--i:130;--mi:59"></div><div class="cell free" style="--i:131;--mi:60"></div><div class="cell free" style="--i:132;--mi:61"></div><div class="cell free" style="--i:133;--mi:62"></div><div class="cell free" style="--i:134;--mi:63"></div><div class="cell free" style="--i:135;--mi:64"></div><div class="cell free" style="--i:136;--mi:65"></div><div class="cell free" style="--i:137;--mi:66"></div><div class="cell free" style="--i:138;--mi:67"></div><div class="cell free" style="--i:139;--mi:68"></div><div class="cell free" style="--i:140;--mi:69"></div><div class="cell free" style="--i:141;--mi:70"></div><div class="cell free" style="--i:142;--mi:71"></div><div class="cell free" style="--i:143;--mi:72"></div><div class="cell free" style="--i:144;--mi:73"></div><div class="cell free" style="--i:145;--mi:74"></div><div class="cell free" style="--i:146;--mi:75"></div><div class="cell free" style="--i:147;--mi:76"></div><div class="cell free" style="--i:148;--mi:77"></div><div class="cell free" style="--i:149;--mi:78"></div><div class="cell free" style="--i:150;--mi:79"></div><div class="cell free" style="--i:151;--mi:80"></div><div class="cell free" style="--i:152;--mi:81"></div><div class="cell free" style="--i:153;--mi:82"></div><div class="cell free" style="--i:154;--mi:83"></div><div class="cell free" style="--i:155;--mi:84"></div><div class="cell free" style="--i:156;--mi:85"></div><div class="cell free" style="--i:157;--mi:86"></div><div class="cell free" style="--i:158;--mi:87"></div><div class="cell free" style="--i:159;--mi:88"></div><div class="cell free" style="--i:160;--mi:89"></div><div class="cell free" style="--i:161;--mi:90"></div><div class="cell free" style="--i:162;--mi:91"></div><div class="cell free" style="--i:163;--mi:92"></div><div class="cell free" style="--i:164;--mi:93"></div><div class="cell free" style="--i:165;--mi:94"></div><div class="cell free" style="--i:166;--mi:95"></div><div class="cell free" style="--i:167;--mi:96"></div><div class="cell free" style="--i:168;--mi:97"></div><div class="cell free" style="--i:169;--mi:98"></div><div class="cell free" style="--i:170;--mi:99"></div><div class="cell free" style="--i:171;--mi:100"></div><div class="cell free" style="--i:172;--mi:101"></div><div class="cell free" style="--i:173;--mi:102"></div><div class="cell free" style="--i:174;--mi:103"></div><div class="cell free" style="--i:175;--mi:104"></div><div class="cell free" style="--i:176;--mi:105"></div><div class="cell free" style="--i:177;--mi:106"></div><div class="cell free" style="--i:178;--mi:107"></div><div class="cell free" style="--i:179;--mi:108"></div><div class="cell free" style="--i:180;--mi:109"></div><div class="cell free" style="--i:181;--mi:110"></div><div class="cell free" style="--i:182;--mi:111"></div><div class="cell free" style="--i:183;--mi:112"></div><div class="cell free" style="--i:184;--mi:113"></div><div class="cell free" style="--i:185;--mi:114"></div><div class="cell free" style="--i:186;--mi:115"></div><div class="cell free" style="--i:187;--mi:116"></div><div class="cell free" style="--i:188;--mi:117"></div><div class="cell free" style="--i:189;--mi:118"></div><div class="cell free" style="--i:190;--mi:119"></div><div class="cell free" style="--i:191;--mi:120"></div><div class="cell free" style="--i:192;--mi:121"></div><div class="cell free" style="--i:193;--mi:122"></div><div class="cell free" style="--i:194;--mi:123"></div><div class="cell free" style="--i:195;--mi:124"></div><div class="cell free" style="--i:196;--mi:125"></div><div class="cell autocompact" style="--i:197;--mi:0"></div><div class="cell autocompact" style="--i:198;--mi:1"></div><div class="cell autocompact" style="--i:199;--mi:2"></div></div>
+        <div class="ctx-real__info">
+          <span class="model-name">Opus 4.7 (1M context)</span>
+          <span class="model-id">us.anthropic.claude-opus-4-7[1m]</span>
+          <span class="usage-total">287k &rarr; 95k tokens</span>
+          <div class="section-label">After /compact</div>
+          <div class="ctx-real__cat sys-prompt"><span class="glyph">&#9153;</span><span class="name">System prompt:</span><span class="tokens">6.2k (unchanged)</span></div>
+          <div class="ctx-real__cat memory"><span class="glyph">&#9153;</span><span class="name">Memory files:</span><span class="tokens">812 (unchanged)</span></div>
+          <div class="ctx-real__cat skills"><span class="glyph">&#9153;</span><span class="name">Skills:</span><span class="tokens">956 (unchanged)</span></div>
+          <div class="ctx-real__cat messages"><span class="glyph">&#9153;</span><span class="name">Messages (summarized):</span><span class="tokens">60k (was 269.5k)</span></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <aside class="notes">
@@ -369,45 +457,78 @@
 </section>
 
 <section class="slide dark" data-section="7:30 — /rewind">
-  <span class="label">04 of 05 · Esc Esc</span>
+  <span class="eyebrow">04 of 05 · checkpoint menu</span>
   <h2><code class="cmd-name">/rewind</code></h2>
-  <p class="body-dark">Every action is a checkpoint. Restore the conversation, the code, or both &mdash; to any previous point.</p>
+  <p class="body-dark">Open the menu with <span class="rewind-chord"><kbd>Esc</kbd><kbd>Esc</kbd></span> or <code>/rewind</code>. Pick a past prompt, then choose what to restore.</p>
 
-  <div class="cmd-anim mt-md rewind-stack">
-    <div class="checkpoints">
-      <div class="checkpoints-track">
-        <div class="checkpoint-dot" style="left: 8%;" data-label="start"></div>
-        <div class="checkpoint-dot" style="left: 26%;" data-label="read"></div>
-        <div class="checkpoint-dot" style="left: 44%;" data-label="plan"></div>
-        <div class="checkpoint-dot target" style="left: 62%;" data-label="edit"></div>
-        <div class="checkpoint-dot" style="left: 80%;" data-label="test"></div>
-        <div class="checkpoint-dot" style="left: 94%;" data-label="commit"></div>
-        <div class="rewind-arrow"></div>
+  <div class="cmd-anim mt-md rewind-pair">
+    <div class="rewind-card">
+      <div class="rewind-card__head">
+        <span class="rw-title">Rewind to a prompt</span>
+        <span class="rw-hint">&uarr; &darr; to navigate &middot; Enter to select</span>
+      </div>
+      <div class="rewind-list">
+        <div class="rw-row is-selected">
+          <span class="rw-marker">&rang;</span>
+          <span class="rw-text">refactor the token refresh helper</span>
+          <span class="rw-meta">2m ago</span>
+        </div>
+        <div class="rw-row">
+          <span class="rw-marker">&nbsp;</span>
+          <span class="rw-text">add tests for auth middleware</span>
+          <span class="rw-meta">11m ago</span>
+        </div>
+        <div class="rw-row">
+          <span class="rw-marker">&nbsp;</span>
+          <span class="rw-text">fix the login redirect bug</span>
+          <span class="rw-meta">24m ago</span>
+        </div>
+        <div class="rw-row">
+          <span class="rw-marker">&nbsp;</span>
+          <span class="rw-text">scaffold the session reducer</span>
+          <span class="rw-meta">1h ago</span>
+        </div>
       </div>
     </div>
 
-    <div class="term term-md term-session term-typing" style="--term-typed-steps: 12; --term-typed-width: 12ch; margin: 0 auto;">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/captech/primer</span></div>
-      <div class="term-body">
-        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/rewind edit"></span></div>
-        <div class="term-output term-output-lines">
-          <div class="term-ln dim">restoring to checkpoint: edit</div>
-          <div class="term-ln dim">reverted 2 turns</div>
-          <div class="term-ln ok term-check">ready</div>
+    <div class="rewind-card">
+      <div class="rewind-card__head">
+        <span class="rw-title">Restore action</span>
+        <span class="rw-hint">1&ndash;4 to pick</span>
+      </div>
+      <div class="rewind-actions">
+        <div class="rw-action is-selected">
+          <span class="rw-key">1</span>
+          <span>Restore code + conversation</span>
+          <span class="rw-caret">&rarr;</span>
         </div>
-        <div class="term-benefits">
-          <span class="term-benefit">try risky things</span>
-          <span class="term-benefit">undo across sessions</span>
+        <div class="rw-action">
+          <span class="rw-key">2</span>
+          <span>Restore conversation only</span>
+          <span class="rw-caret">&rarr;</span>
+        </div>
+        <div class="rw-action">
+          <span class="rw-key">3</span>
+          <span>Restore code only</span>
+          <span class="rw-caret">&rarr;</span>
+        </div>
+        <div class="rw-action">
+          <span class="rw-key">4</span>
+          <span>Summarize forward from here</span>
+          <span class="rw-caret">&rarr;</span>
         </div>
       </div>
     </div>
-
-    <p class="caption" style="text-align:left;">Double-tap Esc. Checkpoints persist across sessions &mdash; rewind tomorrow if you need to.</p>
   </div>
 
+  <p class="rewind-caveat"><strong>Caveat:</strong>&nbsp;tracks Claude's file edits only. Bash side effects and manual edits outside Claude are not rewound. Auto-cleaned after 30 days.</p>
+
   <aside class="notes">
-    <p>30 seconds. This changes how you experiment. You do not have to plan every move carefully. Tell Claude to try something risky &mdash; if it fails, rewind.</p>
-    <p>Caveat: checkpoints track Claude's changes, not external processes like migrations or deployments. Not a replacement for git.</p>
+    <p>~60 seconds. The chord is double-Esc, or type <code>/rewind</code> &mdash; same menu either way. It is the single fastest way to undo a wrong turn without restarting.</p>
+    <p>The menu is a scrollable list of every user prompt in this session, most recent on top. You pick the prompt you want to go back to &mdash; not a named stage, the actual thing you typed.</p>
+    <p>Then four actions: restore code and conversation together, restore just the conversation while keeping your current code, restore just the code while keeping the conversation, or summarize forward from that point &mdash; basically a compact anchored to the prompt you picked.</p>
+    <p>Big caveat, call it out: it only tracks Claude's file edits. If Claude ran <code>git reset</code>, or a migration, or dropped a table via bash &mdash; that is not rewound. Same for anything you edited yourself outside the session. Not a replacement for git.</p>
+    <p>Checkpoints persist across sessions and auto-clean after 30 days. This is the one to reach for when you are twenty turns down a wrong path &mdash; you do not have to be careful when you can go back.</p>
   </aside>
 </section>
 

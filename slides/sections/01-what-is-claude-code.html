@@ -1,18 +1,5 @@
 <style>
   /* Section-local tweaks. Shared styles live in kit.css / sections.css. */
-  .whatis-hero {
-    max-width: 980px;
-  }
-  .whatis-hero .display-xxl {
-    margin: 1rem 0 1.25rem;
-  }
-  .whatis-hero .sub {
-    color: rgba(255,255,255,0.75);
-    font-size: 1.3rem;
-    max-width: 52ch;
-    line-height: 1.45;
-  }
-
   .compare-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -52,49 +39,64 @@
   .compare-shift .to   { color: var(--captech-blue); font-weight: 600; }
   .compare-shift .arrow { color: var(--sky-blue); margin: 0 0.75rem; font-weight: 600; }
 
-  /* Linear agent loop (replaces SVG circular diagram). */
+  /* Linear agent loop on light background. Each step is a labeled
+     number + name; a curved SVG below returns from Done to Plan. */
   .loop-linear {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    gap: 0.85rem;
+    gap: 1.25rem;
     flex-wrap: nowrap;
-    max-width: 900px;
-    margin: 1.25rem auto 0.75rem;
+    max-width: 1100px;
+    margin: 2rem auto 0.5rem;
   }
   .loop-step {
-    font-family: var(--font-sans);
-    font-size: 1.4rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    padding: 0.55rem 1.25rem;
-    border-radius: 999px;
-    border: 1px solid;
-    background: rgba(255,255,255,0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
     white-space: nowrap;
+    min-width: 9ch;
   }
-  .loop-step.plan     { color: var(--captech-blue); border-color: var(--captech-blue); background: rgba(0, 94, 184, 0.15); }
-  .loop-step.tool     { color: var(--sky-blue);     border-color: var(--sky-blue);     background: rgba(0, 165, 223, 0.12); }
-  .loop-step.observe  { color: var(--dark-blue);    border-color: var(--dark-blue);    background: rgba(5, 42, 92, 0.25); }
-  .loop-step.done     { color: #98C379;             border-color: #98C379;             background: rgba(152, 195, 121, 0.15); }
+  .loop-step .loop-index {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    color: var(--medium-grey);
+  }
+  .loop-step .loop-name {
+    font-family: var(--font-sans);
+    font-size: 2rem;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1;
+  }
+  .loop-step.plan     .loop-name { color: var(--captech-blue); }
+  .loop-step.tool     .loop-name { color: var(--sky-blue); }
+  .loop-step.observe  .loop-name { color: var(--dark-blue); }
+  .loop-step.done     .loop-name { color: var(--dark-grey); }
   .loop-arrow {
     font-family: var(--font-mono);
-    font-size: 1.5rem;
-    color: rgba(255,255,255,0.35);
+    font-size: 1.75rem;
+    color: var(--sky-blue);
     font-weight: 400;
+    padding-top: 1.4rem;
   }
-  .loop-return {
+  .loop-return-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 0.25rem auto 1rem;
+  }
+  .loop-return-wrap svg {
+    display: block;
+  }
+  .loop-return-label {
     text-align: center;
     font-family: var(--font-sans);
     font-size: 0.95rem;
-    color: rgba(255,255,255,0.5);
-    margin: 0 auto 1rem;
+    color: var(--medium-grey);
+    margin: 0 auto 0.25rem;
     letter-spacing: 0.01em;
-  }
-  .loop-return .curve {
-    font-family: var(--font-mono);
-    color: rgba(255,255,255,0.4);
-    margin-right: 0.4rem;
   }
 
   /* Three levers with clearer hierarchy: title on top, the three
@@ -146,21 +148,13 @@
   }
 </style>
 
-<section class="slide section-divider" data-section="1:30 — What Claude Code is">
-  <div class="whatis-hero">
-    <span class="eyebrow" style="color: var(--yellow);">1:30 &mdash; 4:30 &middot; section two</span>
-    <p class="display-xxl" style="color: #fff;">Not autocomplete.<br><span class="accent" style="color: var(--sky-blue); font-weight: 500;">An agent.</span></p>
-    <p class="sub">Copilot writes the next line. Claude Code writes the next pull request.</p>
-  </div>
-</section>
-
-<section class="slide" data-section="1:45 — Copilot vs Claude Code">
+<section class="slide slide--top-aligned" data-section="1:45 — Copilot vs Claude Code">
   <span class="label">The mental-model shift</span>
-  <h2>Copilot is not the model.</h2>
+  <h2>Different loop, not a different model.</h2>
 
   <div class="compare-split">
     <div class="compare-col">
-      <p class="col-label">Copilot</p>
+      <p class="col-label">Copilot &mdash; in your editor</p>
       <div class="term term-sm" style="background: #1E252B;">
         <div class="term-chrome">
           <span></span><span></span><span></span>
@@ -174,15 +168,15 @@
           <div style="color: #8A949E;">}</div>
           <div class="term-benefits" style="border-top-color: rgba(138,148,158,0.2);">
             <span class="term-benefit" style="background: rgba(138,148,158,0.12); color: #8A949E; border-color: rgba(138,148,158,0.25);">one file</span>
-            <span class="term-benefit" style="background: rgba(138,148,158,0.12); color: #8A949E; border-color: rgba(138,148,158,0.25);">ghost text</span>
             <span class="term-benefit" style="background: rgba(138,148,158,0.12); color: #8A949E; border-color: rgba(138,148,158,0.25);">accept / reject</span>
+            <span class="term-benefit" style="background: rgba(138,148,158,0.12); color: #8A949E; border-color: rgba(138,148,158,0.25);">suggests; you decide</span>
           </div>
         </div>
       </div>
     </div>
 
     <div class="compare-col">
-      <p class="col-label claude">Claude Code</p>
+      <p class="col-label claude">Claude Code &mdash; in your terminal</p>
       <div class="term term-sm term-session term-output-lines" style="--term-typed-width: 24ch;">
         <div class="term-chrome">
           <span></span><span></span><span></span>
@@ -198,8 +192,8 @@
           </div>
           <div class="term-benefits">
             <span class="term-benefit">many files</span>
-            <span class="term-benefit">full loop</span>
-            <span class="term-benefit">checks itself</span>
+            <span class="term-benefit">plans and acts</span>
+            <span class="term-benefit">verifies itself</span>
           </div>
         </div>
       </div>
@@ -207,42 +201,70 @@
   </div>
 
   <p class="compare-shift">
-    <span class="from">next line</span><span class="arrow">&rarr;</span><span class="to">next pull request</span>
+    <span class="from">accept / reject</span><span class="arrow">&rarr;</span><span class="to">plan / act / verify</span>
   </p>
 
   <aside class="notes">
-    <p>90 seconds. The whole reframe sits in the one-liner: Copilot writes the next line. Claude Code writes the next pull request. Say it. Let it sit.</p>
-    <p>Point at the left terminal: ghost text, one buffer. Point at the right: a goal in, a plan plus edits plus a test run out. Different tool, different workflow.</p>
-    <p>Exit: "The shape of that difference is a loop. Let me show you."</p>
+    <p>90 seconds. Head off the obvious objection first: modern Copilot runs Claude and GPT-class models too, and can draft whole PRs. The difference here is not the model underneath &mdash; it is the interaction loop around it.</p>
+    <p>Left: Copilot lives inside the editor, in one file at a time. It suggests; you accept or reject each step. You stay in the driver's seat at every keystroke.</p>
+    <p>Right: Claude Code lives in the terminal. You give it a goal. It plans, touches many files, runs the shell, runs tests, and reports back. You gate the task, not every line.</p>
+    <p>Land on the caption: accept / reject becomes plan / act / verify. Exit: "The shape of that right-hand loop is the next slide."</p>
   </aside>
 </section>
 
-<section class="slide dark" data-section="2:45 — The agentic loop">
+<section class="slide slide--top-aligned" data-section="2:45 — The agentic loop">
   <span class="label">The agent loop</span>
-  <h2>Plan &rarr; Tool use &rarr; Observe &rarr; done.</h2>
+  <h2>Plan &rarr; Tool use &rarr; Observe &rarr; Done.</h2>
   <div class="loop-linear" role="img" aria-label="Agent loop: Plan, Tool use, Observe, Done. Then repeats.">
-    <span class="loop-step plan">Plan</span>
+    <span class="loop-step plan">
+      <span class="loop-index">01</span>
+      <span class="loop-name">Plan</span>
+    </span>
     <span class="loop-arrow" aria-hidden="true">&rarr;</span>
-    <span class="loop-step tool">Tool use</span>
+    <span class="loop-step tool">
+      <span class="loop-index">02</span>
+      <span class="loop-name">Tool use</span>
+    </span>
     <span class="loop-arrow" aria-hidden="true">&rarr;</span>
-    <span class="loop-step observe">Observe</span>
+    <span class="loop-step observe">
+      <span class="loop-index">03</span>
+      <span class="loop-name">Observe</span>
+    </span>
     <span class="loop-arrow" aria-hidden="true">&rarr;</span>
-    <span class="loop-step done">Done.</span>
+    <span class="loop-step done">
+      <span class="loop-index">04</span>
+      <span class="loop-name">Done</span>
+    </span>
   </div>
-  <p class="loop-return"><span class="curve" aria-hidden="true">&#8630;</span> &hellip; then loops back to Plan.</p>
-  <p class="caption" style="text-align: center; color: rgba(255,255,255,0.65);">
+  <div class="loop-return-wrap" aria-hidden="true">
+    <svg width="760" height="70" viewBox="0 0 760 70" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="loop-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--sky-blue)"></path>
+        </marker>
+      </defs>
+      <path d="M 700 5 C 700 55, 60 55, 60 5"
+            fill="none"
+            stroke="var(--sky-blue)"
+            stroke-width="1.5"
+            stroke-dasharray="5 5"
+            marker-end="url(#loop-arrowhead)"></path>
+    </svg>
+  </div>
+  <p class="loop-return-label">&hellip; loops back to Plan until the task is done.</p>
+  <p class="caption" style="text-align: center; color: var(--medium-grey); max-width: 64ch; margin: 1rem auto 0;">
     Claude iterates until done. Your job is to shape what it sees, what it can do, and how it checks itself.
   </p>
   <aside class="notes">
-    <p>45 seconds. Let the loop pulse. Silence is fine.</p>
-    <p>Land on the caption: the loop exists, and the handles on the loop are the three levers coming up next. Do not name them yet. Build tension.</p>
-    <p>Note for Playwright pass: the SVG node positions may drift on different viewports. Worth a screenshot check.</p>
+    <p>45 seconds. Let the loop land. Walk across the four steps with your hand if you can.</p>
+    <p>The dotted arc matters: this is what people miss about agents. It is not a one-shot &mdash; Claude observes, then replans and tries again until it declares done.</p>
+    <p>Caption is the bridge to the deep dive: what it sees (context), what it can do (capability), how it checks itself (verification). Next slide unpacks each.</p>
   </aside>
 </section>
 
-<section class="slide" data-section="3:30 — Three levers (first appearance)">
-  <span class="label">The slide the whole talk hangs on</span>
-  <h2 style="color: var(--dark-grey); font-size: 2.25rem; font-weight: 500; letter-spacing: -0.01em;">Three levers decide whether Claude helps or hurts.</h2>
+<section class="slide" data-section="3:30 — Three levers (deep dive)">
+  <span class="label">Unpacking the three levers</span>
+  <h2 style="color: var(--dark-grey); font-size: 2.25rem; font-weight: 500; letter-spacing: -0.01em;">What each lever actually means.</h2>
 
   <div class="levers-hero">
     <div class="lever-row">
@@ -267,8 +289,9 @@
   <p class="caption mt-lg" style="font-size: 1rem;">Everything else in the next 25 minutes is a variation on these three.</p>
 
   <aside class="notes">
-    <p>60 seconds. Name each lever, point at each column. The lever NAMES read first; the descriptions are secondary.</p>
-    <p>This slide reappears at slide 33 (wrap). Same pattern. Audience will notice the callback without you announcing it.</p>
-    <p>Exit: "Start with the lever you touch most &mdash; context &mdash; and the commands that decide what Claude sees."</p>
+    <p>60 seconds. You already named the three levers on the thesis slide. This is the unpack: point at each column and give the one-line definition underneath the name.</p>
+    <p>Context: what you put in front of it &mdash; files, CLAUDE.md, memory, skills. Capability: what you let it do &mdash; permissions, hooks, tools, subagents. Verification: how you check its work &mdash; tests, review, cite the line.</p>
+    <p>Two-environment note you can drop here if time allows: on the CapTech sandbox you experiment with all three levers freely; on the client side every lever tightens. Same mental model, different settings.</p>
+    <p>This layout reappears at slide 33 (wrap) as a callback. Exit: "Start with the lever you touch most &mdash; context &mdash; and the commands that decide what Claude sees."</p>
   </aside>
 </section>

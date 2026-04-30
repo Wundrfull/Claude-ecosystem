@@ -111,8 +111,30 @@ function goTo(i) {
   state.current = i;
   updateProgress();
   updateNotes();
+  streamNotesToServer(i);
   if (state.overview) exitOverview();
   state.slides[i].scrollIntoView({ block: "nearest" });
+}
+
+// POST the current slide's speaker notes to the local dev server so the
+// presenter can read them in the terminal running rundeck, instead of
+// juggling a second window or the overlay.
+function streamNotesToServer(i) {
+  const slide = state.slides[i];
+  if (!slide) return;
+  const notesEl = slide.querySelector("aside.notes");
+  const payload = {
+    index: i,
+    total: state.slides.length,
+    section: slide.dataset.section || "",
+    notes: notesEl ? notesEl.innerHTML : "",
+  };
+  fetch("/notes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+    keepalive: true,
+  }).catch(() => { /* server may be a static preview — ignore */ });
 }
 
 function next() { goTo(state.current + 1); }

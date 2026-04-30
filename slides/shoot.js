@@ -102,8 +102,8 @@ async function main() {
     await page.evaluate((idx) => {
       if (typeof goTo === 'function') goTo(idx);
     }, i);
-    // Let animations that fire on .active reach a mid-state.
-    await page.waitForTimeout(1200);
+    // Let animations reach steady-state (typing ~2s, output ~3s, benefits ~4s).
+    await page.waitForTimeout(4500);
 
     // Capture diagnostics per slide.
     const diag = await page.evaluate(() => {

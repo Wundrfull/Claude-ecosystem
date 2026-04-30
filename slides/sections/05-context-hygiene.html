@@ -1,16 +1,17 @@
 <style>
   /* 05-context-hygiene — section-specific tweaks. Kit classes do the heavy lifting. */
-  .ch-stat-graph { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: center; width: 100%; max-width: 1040px; margin: 0 auto; }
-  .ch-stat-graph .stat-duo { margin-top: 0; padding: 1.25rem 0; }
-  .ch-stat-graph .graph { max-width: 640px; }
-  .ch-quote-wrap { position: relative; width: 100%; max-width: 1040px; margin: 0 auto; }
-  .ch-quote-wrap .graph {
-    position: absolute; inset: 0; max-width: 900px; margin: auto;
-    opacity: 0.22; pointer-events: none; z-index: 0;
-  }
-  .ch-quote-wrap .quote { position: relative; z-index: 1; }
-  /* Slide 26 danger-zone: force brand yellow at readable opacity on the dark bg. */
-  .ch-quote-wrap .graph.graph-dark .zone-degrade { fill: rgba(253, 218, 36, 0.15); }
+  /* Merged "rot evidence" slide: flat benchmark graph up top, Anthropic quote below. */
+  .ch-rot-evidence { display: grid; grid-template-rows: auto auto auto; gap: 1.25rem; width: 100%; max-width: 1120px; margin: 0 auto; align-items: center; }
+  .ch-rot-top { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
+  .ch-rot-top .stat-duo { margin: 0; padding: 0; }
+  .ch-rot-top .graph { max-width: 560px; margin: 0; }
+  .ch-rot-pivot { text-align: center; font-family: var(--font-mono); font-size: 1.05rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.55); text-transform: uppercase; padding: 0.25rem 0; border-top: 1px solid rgba(255,255,255,0.12); border-bottom: 1px solid rgba(255,255,255,0.12); }
+  .ch-rot-pivot strong { color: var(--yellow, #FDDA24); font-weight: 600; letter-spacing: 0.02em; }
+  .ch-rot-quote { position: relative; z-index: 1; }
+  .ch-rot-quote .quote { margin: 0; }
+  /* Keep the zone-degrade readable on dark bg. */
+  .ch-rot-top .graph.graph-dark .zone-degrade,
+  .ch-rot-top .graph .zone-degrade { fill: rgba(253, 218, 36, 0.18); }
   .ch-decision { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; width: 100%; max-width: 1080px; margin: 1.5rem auto 0; }
   .ch-panel { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 1.1rem 1.2rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
   .ch-panel h3 { margin: 0; font-family: var(--font-mono); font-size: 1.15rem; color: var(--captech-blue); }
@@ -32,9 +33,45 @@
     border-radius: 2px;
   }
   .ch-panel-verdict { margin-top: auto; font-family: var(--font-mono); font-size: 0.82rem; color: var(--medium-grey); }
-  .ch-compact-layout { display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: center; max-width: 1120px; margin: 1rem auto 0; }
-  .ch-compact-notes { font-size: 1.05rem; line-height: 1.5; color: var(--dark-grey); display: flex; flex-direction: column; gap: 0.9rem; }
-  .ch-compact-notes .num { font-family: var(--font-mono); color: var(--captech-blue); font-weight: 600; }
+  /* Slide 27 — stacked column: terminal on top, looping grid in the middle, bullets below. */
+  .ch-compact-stack { display: flex; flex-direction: column; align-items: center; gap: 0.9rem; max-width: 720px; margin: 0.5rem auto 0; width: 100%; }
+  .ch-compact-stack .term { margin: 0; }
+  .ch-compact-stack .ctx-compact-real { margin: 0; padding: 0.9rem 1.1rem; max-width: 560px; }
+  .ch-compact-bullets { list-style: none; padding: 0; margin: 0; width: 100%; max-width: 620px; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.98rem; line-height: 1.45; color: var(--dark-grey); }
+  .ch-compact-bullets li { position: relative; padding-left: 1.1rem; }
+  .ch-compact-bullets li::before { content: "\25AA"; position: absolute; left: 0; top: 0; color: var(--captech-blue); font-size: 0.9rem; }
+  .ch-compact-bullets .num { font-family: var(--font-mono); color: var(--captech-blue); font-weight: 600; }
+  /* Loop the "summary survives" reveal on the compact grid. Cells with .is-summary
+     pulse a ring; the rest of the grid dims slightly then returns — reads as
+     "this is the part that persists". */
+  @keyframes ch-summary-pulse {
+    0%   { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4); filter: brightness(1); }
+    25%  { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 0 6px rgba(147,51,234,0.6); filter: brightness(1.25); }
+    55%  { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.9), 0 0 6px rgba(147,51,234,0.6); filter: brightness(1.25); }
+    100% { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4); filter: brightness(1); }
+  }
+  @keyframes ch-tail-dim {
+    0%   { opacity: 1; }
+    25%  { opacity: 0.35; }
+    55%  { opacity: 0.35; }
+    100% { opacity: 1; }
+  }
+  .ch-compact-stack .ctx-real__grid .cell.messages.is-summary {
+    animation: ch-summary-pulse 4.2s ease-in-out infinite;
+  }
+  .ch-compact-stack .ctx-real__grid .cell.messages:not(.is-summary),
+  .ch-compact-stack .ctx-real__grid .cell.free,
+  .ch-compact-stack .ctx-real__grid .cell.autocompact {
+    animation: ch-tail-dim 4.2s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ch-compact-stack .ctx-real__grid .cell.messages.is-summary,
+    .ch-compact-stack .ctx-real__grid .cell.messages:not(.is-summary),
+    .ch-compact-stack .ctx-real__grid .cell.free,
+    .ch-compact-stack .ctx-real__grid .cell.autocompact {
+      animation: none;
+    }
+  }
   .ch-tok-compare { display: grid; grid-template-columns: 1fr; gap: 1.25rem; width: 100%; max-width: 880px; margin: 1.5rem auto 0; }
   .ch-tok-row { display: grid; grid-template-columns: 140px 1fr 110px; gap: 1.25rem; align-items: center; }
   .ch-tok-label { font-family: var(--font-mono); font-size: 1rem; color: var(--dark-grey); }
@@ -51,6 +88,12 @@
   @media (prefers-reduced-motion: reduce) {
     .ch-tok-bar .fill { animation: none; }
   }
+  /* Slide 28 consequences band — sits below the bars. */
+  .ch-consequences { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; width: 100%; max-width: 960px; margin: 1.25rem auto 0; }
+  .ch-consequences__title { grid-column: 1 / -1; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--medium-grey); margin: 0 0 -0.25rem; }
+  .ch-consq { border-left: 3px solid var(--sky-blue); padding: 0.35rem 0.9rem; display: flex; flex-direction: column; gap: 0.2rem; }
+  .ch-consq__head { font-family: var(--font-mono); font-size: 0.95rem; color: var(--captech-blue); font-weight: 600; }
+  .ch-consq__body { font-size: 0.88rem; line-height: 1.4; color: var(--dark-grey); }
 </style>
 
 <section class="slide section-divider" data-section="19:00 — Context hygiene">
@@ -59,72 +102,56 @@
   <p class="lede">The load-bearing numbers.</p>
 </section>
 
-<section class="slide" data-section="19:15 — The numbers">
-  <span class="eyebrow">Sonnet 4.5 &middot; SWE-bench Verified</span>
-  <h2>Essentially flat from 200K to 1M.</h2>
-  <div class="ch-stat-graph">
-    <div class="stat-duo">
-      <div class="stat-duo__num">77.2<span class="unit">%</span><span class="sub">200K context</span></div>
-      <div class="stat-duo__delta">
-        <div class="stat-duo__delta-val">&Delta; +1.0</div>
-        <div class="stat-duo__delta-line"></div>
+<section class="slide dark" data-section="19:15 — Context rot evidence">
+  <span class="eyebrow">Two halves of the honest story</span>
+  <h2>Benchmark survives. Recall does not.</h2>
+  <div class="ch-rot-evidence">
+    <div class="ch-rot-top">
+      <div class="stat-duo">
+        <div class="stat-duo__num">77.2<span class="unit">%</span><span class="sub">200K context</span></div>
+        <div class="stat-duo__delta">
+          <div class="stat-duo__delta-val">&Delta; +1.0</div>
+          <div class="stat-duo__delta-line"></div>
+        </div>
+        <div class="stat-duo__num">78.2<span class="unit">%</span><span class="sub">1M context</span></div>
       </div>
-      <div class="stat-duo__num">78.2<span class="unit">%</span><span class="sub">1M context</span></div>
+      <div class="graph graph-dark graph-animate">
+        <svg viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sonnet 4.5 accuracy on SWE-bench Verified, essentially flat from 200K to 1M">
+          <line class="axis-line" x1="80" y1="30" x2="80" y2="220"/>
+          <line class="axis-line" x1="80" y1="220" x2="760" y2="220"/>
+          <line class="axis-tick" x1="80" y1="80" x2="760" y2="80"/>
+          <line class="axis-tick" x1="80" y1="130" x2="760" y2="130"/>
+          <line class="axis-tick" x1="80" y1="180" x2="760" y2="180"/>
+          <text class="axis-title" x="80" y="20" text-anchor="start">SWE-BENCH</text>
+          <text class="axis-title" x="760" y="246" text-anchor="end">TOKEN COUNT</text>
+          <text class="axis-text" x="280" y="240" text-anchor="middle">200K</text>
+          <text class="axis-text" x="760" y="240" text-anchor="middle">1M</text>
+          <text class="axis-text" x="72" y="84" text-anchor="end">80%</text>
+          <text class="axis-text" x="72" y="134" text-anchor="end">70%</text>
+          <path class="curve curve-flat" d="M 80 108 L 280 110 Q 500 112 760 106"/>
+          <circle class="annot-dot" cx="280" cy="110" r="4"/>
+          <circle class="annot-dot" cx="760" cy="106" r="4"/>
+          <text class="annot-text strong" x="280" y="96" text-anchor="middle">77.2%</text>
+          <text class="annot-text strong" x="760" y="96" text-anchor="end">78.2%</text>
+        </svg>
+      </div>
     </div>
-    <div class="graph graph-animate">
-      <svg viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sonnet 4.5 accuracy vs token count, essentially flat">
-        <line class="axis-line" x1="80" y1="30" x2="80" y2="220"/>
-        <line class="axis-line" x1="80" y1="220" x2="760" y2="220"/>
-        <line class="axis-tick" x1="80" y1="80" x2="760" y2="80"/>
-        <line class="axis-tick" x1="80" y1="130" x2="760" y2="130"/>
-        <line class="axis-tick" x1="80" y1="180" x2="760" y2="180"/>
-        <text class="axis-title" x="80" y="20" text-anchor="start">ACCURACY</text>
-        <text class="axis-title" x="760" y="246" text-anchor="end">TOKEN COUNT</text>
-        <text class="axis-text" x="280" y="240" text-anchor="middle">200K</text>
-        <text class="axis-text" x="760" y="240" text-anchor="middle">1M</text>
-        <text class="axis-text" x="72" y="84" text-anchor="end">80%</text>
-        <text class="axis-text" x="72" y="134" text-anchor="end">70%</text>
-        <path class="curve curve-flat" d="M 80 108 L 280 110 Q 500 112 760 106"/>
-        <circle class="annot-dot" cx="280" cy="110" r="4"/>
-        <circle class="annot-dot" cx="760" cy="106" r="4"/>
-        <text class="annot-text strong" x="280" y="96" text-anchor="middle">77.2%</text>
-        <text class="annot-text strong" x="760" y="96" text-anchor="end">78.2%</text>
-      </svg>
+    <div class="ch-rot-pivot">
+      Flat on a narrow benchmark. <strong>Not flat in real work.</strong>
     </div>
-  </div>
-  <p class="caption">anthropic.com/news/claude-sonnet-4-5</p>
-  <aside class="notes">
-    <p>60 seconds. Read the numbers out loud. 77.2% at 200K. 78.2% at 1M. One point of difference. That is the curve going sideways.</p>
-    <p>Takeaway: you are paying for a million tokens and getting back performance that topped out well before you filled it. The 1M window is a ceiling, not a target.</p>
-  </aside>
-</section>
-
-<section class="slide dark" data-section="20:00 — Context rot, verbatim">
-  <span class="eyebrow">Anthropic&rsquo;s own documentation</span>
-  <div class="ch-quote-wrap">
-    <div class="graph graph-dark graph-animate" aria-hidden="true">
-      <svg viewBox="0 0 780 320" xmlns="http://www.w3.org/2000/svg">
-        <rect class="zone-degrade" x="280" y="30" width="460" height="230"/>
-        <line class="axis-line" x1="80" y1="30" x2="80" y2="260"/>
-        <line class="axis-line" x1="80" y1="260" x2="760" y2="260"/>
-        <line class="axis-tick" x1="80" y1="100" x2="760" y2="100"/>
-        <line class="axis-tick" x1="80" y1="170" x2="760" y2="170"/>
-        <text class="axis-title" x="80" y="20" text-anchor="start">ACCURACY</text>
-        <text class="axis-text" x="280" y="280" text-anchor="middle">200K</text>
-        <text class="axis-text" x="760" y="280" text-anchor="middle">1M</text>
-        <path class="curve curve-slope" d="M 80 90 L 280 92 Q 420 94 540 160 T 760 240"/>
-        <line class="annot-line" x1="280" y1="92" x2="280" y2="260"/>
-        <circle class="annot-dot" cx="280" cy="92" r="4"/>
-      </svg>
-    </div>
-    <div class="quote quote-hero">
-      &ldquo;As token count grows, accuracy and recall degrade, a phenomenon known as context rot.&rdquo;
-      <cite>platform.claude.com/docs/en/build-with-claude/context-windows</cite>
+    <div class="ch-rot-quote">
+      <div class="quote quote-hero">
+        &ldquo;As token count grows, accuracy and recall degrade, a phenomenon known as context rot.&rdquo;
+        <cite>platform.claude.com/docs/en/build-with-claude/context-windows</cite>
+      </div>
     </div>
   </div>
+  <p class="caption" style="color: rgba(255,255,255,0.5);">Top: anthropic.com/news/claude-sonnet-4-5 &middot; Bottom: Anthropic platform docs</p>
   <aside class="notes">
-    <p>30 seconds. Read the quote. This is Anthropic documenting it, not me. The word is "context rot" — use it with the team so everyone is naming the same thing.</p>
-    <p>Point at the curve behind the text: that is the shape you are fighting. Past 200K, the line bends the wrong way.</p>
+    <p>75 seconds. Two facts on one slide, because in isolation each one misleads.</p>
+    <p>Top half: Sonnet 4.5 on SWE-bench Verified. 77.2% at 200K, 78.2% at 1M. Essentially flat. If you stop reading there, you conclude the million-token window is safe to fill.</p>
+    <p>Bottom half: Anthropic's own documentation. "As token count grows, accuracy and recall degrade, a phenomenon known as context rot." Their words, not mine.</p>
+    <p>Reconcile them. The flat line is a narrow coding benchmark that plateaus early. Context rot applies to broader recall and reasoning — the stuff that matters in a long session with scattered files, prior decisions, half-remembered constraints. The 1M window is a ceiling, not a target. Use the word "context rot" with the team so everyone names the same thing.</p>
   </aside>
 </section>
 
@@ -166,11 +193,17 @@
   </aside>
 </section>
 
-<section class="slide" data-section="21:45 — Survives compaction">
+<section class="slide slide--top-aligned" data-section="21:45 — Survives compaction">
   <span class="eyebrow">What survives <code>/compact</code></span>
   <h2>Skills re-attach. Tails get cut.</h2>
-  <div class="ch-compact-layout">
-    <div class="ctx-real ctx-compact-real" style="max-width: 540px; padding: 1rem 1.2rem;">
+  <div class="ch-compact-stack">
+    <div class="term term-sm term-session term-typing" style="--term-typed-steps: 34; --term-typed-width: 34ch; max-width: 460px;">
+      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/primer &middot; opus 4.7</span></div>
+      <div class="term-body">
+        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/compact Focus on the auth work"></span></div>
+      </div>
+    </div>
+    <div class="ctx-real ctx-compact-real">
       <div class="ctx-real__title">/compact <span class="sub">after</span></div>
       <div class="ctx-real__grid" data-cells="200" aria-label="Context grid after compact">
         <div class="cell sys-prompt" style="--i:0;--mi:0"></div><div class="cell sys-tools" style="--i:1;--mi:0"></div><div class="cell sys-tools" style="--i:2;--mi:1"></div><div class="cell memory" style="--i:3;--mi:0"></div><div class="cell skills" style="--i:4;--mi:0"></div><div class="cell messages is-summary" style="--i:5;--mi:0"></div><div class="cell messages is-summary" style="--i:6;--mi:1"></div><div class="cell messages is-summary" style="--i:7;--mi:2"></div><div class="cell messages is-summary" style="--i:8;--mi:3"></div><div class="cell messages is-summary" style="--i:9;--mi:4"></div><div class="cell messages is-summary" style="--i:10;--mi:5"></div><div class="cell messages is-summary" style="--i:11;--mi:6"></div><div class="cell messages is-summary" style="--i:12;--mi:7"></div><div class="cell messages is-summary" style="--i:13;--mi:8"></div><div class="cell messages is-summary" style="--i:14;--mi:9"></div><div class="cell messages is-summary" style="--i:15;--mi:10"></div><div class="cell messages is-summary" style="--i:16;--mi:11"></div><div class="cell messages" style="--i:17;--mi:12"></div><div class="cell messages" style="--i:18;--mi:13"></div><div class="cell messages" style="--i:19;--mi:14"></div>
@@ -186,23 +219,18 @@
         <div class="cell autocompact" style="--i:200;--mi:2"></div>
       </div>
     </div>
-    <div class="ch-compact-notes">
-      <div class="term term-sm term-session term-typing" style="--term-typed-steps: 30; --term-typed-width: 30ch; max-width: 420px;">
-        <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/primer &middot; opus 4.7</span></div>
-        <div class="term-body">
-          <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/compact Focus on the API"></span></div>
-        </div>
-      </div>
-      <p>Skills re-attach after compaction &mdash; but each one gets capped at the <span class="num">first 5K tokens</span>.</p>
-      <p>All skills share a <span class="num">25K total budget</span> for re-hydration. A bloated skill loses its tail.</p>
-      <p>Keep skills short. Progressive disclosure beats dumping a manual into the body.</p>
-    </div>
+    <ul class="ch-compact-bullets">
+      <li>Skills re-attach after compaction &mdash; each one capped at the <span class="num">first 5K tokens</span>.</li>
+      <li>All skills share a <span class="num">25K total budget</span>. A bloated skill loses its tail.</li>
+      <li>Keep skills short. Progressive disclosure beats dumping a manual into the body.</li>
+    </ul>
   </div>
   <p class="caption mt-sm">Auto-compaction fires near 95%. Trigger earlier with <code>CLAUDE_CODE_AUTOCOMPACT_PCT_OVERRIDE=80</code>.</p>
   <aside class="notes">
-    <p>60 seconds. Point at the grid: purple cells with rings are the summaries that replaced the chat history. Everything else below them cleared.</p>
-    <p>The skills part trips people up. After /compact, Claude re-reads skill bodies from disk. Each skill is capped at the first 5K. Total budget is 25K across all skills. If your skill has a long tail, the tail is gone post-compact. Write them short.</p>
-    <p>The override line at the bottom: 80% is a sensible setting for long sessions. Summarize before the wall, not at it.</p>
+    <p>60 seconds. Start at the top. The command is <code>/compact Focus on the auth work</code> — you can pass a focus hint so the summary keeps the thread you care about. Runs once, then the grid below shows the result.</p>
+    <p>The pulsing purple cells with rings are the summaries that replaced the chat history. Watch the tail dim out — that is everything below the summary line getting cleared. It loops so the team sees the "what stays, what goes" shape without you having to point at it.</p>
+    <p>Bullets are the part people miss. After /compact, Claude re-reads skill bodies from disk. Each skill is capped at 5K. Total budget 25K across all skills. Long tail on a skill? Tail is gone post-compact. Write them short.</p>
+    <p>Override at the bottom: 80% is a sensible setting for long sessions. Summarize before the wall, not at it.</p>
   </aside>
 </section>
 
@@ -221,10 +249,28 @@
       <div class="ch-tok-count">135 tok<span class="delta">+35%</span></div>
     </div>
   </div>
+  <div class="ch-consequences">
+    <p class="ch-consequences__title">What this costs you</p>
+    <div class="ch-consq">
+      <div class="ch-consq__head">Daily spend up ~35%</div>
+      <div class="ch-consq__body">Default, no change needed from you. Budget for it.</div>
+    </div>
+    <div class="ch-consq">
+      <div class="ch-consq__head">Context wall sooner</div>
+      <div class="ch-consq__body">Same prompt hits 200K earlier. Your CLAUDE.md is bigger now.</div>
+    </div>
+    <div class="ch-consq">
+      <div class="ch-consq__head">Plan Mode gets pricier</div>
+      <div class="ch-consq__body">Reasoning passes use 4.7 tokens too. Bigger codebases, meaningfully higher bills.</div>
+    </div>
+  </div>
   <p class="caption mt-md" style="max-width: 780px; margin-left: auto; margin-right: auto;">The new tokenizer is chunkier. Same prompt, same files, bigger footprint. If your bill jumped the week you moved to 4.7, this is why.</p>
   <aside class="notes">
-    <p>45 seconds. The single fact: Opus 4.7 ships a new tokenizer that turns roughly 100 characters of English into 135 tokens where 4.6 would have given you 100. Up to 35% more.</p>
-    <p>Two practical consequences. One: your daily spend went up by default &mdash; budget for it. Two: you hit the context wall sooner than you did last month. If you had CLAUDE.md at 4K on 4.6, assume it is 5K now on 4.7. Same logic for skills, memory files, pasted snippets.</p>
-    <p>This is the last hygiene slide. Next section is responsible use.</p>
+    <p>60 seconds. Top of the slide is the fact: Opus 4.7 ships a new tokenizer that turns roughly 100 characters of English into 135 tokens where 4.6 would have given you 100. Up to 35% more. Same text, bigger footprint.</p>
+    <p>The "what this costs you" band is the why. Three consequences.</p>
+    <p>One: daily spend is up about 35% by default. Nobody changed anything on your end. Budget for it.</p>
+    <p>Two: you hit the context wall sooner. If your CLAUDE.md was 4K on 4.6, assume it is around 5K now on 4.7. Same for skills, memory files, pasted snippets. The window did not move — your files grew.</p>
+    <p>Three: Plan Mode and the thinking passes use the same tokenizer. On a large codebase those reasoning passes translate to meaningfully higher bills. Keep Plan Mode on short, focused asks.</p>
+    <p>That is why this slide lives in context hygiene, not pricing. Last hygiene slide. Next section is responsible use.</p>
   </aside>
 </section>

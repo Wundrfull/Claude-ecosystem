@@ -1,5 +1,5 @@
 <style>
-  /* Section-scoped tweaks for 07-responsible-use. Keep under 40 lines. */
+  /* Section-scoped tweaks for 07-responsible-use. Keep under 80 lines. */
   .resp-divider-grid {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
@@ -20,29 +20,69 @@
   .resp-divider-grid .cell.mark {
     background: var(--yellow);
   }
-  .policy-grid {
+  /* Rule 1: three-column data-path grid. */
+  .datapath-grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 3rem;
-    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
     margin-top: 1.25rem;
+    max-width: 1120px;
   }
-  .policy-lock {
-    width: 160px; height: 160px;
-    margin: 0 auto;
+  .datapath-col {
+    padding: 1.2rem 1.25rem 1.3rem;
+    border-top: 4px solid var(--col-accent, var(--captech-blue));
+    background: rgba(0, 0, 0, 0.025);
+  }
+  .datapath-col h3 {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--col-accent, var(--captech-blue));
+    margin: 0 0 0.75rem;
+  }
+  .datapath-col p { margin: 0.35rem 0; font-size: 1rem; line-height: 1.45; }
+  .datapath-col p.lead { font-size: 1.08rem; font-weight: 500; color: #111; margin-bottom: 0.6rem; }
+  .datapath-col code { color: var(--captech-blue); font-size: 0.92rem; }
+  .datapath-col .cite { font-size: 0.78rem; color: var(--medium-grey); font-style: italic; margin-top: 0.75rem; display: block; }
+  .dp-client { --col-accent: var(--yellow); }
+  .dp-bedrock { --col-accent: var(--captech-blue); }
+  .dp-team   { --col-accent: var(--light-teal); }
+  /* Rule 3: three gate cards. */
+  .gates-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+    max-width: 1120px;
+  }
+  .gate-card {
+    padding: 1.15rem 1.25rem 1.25rem;
+    border-left: 4px solid var(--gate-accent, var(--captech-blue));
+    background: rgba(0, 0, 0, 0.025);
+  }
+  .gate-card .gate-cmd {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--gate-accent, var(--captech-blue));
     display: block;
-    color: var(--captech-blue);
-    opacity: 0.9;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
   }
+  .gate-card p { margin: 0; font-size: 0.98rem; line-height: 1.45; }
+  .g-1 { --gate-accent: var(--captech-blue); }
+  .g-2 { --gate-accent: var(--sky-blue); }
+  .g-3 { --gate-accent: var(--yellow); }
+  /* Top-5 habit list (reused from old five-grid). */
   .five-grid {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
-    margin-top: 1rem;
+    gap: 0.55rem;
+    margin-top: 0.9rem;
   }
-  .five-grid .term { max-width: 900px; width: 100%; border-left: 4px solid var(--step-accent, var(--sky-blue)); }
+  .five-grid .term { max-width: 960px; width: 100%; border-left: 4px solid var(--step-accent, var(--sky-blue)); }
   .five-grid .term-body {
-    padding: 0.7rem 1.1rem 0.75rem;
+    padding: 0.65rem 1.1rem 0.7rem;
     font-size: 0.88rem;
     display: grid;
     grid-template-columns: auto auto 1fr;
@@ -51,7 +91,7 @@
   }
   .five-grid .step-num {
     font-family: var(--font-mono);
-    font-size: 1.35rem;
+    font-size: 1.3rem;
     font-weight: 600;
     color: var(--step-accent, var(--sky-blue));
     letter-spacing: 0.04em;
@@ -63,21 +103,20 @@
     color: var(--step-accent, var(--sky-blue));
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    white-space: nowrap;
   }
-  .five-grid .step-body { color: #E6E6E6; font-size: 0.95rem; line-height: 1.45; }
+  .five-grid .step-body { color: #E6E6E6; font-size: 0.93rem; line-height: 1.45; }
   .five-grid .step-body code {
     color: var(--yellow);
     background: rgba(253, 218, 36, 0.08);
     padding: 0 0.25rem;
     border-radius: 3px;
   }
-  /* Per-step accents: captech-blue, sky-blue, yellow, light-teal, green. */
   .five-grid .s-1 { --step-accent: var(--captech-blue); }
   .five-grid .s-2 { --step-accent: var(--sky-blue); }
   .five-grid .s-3 { --step-accent: var(--yellow); }
   .five-grid .s-4 { --step-accent: var(--light-teal); }
   .five-grid .s-5 { --step-accent: #98C379; }
-  /* Tint the session chrome's "claude" pill to match each step's accent. */
   .five-grid .term-session .term-chrome {
     background: color-mix(in srgb, var(--step-accent, var(--sky-blue)) 10%, transparent);
     border-bottom-color: color-mix(in srgb, var(--step-accent, var(--sky-blue)) 25%, transparent);
@@ -94,82 +133,116 @@
 <section class="slide section-divider" data-section="22:30 — Responsible use">
   <span class="label">22:30 — 25:00</span>
   <h1>Responsible use.</h1>
-  <p class="lede">Three rules. One habit. Start tonight.</p>
+  <p class="lede">Three rules: know your data path. Cite your claims. Gate your tools. <span style="color: var(--yellow);">One habit:</span> audit your memory weekly.</p>
   <div class="resp-divider-grid" aria-hidden="true">
     <div class="cell"></div><div class="cell redact"></div><div class="cell"></div><div class="cell"></div><div class="cell mark"></div><div class="cell"></div><div class="cell redact"></div><div class="cell"></div>
     <div class="cell redact"></div><div class="cell"></div><div class="cell"></div><div class="cell redact"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell redact"></div>
     <div class="cell"></div><div class="cell"></div><div class="cell redact"></div><div class="cell"></div><div class="cell"></div><div class="cell redact"></div><div class="cell"></div><div class="cell"></div>
   </div>
-</section>
-
-<section class="slide" data-section="22:45 — Data policy">
-  <span class="eyebrow">Anthropic data policy &middot; verbatim</span>
-  <div class="policy-grid">
-    <p class="display-quote-lg">
-      &ldquo;By default, we will <span class="accent">not use your inputs or outputs</span> from our commercial products to train our models.&rdquo;
-    </p>
-    <svg class="policy-lock" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <rect x="12" y="28" width="40" height="28" rx="3"/>
-      <path d="M20 28 V18 a12 12 0 0 1 24 0 V28"/>
-      <circle cx="32" cy="42" r="3" fill="currentColor" stroke="none"/>
-      <line x1="32" y1="45" x2="32" y2="50"/>
-    </svg>
-  </div>
-  <p class="caption mt-sm">privacy.claude.com/en/articles/7996868</p>
-  <div class="rulebox rulebox-warn mt-lg">
-    <p><strong>The exception:</strong> thumbs-up and thumbs-down feedback buttons do send data back.</p>
-    <p><strong>Admin action</strong> (Team / Enterprise): Organization settings &rarr; Data and Privacy &rarr; Rate chats &rarr; off. One click, org-wide, before you touch client data.</p>
-  </div>
   <aside class="notes">
-    <p>60 seconds. Read the quote verbatim so the team hears the exact wording, not my paraphrase. Then the exception: the thumbs buttons are the one channel that sends content back, and most people do not know that.</p>
-    <p>The admin toggle is the single most important action before a client engagement. One click. Do it before the kickoff call.</p>
+    <p>20 seconds. Name the three rules and the habit as you point at the divider: data path, cite the claim, gate the tools, audit the memory. Everything in this section is a drill-down on one of those four.</p>
+    <p>Tell them: this is the section that matters most on a client engagement. The rest of the talk is how to move fast; this is how to not create an incident.</p>
   </aside>
 </section>
 
-<section class="slide" data-section="23:45 — Cite the line">
-  <span class="eyebrow">the single highest-ROI habit</span>
-  <p class="display-quote-lg mt-sm">
-    &ldquo;<span class="accent">Cite the file and line.</span>&rdquo;
-  </p>
-  <p class="lede-light mt-lg">Every function, type, or GraphQL field Claude names needs a <code>path:line</code>. If it cannot cite, it is guessing.</p>
+<section class="slide slide--top-aligned" data-section="22:55 — Rule 1: data path">
+  <span class="eyebrow">Rule 1 &middot; know your data path</span>
+  <h2>Where does your prompt actually go?</h2>
+  <div class="datapath-grid">
+    <div class="datapath-col dp-client">
+      <h3>What the client told you</h3>
+      <p class="lead">Assume the worst-case constraint set.</p>
+      <p>No third-party tools. Token ceilings on day-to-day work. Production data, credentials, and PII in scope.</p>
+      <p>If CLAUDE.md does not say it, go ask.</p>
+    </div>
+    <div class="datapath-col dp-bedrock">
+      <h3>What Bedrock does</h3>
+      <p class="lead">Claude runs inside your AWS account.</p>
+      <p>Prompts and outputs stay in the <code>ailab</code> profile's region. Anthropic does not see them. Anthropic does not train on them.</p>
+      <span class="cite">&ldquo;By default, we will not use your inputs or outputs from our commercial products to train our models.&rdquo; &mdash; privacy.claude.com/7996868</span>
+    </div>
+    <div class="datapath-col dp-team">
+      <h3>What your team must verify</h3>
+      <p class="lead">The guarantee is not a substitute for review.</p>
+      <p>Read CLAUDE.md for client constraints. Confirm <code>/permissions</code> before any destructive tool. Never paste credentials or raw customer rows.</p>
+      <p>Thumbs-up / thumbs-down buttons <em>do</em> send content back &mdash; admin: Organization settings &rarr; Data and Privacy &rarr; Rate chats &rarr; off.</p>
+    </div>
+  </div>
+  <p class="caption mt-lg">CapTech sandbox: anything goes. Client repos: the three columns above are the checklist.</p>
+  <aside class="notes">
+    <p>75 seconds. Walk the three columns left to right. The client imposes constraints (column 1); Bedrock gives you a real privacy boundary (column 2); your team still has to verify, because the boundary does not defend against you pasting a credential into chat (column 3).</p>
+    <p>Call out the thumbs-feedback exception. One admin click, org-wide, before the kickoff call. That is the only action that has to happen before you open the client repo.</p>
+  </aside>
+</section>
 
-  <div class="term term-md term-session mt-lg" style="max-width: 720px;">
+<section class="slide" data-section="23:35 — Rule 2: cite the line">
+  <span class="eyebrow">Rule 2 &middot; cite the line</span>
+  <h2>Cite the line &mdash; your best hallucination guard.</h2>
+  <p class="lede-light mt-sm" style="max-width: 62ch;">Ask Claude <em>where</em> something lives before you ask what it does. It will grep the repo, open the file, and answer with a <code>path:line</code>. Hallucinations drop because the model has to point at real code.</p>
+
+  <div class="term term-md term-session mt-lg" style="max-width: 760px;">
     <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/client/subgraph &middot; opus 4.7</span></div>
     <div class="term-body">
-      <div class="term-line"><span class="term-prompt">$</span> Where does the consumer refresh token live?</div>
+      <div class="term-line"><span class="term-prompt">$</span> where does the token refresh happen?</div>
       <div class="term-output" style="margin-top: 0.5rem;">
-        <div class="term-ln accent" style="opacity: 1;">src/auth/session.ts:47 &mdash; refreshToken()</div>
-        <div class="term-ln dim" style="opacity: 1;">schema/auth.graphql:12 &mdash; type SessionToken</div>
-        <div class="term-ln ok term-check" style="opacity: 1;">cited &middot; verified against file</div>
+        <div class="term-ln dim" style="opacity: 1;">reading src/auth/refresh.ts:42-78</div>
+        <div class="term-ln" style="opacity: 1;">refreshToken() calls POST /api/auth/refresh with the stored refresh_token</div>
+        <div class="term-ln" style="opacity: 1;">rotation is handled by SessionStore.rotate() &mdash; schema/auth.graphql:12</div>
+        <div class="term-ln ok term-check accent" style="opacity: 1;">cite: src/auth/refresh.ts:54</div>
       </div>
     </div>
   </div>
 
-  <p class="caption mt-lg">Put it in CLAUDE.md as rule #1. Reject diffs that claim a reference without a line.</p>
+  <p class="caption mt-lg">Same pattern for <code>/review</code>, <code>/security-review</code>, and any grep-heavy task. No citation, no trust.</p>
   <aside class="notes">
-    <p>60 seconds. This line walks out of the room with them. Slow down.</p>
-    <p>The terminal on this slide shows the shape of a correct answer: path, line, symbol. That is what you demand every time. When the team sees a claim with no path:line, they reject the diff and ask for the citation.</p>
+    <p>60 seconds. Lead with the accuracy claim, not the process. "Cite the line" is the highest-ROI habit on this slide because it forces Claude to grep before answering, and grep-then-cite is measurably more accurate than guess-then-write.</p>
+    <p>Walk the terminal: question, file read, symbol explanation, line citation. That is the shape of a correct answer. When the team sees a claim with no path:line, they reject the diff and ask for the citation.</p>
   </aside>
 </section>
 
-<section class="slide" data-section="24:30 — Five things tonight">
-  <span class="eyebrow">your Monday-morning starter kit</span>
-  <h2>Five things to install tonight.</h2>
+<section class="slide slide--top-aligned" data-section="24:05 — Rule 3: gate your tools">
+  <span class="eyebrow">Rule 3 &middot; gate your tools</span>
+  <h2>Gate your tools before you need to.</h2>
+  <p class="lede-light mt-sm" style="max-width: 64ch;">Three layers, loosest to strictest. Stack them; do not pick one.</p>
+  <div class="gates-grid">
+    <div class="gate-card g-1">
+      <span class="gate-cmd">/permissions</span>
+      <p>Approve safe tools once per repo. Deny-by-default for anything destructive. Stops the mid-task Approve spam without opening the barn door.</p>
+    </div>
+    <div class="gate-card g-2">
+      <span class="gate-cmd">allowed-tools:</span>
+      <p>Per-skill allowlist in the skill's frontmatter. A <code>/security-review</code> skill should not need <code>Bash</code>; say so. Scopes capability to the job.</p>
+    </div>
+    <div class="gate-card g-3">
+      <span class="gate-cmd">hooks (PreToolUse)</span>
+      <p>Deterministic shell gates for anything you can never tolerate. Block <code>git push --force</code>, <code>rm -rf</code>, writes outside the repo. Runs before Claude sees the tool call.</p>
+    </div>
+  </div>
+  <p class="caption mt-lg">CapTech sandbox: permissive. Client repos: strict &mdash; read CLAUDE.md, confirm <code>/permissions</code>, then verify the hook fired.</p>
+  <aside class="notes">
+    <p>60 seconds. Stack the three layers as you walk them. <code>/permissions</code> is the everyday lever; allowed-tools in frontmatter is the per-skill scope; hooks are the floor the model cannot cross.</p>
+    <p>Emphasis: CLAUDE.md can <em>request</em> a behavior but cannot <em>enforce</em> it. Hooks enforce. If a rule matters for compliance, it belongs in <code>.claude/settings.json</code>, not CLAUDE.md.</p>
+  </aside>
+</section>
+
+<section class="slide dark slide--top-aligned" data-section="24:45 — The habit: top 5 tools">
+  <span class="eyebrow">the habit &middot; weekly</span>
+  <h2>Top 5 tools to reach for.</h2>
   <div class="five-grid">
     <div class="term term-session s-1">
       <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"></span></div>
       <div class="term-body">
         <span class="step-num">01</span>
-        <span class="step-tag">install</span>
-        <div class="step-body">Install <code>claude</code> if you do not have it.</div>
+        <span class="step-tag">permissions</span>
+        <div class="step-body"><code>/permissions</code> &mdash; audit what Claude can do in this repo. Re-read the allowlist every Monday.</div>
       </div>
     </div>
     <div class="term term-session s-2">
       <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"></span></div>
       <div class="term-body">
         <span class="step-num">02</span>
-        <span class="step-tag">bootstrap</span>
-        <div class="step-body">Run <code>/init</code> in your repo. Writes a starter CLAUDE.md.</div>
+        <span class="step-tag">clear</span>
+        <div class="step-body"><code>/clear</code> &mdash; when the next task is unrelated, start fresh. Biggest accuracy lever on client work.</div>
       </div>
     </div>
     <div class="term term-session s-3">
@@ -177,29 +250,29 @@
       <div class="term-body">
         <span class="step-num">03</span>
         <span class="step-tag">memory</span>
-        <div class="step-body">Auto memory is on by default in v2.1.59 and later. Confirm.</div>
+        <div class="step-body">skim <code>MEMORY.md</code> &mdash; Claude writes notes; you decide what stays. Bad assumptions become permanent context otherwise.</div>
       </div>
     </div>
     <div class="term term-session s-4">
       <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"></span></div>
       <div class="term-body">
         <span class="step-num">04</span>
-        <span class="step-tag">permissions</span>
-        <div class="step-body">Allowlist safe tools with <code>/permissions</code>. Stop clicking Approve.</div>
+        <span class="step-tag">security</span>
+        <div class="step-body"><code>/security-review</code> &mdash; run on any diff touching auth, data, or secrets before you request review.</div>
       </div>
     </div>
     <div class="term term-session s-5">
       <div class="term-chrome"><span></span><span></span><span></span><span class="term-title"></span></div>
       <div class="term-body">
         <span class="step-num">05</span>
-        <span class="step-tag">habit</span>
-        <div class="step-body">Run <code>/clear</code> between unrelated tasks. Every time.</div>
+        <span class="step-tag">hooks</span>
+        <div class="step-body">hooks in <code>.claude/settings.json</code> &mdash; deterministic gates that CLAUDE.md can only request.</div>
       </div>
     </div>
   </div>
-  <p class="caption mt-lg">Do all five before you open the client repo tomorrow.</p>
+  <p class="caption mt-lg">Five minutes a week. Prevents the ninety-minute incident.</p>
   <aside class="notes">
-    <p>60 seconds. Read each tile. The /permissions one is the stealth winner. The team will get tired of clicking Approve on every git status, and this is the fix.</p>
-    <p>Tell them: if you only do one tonight, do <code>/init</code>. You cannot cite the line without a CLAUDE.md that says to.</p>
+    <p>75 seconds. Frame this as the weekly habit, not a one-time setup. Read each row; the connective tissue is &ldquo;all five take under a minute and none of them require you to open a ticket.&rdquo;</p>
+    <p>Numbers two and three are the biggest accuracy levers on a long engagement: <code>/clear</code> before unrelated tasks, and skim MEMORY.md so the auto-memory does not drift into stale assumptions. Four and five are the security floor; one is the daily hygiene check.</p>
   </aside>
 </section>
