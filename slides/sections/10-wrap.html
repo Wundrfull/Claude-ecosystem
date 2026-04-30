@@ -64,40 +64,56 @@
   }
   .qa-meta span strong { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
 
-  /* Ranked commands list — two columns, mono slash-commands with rank chip and brief reason. */
-  .ranked-list {
-    list-style: none;
-    padding: 0;
+  /* Commands slide — two panels (built-ins, skills) with their own lists. */
+  .cmds-split {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 2.5rem;
+    max-width: 1200px;
     margin: 1rem auto 0;
-    max-width: 1080px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.45rem 2rem;
+    align-items: start;
   }
-  .ranked-list li {
-    display: grid;
-    grid-template-columns: 2rem 10rem 1fr;
-    gap: 0.8rem;
-    align-items: baseline;
-    padding: 0.4rem 0.25rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-  }
-  .ranked-list .rank {
-    font-family: var(--font-mono);
+  .cmds-panel h3 {
+    font-family: var(--font-sans);
     font-size: 0.82rem;
-    color: var(--medium-grey);
+    font-weight: 600;
     letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--medium-grey);
+    margin: 0 0 0.6rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   }
-  .ranked-list .cmd {
+  .cmds-panel h3 .pill {
     font-family: var(--font-mono);
+    font-size: 0.72rem;
     color: var(--captech-blue);
     font-weight: 500;
-    font-size: 1rem;
+    letter-spacing: 0.06em;
+    margin-left: 0.5rem;
+    text-transform: none;
   }
-  .ranked-list .why {
-    font-size: 0.95rem;
-    color: var(--dark-grey);
-    line-height: 1.4;
+  .cmds-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    color: var(--captech-blue);
+  }
+  .cmds-list.single-col { grid-template-columns: 1fr; }
+  .cmds-list li {
+    padding: 0.22rem 0;
+    line-height: 1.3;
+  }
+  .cmds-list li .src {
+    color: var(--medium-grey);
+    font-size: 0.78rem;
+    margin-left: 0.35rem;
+    letter-spacing: 0.01em;
   }
 
   /* Tools-I-use slide — three-column card grid with category + stack of items. */
@@ -233,38 +249,59 @@
   </aside>
 </section>
 
-<section class="slide slide--top-aligned" data-section="25:30 — Commands, ranked">
-  <span class="eyebrow">every slash command anthropic ships &middot; my personal ranking</span>
-  <h2>The short list, in order of how often I reach for it.</h2>
+<section class="slide slide--top-aligned" data-section="25:30 — Commands I reach for">
+  <span class="eyebrow">what I actually type</span>
+  <h2>Commands and skills I reach for.</h2>
 
-  <ol class="ranked-list">
-    <li><span class="rank">01</span><span class="cmd">/clear</span><span class="why">Between unrelated tasks. Biggest accuracy lever you have.</span></li>
-    <li><span class="rank">02</span><span class="cmd">Shift+Tab</span><span class="why">Plan Mode. Read-only scouting before any real change.</span></li>
-    <li><span class="rank">03</span><span class="cmd">/rewind</span><span class="why">When you're down a wrong path. Four actions to pick from.</span></li>
-    <li><span class="rank">04</span><span class="cmd">/permissions</span><span class="why">Audit what Claude can do in this repo. Check before every client session.</span></li>
-    <li><span class="rank">05</span><span class="cmd">/compact</span><span class="why">Long related session, approaching the wall.</span></li>
-    <li><span class="rank">06</span><span class="cmd">/memory</span><span class="why">View or edit MEMORY.md. Skim weekly.</span></li>
-    <li><span class="rank">07</span><span class="cmd">/context</span><span class="why">Read-only snapshot. Use when unsure whether to clear or compact.</span></li>
-    <li><span class="rank">08</span><span class="cmd">/review</span><span class="why">Self-review before requesting human review.</span></li>
-    <li><span class="rank">09</span><span class="cmd">/security-review</span><span class="why">Any diff touching auth, data, secrets, or infra.</span></li>
-    <li><span class="rank">10</span><span class="cmd">/config</span><span class="why">Model selection, theme, output format. Set once.</span></li>
-    <li><span class="rank">11</span><span class="cmd">/help</span><span class="why">Resurfaces the list when a command name escapes you.</span></li>
-    <li><span class="rank">12</span><span class="cmd">/init</span><span class="why">Bootstrap CLAUDE.md. Mostly useful on greenfield repos.</span></li>
-  </ol>
+  <div class="cmds-split">
+    <div class="cmds-panel">
+      <h3>Built-in slash commands<span class="pill">16</span></h3>
+      <ul class="cmds-list">
+        <li>/clear</li>
+        <li>/resume</li>
+        <li>/recap</li>
+        <li>/context</li>
+        <li>/compact</li>
+        <li>/rewind</li>
+        <li>/memory</li>
+        <li>/permissions</li>
+        <li>/voice</li>
+        <li>/doctor</li>
+        <li>/cost</li>
+        <li>/ultrareview</li>
+        <li>/ultraplan</li>
+        <li>/model</li>
+        <li>/config</li>
+        <li>/help</li>
+      </ul>
+    </div>
+    <div class="cmds-panel">
+      <h3>Skill packs I install<span class="pill">8</span></h3>
+      <ul class="cmds-list single-col">
+        <li>gsd <span class="src">get shit done</span></li>
+        <li>autoresearch</li>
+        <li>superpowers <span class="src">obra</span></li>
+        <li>anthropic-skills</li>
+        <li>codex</li>
+        <li>code-review</li>
+        <li>impeccable</li>
+        <li>frontend-design</li>
+      </ul>
+    </div>
+  </div>
 
-  <p class="caption" style="text-align: center; margin-top: 0.9rem;">Your ranking will differ. Keep the top five in muscle memory; look up the rest.</p>
+  <p class="caption" style="text-align: center; margin-top: 1rem;">Left column: out of the box. Right column: drop the folder in, type the slash, done.</p>
 
   <aside class="notes">
     <ul>
-      <li><strong>45 seconds.</strong></li>
-      <li>Say "my ranking, not The Ranking" up front.</li>
-      <li>The top five are the ones I could not work without.</li>
-      <li>Stress: <code>/clear</code> over <code>/compact</code> for most tasks.</li>
-      <li><code>/compact</code> bakes in whatever direction the session was headed.</li>
-      <li><code>/clear</code> starts you fresh, which is usually what you actually want.</li>
-      <li>Point at <code>/permissions</code>: this is the one everyone forgets.</li>
-      <li>Run it before you touch a client repo.</li>
-      <li>Know what Claude is allowed to do before you ask it to do anything.</li>
+      <li><strong>60 seconds.</strong></li>
+      <li>Left column is every slash command I use regularly. Top five in my head: <code>/clear</code>, <code>/context</code>, <code>/rewind</code>, <code>/permissions</code>, <code>/compact</code>.</li>
+      <li><code>/doctor</code>, <code>/cost</code>, <code>/voice</code>: quieter commands worth knowing exist.</li>
+      <li><code>/ultrareview</code> and <code>/ultraplan</code>: deeper versions of review / plan when the stakes warrant it.</li>
+      <li>Right column: community and first-party skill packs I install every engagement.</li>
+      <li>Say them by name: gsd, autoresearch, superpowers, anthropic-skills, codex, code-review, impeccable, frontend-design.</li>
+      <li>Point out: the skill packs are a folder drop. No install step beyond <code>cp -r</code>.</li>
+      <li>Links in the appendix after Q&amp;A.</li>
     </ul>
   </aside>
 </section>
@@ -275,33 +312,33 @@
 
   <div class="tools-grid">
     <div class="tools-card t-teams">
-      <p class="cat">Agent orchestration</p>
-      <h3>Teams &amp; subagents</h3>
+      <p class="cat">Models &amp; subscriptions</p>
+      <h3>What I pay for</h3>
       <ul>
-        <li><strong>Opus 4.7 lead</strong> with Sonnet 4.6 teammates for parallel work.</li>
-        <li><strong>Explore agent</strong> for read-only scouting without polluting main.</li>
-        <li><strong>Plan agent</strong> when the design needs alignment before coding.</li>
-        <li><strong>Agent SDK</strong> to build custom subagents for recurring tasks.</li>
+        <li><strong>Claude Pro x20</strong> &mdash; Opus 4.6, 4.7, Sonnet.</li>
+        <li><strong>Codex Pro x20</strong> &mdash; GPT 5.4, 5.5.</li>
+        <li><strong>Anthropic API</strong> for skill dev and custom agents.</li>
+        <li><strong>Anthropic Design</strong> for component references.</li>
       </ul>
     </div>
     <div class="tools-card t-shell">
-      <p class="cat">Shell &amp; workflow</p>
-      <h3>Terminal layer</h3>
+      <p class="cat">Orchestration &amp; shell</p>
+      <h3>How sessions run</h3>
       <ul>
-        <li><strong>tmux</strong> to keep the Claude session pinned while code runs beside it.</li>
-        <li><strong>git worktrees</strong> so agents can work on isolated branches in parallel.</li>
-        <li><strong>gh cli</strong> for PR, issue, and check management inside the session.</li>
-        <li><strong>starship</strong> prompt for a visible model/context indicator.</li>
+        <li><strong>Agent Teams</strong> &mdash; Opus lead, Sonnet teammates.</li>
+        <li><strong>Agent SDK</strong> for custom subagents.</li>
+        <li><strong>tmux</strong> to pin sessions beside running code.</li>
+        <li><strong>git worktrees</strong> for isolated parallel branches.</li>
       </ul>
     </div>
     <div class="tools-card t-platform">
-      <p class="cat">Platform &amp; extensions</p>
-      <h3>Plugs into Claude</h3>
+      <p class="cat">MCPs &amp; CLIs</p>
+      <h3>What plugs in</h3>
       <ul>
-        <li><strong>MCP servers</strong> for Linear, GitHub, Postgres, Slack.</li>
-        <li><strong>Hooks</strong> in <code>.claude/settings.json</code> for deterministic gates.</li>
-        <li><strong>Skills marketplace</strong> &mdash; install, don't rewrite.</li>
-        <li><strong>AWS Bedrock</strong> routing for client engagements.</li>
+        <li><strong>Playwright MCP</strong>, <strong>Obsidian MCP</strong>.</li>
+        <li><strong>Frame0 CLI</strong>, <strong>Supabase CLI</strong>.</li>
+        <li><strong>Vercel CLI</strong>, <strong>Redis CLI</strong>.</li>
+        <li><em>Some MCPs became CLIs &mdash; cheaper on tokens.</em></li>
       </ul>
     </div>
   </div>
@@ -311,18 +348,17 @@
   <aside class="notes">
     <ul>
       <li><strong>60 seconds.</strong></li>
-      <li>The shape: Claude Code on its own is powerful.</li>
-      <li>Wrapping the right tooling around it is what makes it sustainable on real client work.</li>
-      <li>Call out the three categories:
+      <li>The shape: Claude Code alone is powerful; the surrounding tooling is what makes it sustainable.</li>
+      <li>Three categories:
         <ul>
-          <li>How Claude plans (teams).</li>
-          <li>Where Claude runs (shell).</li>
-          <li>What Claude connects to (platform).</li>
+          <li><strong>Pay-for models:</strong> Claude Pro x20 and Codex Pro x20 side by side. Anthropic API for skill dev.</li>
+          <li><strong>Orchestration:</strong> Agent Teams (Opus lead, Sonnet teammates), Agent SDK, tmux, git worktrees.</li>
+          <li><strong>Plugs:</strong> MCPs for tools Claude must hold state over (Playwright, Obsidian); CLIs for one-shot calls (Frame0, Supabase, Vercel, Redis).</li>
         </ul>
       </li>
-      <li>Per item: one sentence max.</li>
+      <li><strong>Call out the token story:</strong> some tools shipped as MCPs first, then added CLIs. CLI form is cheaper because you pay for one call instead of sustained MCP context.</li>
       <li>Goal is name-recognition, not a tutorial.</li>
-      <li>Links live on the appendix slide after Q&amp;A.</li>
+      <li>Links in the appendix after Q&amp;A.</li>
     </ul>
   </aside>
 </section>
