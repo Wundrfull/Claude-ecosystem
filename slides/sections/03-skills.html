@@ -19,6 +19,51 @@
     margin-left: 0.5rem;
   }
 
+  /* Lifecycle loop slide — seven numbered rows, step-by-step. */
+  .lifecycle-loop {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem auto 0;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .lifecycle-loop li {
+    display: grid;
+    grid-template-columns: 3rem 8rem 1fr;
+    gap: 1.25rem;
+    align-items: baseline;
+    padding: 0.55rem 0.25rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  }
+  .lifecycle-loop li:last-child { border-bottom: 0; }
+  .lifecycle-loop .n {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--medium-grey);
+    letter-spacing: 0.14em;
+  }
+  .lifecycle-loop .k {
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--captech-blue);
+    letter-spacing: -0.01em;
+  }
+  .lifecycle-loop .d {
+    font-size: 1.02rem;
+    color: var(--dark-grey);
+    line-height: 1.45;
+  }
+  .lifecycle-loop .d code {
+    background: rgba(0, 94, 184, 0.07);
+    padding: 0 0.3em;
+    border-radius: 3px;
+    font-size: 0.92em;
+    color: var(--captech-blue);
+  }
+
   /* Slide 14: headline constraint + mono shrink */
   .skill-headline {
     max-width: 22ch;
@@ -57,7 +102,7 @@
     overflow: visible;
   }
 
-  /* Slide 15 + 17: 180px label gutter grid */
+  /* Slide 15: 180px label gutter grid (right-aligned eyebrow labels) */
   .pd-row {
     display: grid;
     grid-template-columns: 180px 1fr;
@@ -66,8 +111,30 @@
     max-width: 1080px;
     margin: 0 auto;
   }
-  .pd-row + .pd-row { margin-top: 1.5rem; }
-  .pd-row .pd-pane-label { margin: 0.35rem 0 0; }
+  .pd-row + .pd-row { margin-top: 1.25rem; }
+  .pd-row .pd-pane-label {
+    margin: 0;
+    padding-top: 0.6rem;
+    text-align: right;
+  }
+
+  /* Slide 15: tighten header-to-rows spacing, left-anchor the footnote under the body pane */
+  .pd-intro {
+    max-width: 1080px;
+    margin: 0.3rem auto 1.1rem;
+  }
+  .pd-footnote-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 2rem;
+    max-width: 1080px;
+    margin: 1rem auto 0;
+  }
+  .pd-footnote-row .footnote {
+    grid-column: 2;
+    margin: 0;
+    text-align: left;
+  }
 
   /* Slide 18: hook terminal chrome tint — amber accent */
   .term.term-session--warn {
@@ -151,35 +218,53 @@
   }
   .skills-section table.fm-ref tr:last-child td { border-bottom: 0; }
 
-  /* Writing-your-first-skill layout: tree top, terminal below, side by side */
-  .first-skill-stage {
+  /* Writing-your-first-skill layout: two columns — stacked artifacts on left, steps on right */
+  .first-skill-layout {
     display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-    gap: 2rem;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 2.5rem;
     align-items: start;
-    max-width: 1100px;
+    max-width: 1120px;
     margin: 1rem auto 0;
   }
-  .first-skill-stage .tree { margin: 0; max-width: 100%; }
-  .first-skill-stage .term { margin: 0; }
+  .first-skill-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    align-items: stretch;
+    text-align: left;
+  }
+  .first-skill-left .pd-pane-label {
+    margin: 0 0 0.35rem;
+  }
+  .first-skill-left .first-skill-block + .first-skill-block {
+    margin-top: 0.4rem;
+  }
+  .first-skill-left .tree { margin: 0; max-width: 100%; text-align: left; }
+  .first-skill-left .term { margin: 0; }
   .first-skill-steps {
-    margin: 1.25rem auto 0;
-    max-width: 1080px;
+    margin: 0;
     font-size: 1rem;
     color: var(--dark-grey);
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.1rem;
-    justify-content: center;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-self: start;
   }
   .first-skill-steps .step {
+    display: flex;
+    gap: 0.9rem;
+    align-items: baseline;
     font-family: var(--font-mono);
+    font-size: 1.1rem;
     color: var(--medium-grey);
   }
   .first-skill-steps .step .num {
-    color: var(--captech-blue);
+    font-size: 1.4rem;
     font-weight: 600;
-    margin-right: 0.35rem;
+    color: var(--captech-blue);
+    min-width: 1.5ch;
+    font-family: var(--font-sans);
   }
 
   /* Subagents/hooks split: each column gets a mini terminal */
@@ -311,57 +396,61 @@ conventional commits. Reference the diff; do not restate it.</pre>
   <span class="label">Ship your first skill tonight</span>
   <h2>Five steps. Ten minutes.</h2>
 
-  <div class="pd-row">
-    <p class="pd-pane-label">The folder</p>
-    <div class="tree tree-grow" style="margin: 0;">
-      <ul>
-        <li><span class="dir">~/.claude/skills/</span>
+  <div class="first-skill-layout">
+    <div class="first-skill-left">
+      <div class="first-skill-block">
+        <p class="pd-pane-label">The folder</p>
+        <div class="tree tree-grow">
           <ul>
-            <li><span class="dir">explain-code/</span>
+            <li><span class="dir">~/.claude/skills/</span>
               <ul>
-                <li><span class="file tree-highlight">SKILL.md</span> <span class="callout">that is it</span></li>
+                <li><span class="dir">explain-code/</span>
+                  <ul>
+                    <li><span class="file tree-highlight">SKILL.md</span> <span class="callout">that is it</span></li>
+                  </ul>
+                </li>
               </ul>
             </li>
           </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
+        </div>
+      </div>
 
-  <div class="pd-row">
-    <p class="pd-pane-label">The run</p>
-    <div class="term term-md term-session term-typing term-output-lines"
-         style="--term-typed-steps: 13; --term-typed-width: 13ch; margin: 0;">
-      <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7 · 22k/1M</span></div>
-      <div class="term-body">
-        <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/explain-code"></span></div>
-        <div class="term-output">
-          <div class="term-ln dim">matched: explain-code</div>
-          <div class="term-ln accent">reading SKILL.md...</div>
-          <div class="term-ln ok term-check">ready · which file?</div>
+      <div class="first-skill-block">
+        <p class="pd-pane-label">The run</p>
+        <div class="term term-md term-session term-typing term-output-lines"
+             style="--term-typed-steps: 13; --term-typed-width: 13ch;">
+          <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/project · opus 4.7 · 22k/1M</span></div>
+          <div class="term-body">
+            <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="/explain-code"></span></div>
+            <div class="term-output">
+              <div class="term-ln dim">matched: explain-code</div>
+              <div class="term-ln accent">reading SKILL.md...</div>
+              <div class="term-ln ok term-check">ready · which file?</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="first-skill-steps">
-    <span class="step"><span class="num">1</span>mkdir the folder</span>
-    <span class="step"><span class="num">2</span>write SKILL.md</span>
-    <span class="step"><span class="num">3</span>description says "use when..."</span>
-    <span class="step"><span class="num">4</span>save — live on next turn</span>
-    <span class="step"><span class="num">5</span>invoke or let Claude match it</span>
+    <div class="first-skill-steps">
+      <span class="step"><span class="num">1</span><span class="action">mkdir the folder</span></span>
+      <span class="step"><span class="num">2</span><span class="action">write SKILL.md</span></span>
+      <span class="step"><span class="num">3</span><span class="action">description says "use when..."</span></span>
+      <span class="step"><span class="num">4</span><span class="action">save — live on next turn</span></span>
+      <span class="step"><span class="num">5</span><span class="action">invoke or let Claude match it</span></span>
+    </div>
   </div>
 
   <aside class="notes">
-    <p>120 seconds. This is the do-it-tonight slide. Walk the five steps along the bottom as a checklist, then point at the tree and say "that is the whole folder structure," then point at the terminal and say "that is the whole invocation."</p>
+    <p>120 seconds. This is the do-it-tonight slide. Walk the five steps down the right column as a checklist, then point at the tree on the left and say "that is the whole folder structure," then point at the terminal below it and say "that is the whole invocation."</p>
     <p>Project-scope vs personal-scope: <code>.claude/skills/</code> in the repo ships with the team; <code>~/.claude/skills/</code> is just for you. Mention the CapTech-side vs client-side split here.</p>
   </aside>
 </section>
 
 <section class="slide slide--top-aligned skills-section" data-section="12:00 — Why skills are cheap">
   <span class="label">Why skills are cheap</span>
-  <h2>Names in context. Body on demand.</h2>
-  <p class="caption caption-center" style="margin-top: 0.3rem;">This is <em>progressive disclosure</em> — only the name + 1,536-char description live in context; the body loads when Claude picks the skill.</p>
+  <h2 style="margin-bottom: 0.4rem;">Names in context. Body on demand.</h2>
+  <p class="caption pd-intro">This is <em>progressive disclosure</em> — only the name + 1,536-char description live in context; the body loads when Claude picks the skill.</p>
 
   <div class="pd-row">
     <p class="pd-pane-label">Trigger</p>
@@ -395,7 +484,9 @@ conventional commits. Reference the diff; do not restate it.</pre>
     </div>
   </div>
 
-  <p class="footnote" style="text-align: center;">A 2,000-line skill costs you nothing until you need it. Install thirty; pay for one.</p>
+  <div class="pd-footnote-row">
+    <p class="footnote">A 2,000-line skill costs you nothing until you need it. Install thirty; pay for one.</p>
+  </div>
 
   <aside class="notes">
     <p>90 seconds. Define progressive disclosure explicitly now that the team has built one. You can install 30 skills and not pay a context tax, because only the names plus a 1,536-character description sit in context. The body comes in on invoke.</p>
@@ -508,6 +599,29 @@ conventional commits. Reference the diff; do not restate it.</pre>
   <aside class="notes">
     <p>60 seconds flat. No deep dive. The job is name-recognition so "subagent" and "hook" land as familiar words when they come up on the job next week.</p>
     <p>Mental model to say out loud: skills are the playbook, subagents are where it can run, hooks are the guarantee.</p>
+  </aside>
+</section>
+
+<section class="slide slide--top-aligned skills-section" data-section="16:00 — The lifecycle loop">
+  <span class="label">How a Claude Code session actually runs</span>
+  <h2>The lifecycle, step by step.</h2>
+
+  <ol class="lifecycle-loop">
+    <li><span class="n">01</span><span class="k">Launch</span><span class="d">Open the session. CLAUDE.md and auto memory load into context.</span></li>
+    <li><span class="n">02</span><span class="k">Plan</span><span class="d">Claude reads files, outlines the task, asks before destructive changes.</span></li>
+    <li><span class="n">03</span><span class="k">Act</span><span class="d">Tool calls, file edits, shell commands. Hooks fire on every tool event.</span></li>
+    <li><span class="n">04</span><span class="k">Observe</span><span class="d">Output checked. Tests run. Diff reviewed.</span></li>
+    <li><span class="n">05</span><span class="k">Decide</span><span class="d">Keep going, <code>/rewind</code> a step, or <code>/clear</code> and start the next task.</span></li>
+    <li><span class="n">06</span><span class="k">Compact</span><span class="d">Near 95% context, Claude summarizes. Skills re-attach from disk.</span></li>
+    <li><span class="n">07</span><span class="k">Close</span><span class="d">Commit. Auto memory persists what mattered for next session.</span></li>
+  </ol>
+
+  <p class="footnote" style="text-align: center; margin-top: 1rem;">Steps 02&ndash;05 repeat until done. Every command in this deck lives somewhere on this loop.</p>
+
+  <aside class="notes">
+    <p>60 seconds. This is the "where does everything we just covered fit" slide. Walk the loop once.</p>
+    <p>Point at 02&ndash;05: this is where most of the tension lives. Plan Mode on 02. /rewind on 05. /clear and /compact on 05 and 06. Hooks and permissions gate 03. Skills join the playbook at launch (01) and re-attach after compact (06).</p>
+    <p>Do not read all seven out loud. Name 02&ndash;05 as the core loop. Close with: "that is the shape. Next section: how you shape what it sees."</p>
   </aside>
 </section>
 

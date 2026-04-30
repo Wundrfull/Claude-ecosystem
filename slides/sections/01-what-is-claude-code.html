@@ -14,14 +14,61 @@
   }
   .compare-split .col-label {
     font-family: var(--font-sans);
-    font-size: 0.78rem;
+    font-size: 1.15rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: -0.005em;
+    color: var(--dark-grey);
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 2px solid var(--medium-grey);
+  }
+  .compare-split .col-label.claude {
+    color: var(--captech-blue);
+    border-bottom-color: var(--captech-blue);
+  }
+  .compare-split .col-label .kicker {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--medium-grey);
-    margin: 0 0 0.5rem;
+    margin-bottom: 0.2rem;
   }
-  .compare-split .col-label.claude { color: var(--captech-blue); }
+  .compare-split .col-label.claude .kicker { color: var(--sky-blue); }
+
+  /* Verb chip below each terminal, arrow between them in the row. */
+  .compare-verbs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1rem;
+    align-items: center;
+    max-width: 1100px;
+    margin: 1.25rem auto 0;
+  }
+  .compare-verbs .verb {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    letter-spacing: 0.01em;
+    text-align: center;
+    padding: 0.55rem 0.75rem;
+    border-radius: 4px;
+  }
+  .compare-verbs .verb.from {
+    color: var(--medium-grey);
+    background: rgba(138,148,158,0.08);
+  }
+  .compare-verbs .verb.to {
+    color: var(--captech-blue);
+    background: rgba(0,94,184,0.07);
+    font-weight: 600;
+  }
+  .compare-verbs .verb-arrow {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    color: var(--sky-blue);
+    font-weight: 600;
+  }
   /* Force terminals to share the column's left edge (not auto-centered). */
   .compare-split .term {
     margin: 0;
@@ -154,7 +201,7 @@
 
   <div class="compare-split">
     <div class="compare-col">
-      <p class="col-label">Copilot &mdash; in your editor</p>
+      <p class="col-label"><span class="kicker">editor-embedded</span>Copilot</p>
       <div class="term term-sm" style="background: #1E252B;">
         <div class="term-chrome">
           <span></span><span></span><span></span>
@@ -176,7 +223,7 @@
     </div>
 
     <div class="compare-col">
-      <p class="col-label claude">Claude Code &mdash; in your terminal</p>
+      <p class="col-label claude"><span class="kicker">terminal-resident agent</span>Claude Code</p>
       <div class="term term-sm term-session term-output-lines" style="--term-typed-width: 24ch;">
         <div class="term-chrome">
           <span></span><span></span><span></span>
@@ -200,9 +247,11 @@
     </div>
   </div>
 
-  <p class="compare-shift">
-    <span class="from">accept / reject</span><span class="arrow">&rarr;</span><span class="to">plan / act / verify</span>
-  </p>
+  <div class="compare-verbs">
+    <div class="verb from">accept / reject</div>
+    <div class="verb-arrow">&rarr;</div>
+    <div class="verb to">plan / act / verify</div>
+  </div>
 
   <aside class="notes">
     <p>90 seconds. Head off the obvious objection first: modern Copilot runs Claude and GPT-class models too, and can draft whole PRs. The difference here is not the model underneath &mdash; it is the interaction loop around it.</p>

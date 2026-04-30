@@ -38,16 +38,38 @@
     font-size: 0.78rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--col-accent, var(--captech-blue));
+    color: var(--col-title, var(--dark-grey));
     margin: 0 0 0.75rem;
   }
   .datapath-col p { margin: 0.35rem 0; font-size: 1rem; line-height: 1.45; }
   .datapath-col p.lead { font-size: 1.08rem; font-weight: 500; color: #111; margin-bottom: 0.6rem; }
   .datapath-col code { color: var(--captech-blue); font-size: 0.92rem; }
   .datapath-col .cite { font-size: 0.78rem; color: var(--medium-grey); font-style: italic; margin-top: 0.75rem; display: block; }
-  .dp-client { --col-accent: var(--yellow); }
-  .dp-bedrock { --col-accent: var(--captech-blue); }
-  .dp-team   { --col-accent: var(--light-teal); }
+  /* Dark-text titles for columns whose accent would be unreadable as a title color. */
+  .dp-client { --col-accent: var(--yellow); --col-title: var(--dark-grey); }
+  .dp-bedrock { --col-accent: var(--captech-blue); --col-title: var(--captech-blue); }
+  .dp-team   { --col-accent: var(--light-teal); --col-title: var(--captech-blue); }
+  /* Yellow admin-action callout: yellow band, dark text on top. */
+  .datapath-col .admin-action {
+    display: block;
+    margin-top: 0.75rem;
+    padding: 0.55rem 0.75rem;
+    background: var(--yellow);
+    color: #000;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    border-radius: 3px;
+  }
+  .datapath-col .admin-action strong {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.15rem;
+    color: #000;
+  }
+  .datapath-col .admin-action code { color: #000; background: rgba(0, 0, 0, 0.08); padding: 0 0.25rem; border-radius: 2px; }
   /* Rule 3: three gate cards. */
   .gates-grid {
     display: grid;
@@ -165,7 +187,7 @@
       <h3>What your team must verify</h3>
       <p class="lead">The guarantee is not a substitute for review.</p>
       <p>Read CLAUDE.md for client constraints. Confirm <code>/permissions</code> before any destructive tool. Never paste credentials or raw customer rows.</p>
-      <p>Thumbs-up / thumbs-down buttons <em>do</em> send content back &mdash; admin: Organization settings &rarr; Data and Privacy &rarr; Rate chats &rarr; off.</p>
+      <p class="admin-action"><strong>Admin action &middot; one-time</strong>Thumbs-up / thumbs-down buttons <em>do</em> send content back. Organization settings &rarr; Data and Privacy &rarr; Rate chats &rarr; <strong style="display:inline; margin:0; font-size:inherit; letter-spacing:0.04em;">off</strong>.</p>
     </div>
   </div>
   <p class="caption mt-lg">CapTech sandbox: anything goes. Client repos: the three columns above are the checklist.</p>
@@ -180,15 +202,15 @@
   <h2>Cite the line &mdash; your best hallucination guard.</h2>
   <p class="lede-light mt-sm" style="max-width: 62ch;">Ask Claude <em>where</em> something lives before you ask what it does. It will grep the repo, open the file, and answer with a <code>path:line</code>. Hallucinations drop because the model has to point at real code.</p>
 
-  <div class="term term-md term-session mt-lg" style="max-width: 760px;">
+  <div class="term term-md term-session term-typing term-output-lines mt-lg" style="max-width: 760px; --term-typed-steps: 36; --term-typed-width: 36ch;">
     <div class="term-chrome"><span></span><span></span><span></span><span class="term-title">~/client/subgraph &middot; opus 4.7</span></div>
     <div class="term-body">
-      <div class="term-line"><span class="term-prompt">$</span> where does the token refresh happen?</div>
-      <div class="term-output" style="margin-top: 0.5rem;">
-        <div class="term-ln dim" style="opacity: 1;">reading src/auth/refresh.ts:42-78</div>
-        <div class="term-ln" style="opacity: 1;">refreshToken() calls POST /api/auth/refresh with the stored refresh_token</div>
-        <div class="term-ln" style="opacity: 1;">rotation is handled by SessionStore.rotate() &mdash; schema/auth.graphql:12</div>
-        <div class="term-ln ok term-check accent" style="opacity: 1;">cite: src/auth/refresh.ts:54</div>
+      <div class="term-line"><span class="term-prompt">$</span><span class="term-typed" data-text="where does the token refresh happen?"></span></div>
+      <div class="term-output">
+        <div class="term-ln dim">reading src/auth/refresh.ts:42-78</div>
+        <div class="term-ln">refreshToken() calls POST /api/auth/refresh with the stored refresh_token</div>
+        <div class="term-ln">rotation is handled by SessionStore.rotate() &mdash; schema/auth.graphql:12</div>
+        <div class="term-ln ok term-check accent">cite: src/auth/refresh.ts:54</div>
       </div>
     </div>
   </div>

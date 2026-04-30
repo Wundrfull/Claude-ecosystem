@@ -63,6 +63,138 @@
     color: rgba(255, 255, 255, 0.6);
   }
   .qa-meta span strong { color: rgba(255, 255, 255, 0.9); font-weight: 500; }
+
+  /* Ranked commands list — two columns, mono slash-commands with rank chip and brief reason. */
+  .ranked-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem auto 0;
+    max-width: 1080px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem 2rem;
+  }
+  .ranked-list li {
+    display: grid;
+    grid-template-columns: 2rem 10rem 1fr;
+    gap: 0.8rem;
+    align-items: baseline;
+    padding: 0.4rem 0.25rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  }
+  .ranked-list .rank {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--medium-grey);
+    letter-spacing: 0.14em;
+  }
+  .ranked-list .cmd {
+    font-family: var(--font-mono);
+    color: var(--captech-blue);
+    font-weight: 500;
+    font-size: 1rem;
+  }
+  .ranked-list .why {
+    font-size: 0.95rem;
+    color: var(--dark-grey);
+    line-height: 1.4;
+  }
+
+  /* Tools-I-use slide — three-column card grid with category + stack of items. */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+    max-width: 1120px;
+  }
+  .tools-card {
+    padding: 1.25rem 1.25rem 1.1rem;
+    border-top: 3px solid;
+    background: rgba(0, 0, 0, 0.02);
+  }
+  .tools-card.t-teams    { border-color: var(--captech-blue); }
+  .tools-card.t-shell    { border-color: var(--sky-blue); }
+  .tools-card.t-platform { border-color: var(--light-teal); }
+  .tools-card .cat {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--medium-grey);
+    margin: 0 0 0.6rem;
+  }
+  .tools-card h3 {
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin: 0 0 0.75rem;
+    color: var(--dark-grey);
+    letter-spacing: -0.01em;
+  }
+  .tools-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .tools-card li {
+    font-size: 0.98rem;
+    line-height: 1.4;
+    color: var(--dark-grey);
+  }
+  .tools-card li strong {
+    font-family: var(--font-mono);
+    color: var(--captech-blue);
+    font-weight: 500;
+    margin-right: 0.35rem;
+  }
+
+  /* Appendix resources — dark slide, grouped link lists. */
+  .appendix-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 1.5rem;
+    max-width: 1120px;
+  }
+  .appendix-col h4 {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin: 0 0 0.75rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    font-weight: 600;
+  }
+  .appendix-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .appendix-col li {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .appendix-col li .resource {
+    display: block;
+    font-family: var(--font-mono);
+    color: var(--sky-blue);
+    font-size: 0.85rem;
+  }
+  .appendix-col li .desc {
+    display: block;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.82rem;
+    margin-top: 0.1rem;
+  }
 </style>
 
 <section class="slide" data-section="25:00 — Three levers, final">
@@ -94,6 +226,80 @@
   </aside>
 </section>
 
+<section class="slide slide--top-aligned" data-section="25:30 — Commands, ranked">
+  <span class="eyebrow">every slash command anthropic ships &middot; my personal ranking</span>
+  <h2>The short list, in order of how often I reach for it.</h2>
+
+  <ol class="ranked-list">
+    <li><span class="rank">01</span><span class="cmd">/clear</span><span class="why">Between unrelated tasks. Biggest accuracy lever you have.</span></li>
+    <li><span class="rank">02</span><span class="cmd">Shift+Tab</span><span class="why">Plan Mode. Read-only scouting before any real change.</span></li>
+    <li><span class="rank">03</span><span class="cmd">/rewind</span><span class="why">When you're down a wrong path. Four actions to pick from.</span></li>
+    <li><span class="rank">04</span><span class="cmd">/permissions</span><span class="why">Audit what Claude can do in this repo. Check before every client session.</span></li>
+    <li><span class="rank">05</span><span class="cmd">/compact</span><span class="why">Long related session, approaching the wall.</span></li>
+    <li><span class="rank">06</span><span class="cmd">/memory</span><span class="why">View or edit MEMORY.md. Skim weekly.</span></li>
+    <li><span class="rank">07</span><span class="cmd">/context</span><span class="why">Read-only snapshot. Use when unsure whether to clear or compact.</span></li>
+    <li><span class="rank">08</span><span class="cmd">/review</span><span class="why">Self-review before requesting human review.</span></li>
+    <li><span class="rank">09</span><span class="cmd">/security-review</span><span class="why">Any diff touching auth, data, secrets, or infra.</span></li>
+    <li><span class="rank">10</span><span class="cmd">/config</span><span class="why">Model selection, theme, output format. Set once.</span></li>
+    <li><span class="rank">11</span><span class="cmd">/help</span><span class="why">Resurfaces the list when a command name escapes you.</span></li>
+    <li><span class="rank">12</span><span class="cmd">/init</span><span class="why">Bootstrap CLAUDE.md. Mostly useful on greenfield repos.</span></li>
+  </ol>
+
+  <p class="caption" style="text-align: center; margin-top: 0.9rem;">Your ranking will differ. Keep the top five in muscle memory; look up the rest.</p>
+
+  <aside class="notes">
+    <p>45 seconds. Say "my ranking, not The Ranking" up front. The top five are the ones I could not work without.</p>
+    <p>Stress: /clear over /compact for most tasks. /compact bakes in whatever direction the session was headed; /clear starts you fresh, which is usually what you actually want.</p>
+    <p>Point at /permissions: this is the one everyone forgets. Run it before you touch a client repo. Know what Claude is allowed to do before you ask it to do anything.</p>
+  </aside>
+</section>
+
+<section class="slide slide--top-aligned" data-section="25:40 — Tools I actually use">
+  <span class="eyebrow">beyond the CLI</span>
+  <h2>Tools I actually use with Claude Code.</h2>
+
+  <div class="tools-grid">
+    <div class="tools-card t-teams">
+      <p class="cat">Agent orchestration</p>
+      <h3>Teams &amp; subagents</h3>
+      <ul>
+        <li><strong>Opus 4.7 lead</strong> with Sonnet 4.6 teammates for parallel work.</li>
+        <li><strong>Explore agent</strong> for read-only scouting without polluting main.</li>
+        <li><strong>Plan agent</strong> when the design needs alignment before coding.</li>
+        <li><strong>Agent SDK</strong> to build custom subagents for recurring tasks.</li>
+      </ul>
+    </div>
+    <div class="tools-card t-shell">
+      <p class="cat">Shell &amp; workflow</p>
+      <h3>Terminal layer</h3>
+      <ul>
+        <li><strong>tmux</strong> to keep the Claude session pinned while code runs beside it.</li>
+        <li><strong>git worktrees</strong> so agents can work on isolated branches in parallel.</li>
+        <li><strong>gh cli</strong> for PR, issue, and check management inside the session.</li>
+        <li><strong>starship</strong> prompt for a visible model/context indicator.</li>
+      </ul>
+    </div>
+    <div class="tools-card t-platform">
+      <p class="cat">Platform &amp; extensions</p>
+      <h3>Plugs into Claude</h3>
+      <ul>
+        <li><strong>MCP servers</strong> for Linear, GitHub, Postgres, Slack.</li>
+        <li><strong>Hooks</strong> in <code>.claude/settings.json</code> for deterministic gates.</li>
+        <li><strong>Skills marketplace</strong> &mdash; install, don't rewrite.</li>
+        <li><strong>AWS Bedrock</strong> routing for client engagements.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="caption" style="text-align: center; margin-top: 1rem;">None of this is required. All of it compounds.</p>
+
+  <aside class="notes">
+    <p>60 seconds. The shape: Claude Code on its own is powerful; wrapping the right tooling around it is what makes it sustainable on real client work.</p>
+    <p>Call out the three categories: how Claude plans (teams), where Claude runs (shell), what Claude connects to (platform).</p>
+    <p>Per item: one sentence max. The goal is name-recognition, not a tutorial. Links live on the appendix slide after Q&amp;A.</p>
+  </aside>
+</section>
+
 <section class="slide slide--top-aligned dark" data-section="25:45 — Q&amp;A">
   <span class="label">the reference index</span>
   <div class="qa-hero">
@@ -117,5 +323,87 @@
       <li>How do we pick Opus 4.7 vs Sonnet 4.6 per task?</li>
     </ul>
     <p>Close by pointing them at the repo and the two scenario walkthroughs in <code>demos/</code>. Tell them to run the scenarios in sandbox before touching the client repo.</p>
+  </aside>
+</section>
+
+<section class="slide slide--top-aligned dark" data-section="26:00 — Appendix: resources">
+  <span class="label" style="color: var(--yellow);">appendix &middot; keep-this-handy</span>
+  <h2 style="color: #fff; max-width: 24ch;">Resources worth bookmarking.</h2>
+
+  <div class="appendix-grid">
+    <div class="appendix-col">
+      <h4>Docs &amp; foundations</h4>
+      <ul>
+        <li>
+          <span class="resource">docs.claude.com/claude-code</span>
+          <span class="desc">Official CLI reference and guides.</span>
+        </li>
+        <li>
+          <span class="resource">docs.claude.com/en/docs/claude-code/settings</span>
+          <span class="desc">Hooks, permissions, settings.json schema.</span>
+        </li>
+        <li>
+          <span class="resource">docs.claude.com/en/docs/agents-and-tools/agent-sdk</span>
+          <span class="desc">Build custom subagents with the Agent SDK.</span>
+        </li>
+        <li>
+          <span class="resource">docs.claude.com/en/docs/agents-and-tools/skills</span>
+          <span class="desc">Skill authoring, frontmatter, progressive disclosure.</span>
+        </li>
+        <li>
+          <span class="resource">docs.claude.com/en/docs/claude-code/mcp</span>
+          <span class="desc">MCP server setup and tool scoping.</span>
+        </li>
+      </ul>
+    </div>
+    <div class="appendix-col">
+      <h4>Templates &amp; examples</h4>
+      <ul>
+        <li>
+          <span class="resource">github.com/anthropics/claude-code</span>
+          <span class="desc">Upstream CLI source; sample CLAUDE.md files.</span>
+        </li>
+        <li>
+          <span class="resource">github.com/anthropics/skills</span>
+          <span class="desc">First-party skill library (humanizer, impeccable, more).</span>
+        </li>
+        <li>
+          <span class="resource">github.com/obra/superpowers</span>
+          <span class="desc">Widely-referenced community skill pack.</span>
+        </li>
+        <li>
+          <span class="resource">grugbrain.dev</span>
+          <span class="desc">The Grug Brained Developer &mdash; required reading.</span>
+        </li>
+      </ul>
+    </div>
+    <div class="appendix-col">
+      <h4>Context &amp; background</h4>
+      <ul>
+        <li>
+          <span class="resource">platform.claude.com/docs/en/build-with-claude/context-windows</span>
+          <span class="desc">Context rot, the honest story.</span>
+        </li>
+        <li>
+          <span class="resource">anthropic.com/news/claude-sonnet-4-5</span>
+          <span class="desc">SWE-bench numbers referenced on the rot slide.</span>
+        </li>
+        <li>
+          <span class="resource">code.claude.com/docs/en/checkpointing</span>
+          <span class="desc">/rewind mechanics and the 30-day retention policy.</span>
+        </li>
+        <li>
+          <span class="resource">this repo &middot; <code>notes/</code></span>
+          <span class="desc">Speaker notes, research synthesis, rehearsal cues.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="caption" style="text-align: center; color: rgba(255,255,255,0.5); margin-top: 1.1rem;">Links current as of April 2026. Deck repo stays open; PRs welcome.</p>
+
+  <aside class="notes">
+    <p>This is the "keep this open in a tab" slide. Do not read it during Q&amp;A. Point at it as the close, say "these are in the repo as a text file too", and move on.</p>
+    <p>If someone asks "where do I start?": docs.claude.com/claude-code, then the skills repo, then one afternoon messing with hooks in a sandbox.</p>
   </aside>
 </section>

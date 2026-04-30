@@ -1,17 +1,32 @@
 <style>
   /* 05-context-hygiene — section-specific tweaks. Kit classes do the heavy lifting. */
-  /* Merged "rot evidence" slide: flat benchmark graph up top, Anthropic quote below. */
-  .ch-rot-evidence { display: grid; grid-template-rows: auto auto auto; gap: 1.25rem; width: 100%; max-width: 1120px; margin: 0 auto; align-items: center; }
-  .ch-rot-top { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
-  .ch-rot-top .stat-duo { margin: 0; padding: 0; }
-  .ch-rot-top .graph { max-width: 560px; margin: 0; }
-  .ch-rot-pivot { text-align: center; font-family: var(--font-mono); font-size: 1.05rem; letter-spacing: 0.04em; color: rgba(255,255,255,0.55); text-transform: uppercase; padding: 0.25rem 0; border-top: 1px solid rgba(255,255,255,0.12); border-bottom: 1px solid rgba(255,255,255,0.12); }
-  .ch-rot-pivot strong { color: var(--yellow, #FDDA24); font-weight: 600; letter-spacing: 0.02em; }
+  /* Merged "rot evidence" slide: two-panel graph (flat + declining) on top, Anthropic quote below. */
+  .ch-rot-evidence { display: grid; grid-template-rows: auto auto auto; gap: 1.1rem; width: 100%; max-width: 1180px; margin: 0 auto; align-items: center; }
+  .ch-rot-top { display: grid; grid-template-columns: 1fr 1fr; gap: 1.75rem; align-items: stretch; }
+  .ch-rot-panel { display: flex; flex-direction: column; gap: 0.5rem; }
+  .ch-rot-panel__label { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--medium-grey); margin: 0; }
+  .ch-rot-panel__sub { font-family: var(--font-mono); font-size: 0.78rem; color: var(--medium-grey); margin: 0; text-align: center; letter-spacing: 0.04em; }
+  .ch-rot-top .graph { max-width: 100%; margin: 0; }
+  .ch-rot-top .graph svg { width: 100%; height: auto; display: block; }
+  /* Light-bg axis + text overrides, scoped to this slide. */
+  .ch-rot-top .graph .axis-line { stroke: rgba(0,0,0,0.55); }
+  .ch-rot-top .graph .axis-tick { stroke: rgba(0,0,0,0.12); stroke-dasharray: 3 4; }
+  .ch-rot-top .graph .axis-title { fill: var(--medium-grey); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .ch-rot-top .graph .axis-text { fill: var(--medium-grey); font-family: var(--font-mono); font-size: 11px; }
+  .ch-rot-top .graph .annot-text { fill: var(--dark-grey); font-family: var(--font-mono); font-size: 12px; }
+  .ch-rot-top .graph .annot-text.strong { fill: var(--captech-blue); font-weight: 600; }
+  .ch-rot-top .graph .annot-text.decline { fill: #B3341A; font-weight: 600; }
+  .ch-rot-top .graph .curve-flat { fill: none; stroke: var(--captech-blue); stroke-width: 3; stroke-linecap: round; }
+  .ch-rot-top .graph .curve-decline { fill: none; stroke: #D9451F; stroke-width: 3; stroke-linecap: round; }
+  .ch-rot-top .graph .annot-dot { fill: var(--captech-blue); }
+  .ch-rot-top .graph .annot-dot.decline { fill: #D9451F; }
+  .ch-rot-top .graph .zone-degrade { fill: rgba(253, 218, 36, 0.28); }
+  .ch-rot-pivot { text-align: center; font-family: var(--font-mono); font-size: 1.02rem; letter-spacing: 0.04em; color: var(--medium-grey); text-transform: uppercase; padding: 0.3rem 0; border-top: 1px solid rgba(0,0,0,0.12); border-bottom: 1px solid rgba(0,0,0,0.12); }
+  .ch-rot-pivot strong { color: #B3341A; font-weight: 600; letter-spacing: 0.02em; }
   .ch-rot-quote { position: relative; z-index: 1; }
-  .ch-rot-quote .quote { margin: 0; }
-  /* Keep the zone-degrade readable on dark bg. */
-  .ch-rot-top .graph.graph-dark .zone-degrade,
-  .ch-rot-top .graph .zone-degrade { fill: rgba(253, 218, 36, 0.18); }
+  .ch-rot-quote .quote { margin: 0; color: var(--dark-grey); }
+  .ch-rot-quote .quote cite { color: var(--medium-grey); }
+  .ch-rot-citation { color: var(--medium-grey); }
   .ch-decision { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; width: 100%; max-width: 1080px; margin: 1.5rem auto 0; }
   .ch-panel { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; padding: 1.1rem 1.2rem 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
   .ch-panel h3 { margin: 0; font-family: var(--font-mono); font-size: 1.15rem; color: var(--captech-blue); }
@@ -102,38 +117,68 @@
   <p class="lede">The load-bearing numbers.</p>
 </section>
 
-<section class="slide dark" data-section="19:15 — Context rot evidence">
+<section class="slide" data-section="19:15 — Context rot evidence">
   <span class="eyebrow">Two halves of the honest story</span>
   <h2>Benchmark survives. Recall does not.</h2>
   <div class="ch-rot-evidence">
     <div class="ch-rot-top">
-      <div class="stat-duo">
-        <div class="stat-duo__num">77.2<span class="unit">%</span><span class="sub">200K context</span></div>
-        <div class="stat-duo__delta">
-          <div class="stat-duo__delta-val">&Delta; +1.0</div>
-          <div class="stat-duo__delta-line"></div>
+      <div class="ch-rot-panel">
+        <p class="ch-rot-panel__label">Left &middot; narrow benchmark</p>
+        <div class="stat-duo">
+          <div class="stat-duo__num">77.2<span class="unit">%</span><span class="sub">200K context</span></div>
+          <div class="stat-duo__delta">
+            <div class="stat-duo__delta-val">&Delta; +1.0</div>
+            <div class="stat-duo__delta-line"></div>
+          </div>
+          <div class="stat-duo__num">78.2<span class="unit">%</span><span class="sub">1M context</span></div>
         </div>
-        <div class="stat-duo__num">78.2<span class="unit">%</span><span class="sub">1M context</span></div>
+        <div class="graph graph-animate">
+          <svg viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sonnet 4.5 accuracy on SWE-bench Verified, essentially flat from 200K to 1M">
+            <line class="axis-line" x1="80" y1="30" x2="80" y2="220"/>
+            <line class="axis-line" x1="80" y1="220" x2="760" y2="220"/>
+            <line class="axis-tick" x1="80" y1="80" x2="760" y2="80"/>
+            <line class="axis-tick" x1="80" y1="130" x2="760" y2="130"/>
+            <line class="axis-tick" x1="80" y1="180" x2="760" y2="180"/>
+            <text class="axis-title" x="80" y="20" text-anchor="start">SWE-BENCH</text>
+            <text class="axis-title" x="760" y="246" text-anchor="end">TOKEN COUNT</text>
+            <text class="axis-text" x="280" y="240" text-anchor="middle">200K</text>
+            <text class="axis-text" x="760" y="240" text-anchor="middle">1M</text>
+            <text class="axis-text" x="72" y="84" text-anchor="end">80%</text>
+            <text class="axis-text" x="72" y="134" text-anchor="end">70%</text>
+            <path class="curve curve-flat" d="M 80 108 L 280 110 Q 500 112 760 106"/>
+            <circle class="annot-dot" cx="280" cy="110" r="4"/>
+            <circle class="annot-dot" cx="760" cy="106" r="4"/>
+            <text class="annot-text strong" x="280" y="96" text-anchor="middle">77.2%</text>
+            <text class="annot-text strong" x="760" y="96" text-anchor="end">78.2%</text>
+          </svg>
+        </div>
+        <p class="ch-rot-panel__sub">Sonnet 4.5 on SWE-bench Verified</p>
       </div>
-      <div class="graph graph-dark graph-animate">
-        <svg viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sonnet 4.5 accuracy on SWE-bench Verified, essentially flat from 200K to 1M">
-          <line class="axis-line" x1="80" y1="30" x2="80" y2="220"/>
-          <line class="axis-line" x1="80" y1="220" x2="760" y2="220"/>
-          <line class="axis-tick" x1="80" y1="80" x2="760" y2="80"/>
-          <line class="axis-tick" x1="80" y1="130" x2="760" y2="130"/>
-          <line class="axis-tick" x1="80" y1="180" x2="760" y2="180"/>
-          <text class="axis-title" x="80" y="20" text-anchor="start">SWE-BENCH</text>
-          <text class="axis-title" x="760" y="246" text-anchor="end">TOKEN COUNT</text>
-          <text class="axis-text" x="280" y="240" text-anchor="middle">200K</text>
-          <text class="axis-text" x="760" y="240" text-anchor="middle">1M</text>
-          <text class="axis-text" x="72" y="84" text-anchor="end">80%</text>
-          <text class="axis-text" x="72" y="134" text-anchor="end">70%</text>
-          <path class="curve curve-flat" d="M 80 108 L 280 110 Q 500 112 760 106"/>
-          <circle class="annot-dot" cx="280" cy="110" r="4"/>
-          <circle class="annot-dot" cx="760" cy="106" r="4"/>
-          <text class="annot-text strong" x="280" y="96" text-anchor="middle">77.2%</text>
-          <text class="annot-text strong" x="760" y="96" text-anchor="end">78.2%</text>
-        </svg>
+      <div class="ch-rot-panel">
+        <p class="ch-rot-panel__label">Right &middot; broad recall &amp; reasoning</p>
+        <div class="graph graph-animate">
+          <svg viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Illustrative recall on broad tasks: near-flat through 200K, gentle decline to 500K, steeper drop to 1M">
+            <rect class="zone-degrade" x="280" y="30" width="480" height="190"/>
+            <line class="axis-line" x1="80" y1="30" x2="80" y2="220"/>
+            <line class="axis-line" x1="80" y1="220" x2="760" y2="220"/>
+            <line class="axis-tick" x1="80" y1="80" x2="760" y2="80"/>
+            <line class="axis-tick" x1="80" y1="130" x2="760" y2="130"/>
+            <line class="axis-tick" x1="80" y1="180" x2="760" y2="180"/>
+            <text class="axis-title" x="80" y="20" text-anchor="start">RECALL</text>
+            <text class="axis-title" x="760" y="246" text-anchor="end">TOKEN COUNT</text>
+            <text class="axis-text" x="280" y="240" text-anchor="middle">200K</text>
+            <text class="axis-text" x="520" y="240" text-anchor="middle">500K</text>
+            <text class="axis-text" x="760" y="240" text-anchor="middle">1M</text>
+            <text class="axis-text" x="72" y="84" text-anchor="end">high</text>
+            <text class="axis-text" x="72" y="184" text-anchor="end">low</text>
+            <path class="curve curve-decline" d="M 80 78 L 200 80 Q 280 84 360 102 Q 460 126 560 158 Q 660 192 760 208"/>
+            <circle class="annot-dot decline" cx="80" cy="78" r="4"/>
+            <circle class="annot-dot decline" cx="280" cy="86" r="4"/>
+            <circle class="annot-dot decline" cx="760" cy="208" r="4"/>
+            <text class="annot-text decline" x="760" y="198" text-anchor="end">fall-off</text>
+          </svg>
+        </div>
+        <p class="ch-rot-panel__sub">Recall on broad tasks (illustrative)</p>
       </div>
     </div>
     <div class="ch-rot-pivot">
@@ -146,11 +191,12 @@
       </div>
     </div>
   </div>
-  <p class="caption" style="color: rgba(255,255,255,0.5);">Top: anthropic.com/news/claude-sonnet-4-5 &middot; Bottom: Anthropic platform docs</p>
+  <p class="caption ch-rot-citation">Left: anthropic.com/news/claude-sonnet-4-5 &middot; Right: shape is illustrative, claim cited below</p>
   <aside class="notes">
     <p>75 seconds. Two facts on one slide, because in isolation each one misleads.</p>
-    <p>Top half: Sonnet 4.5 on SWE-bench Verified. 77.2% at 200K, 78.2% at 1M. Essentially flat. If you stop reading there, you conclude the million-token window is safe to fill.</p>
-    <p>Bottom half: Anthropic's own documentation. "As token count grows, accuracy and recall degrade, a phenomenon known as context rot." Their words, not mine.</p>
+    <p>Left panel: Sonnet 4.5 on SWE-bench Verified. 77.2% at 200K, 78.2% at 1M. Essentially flat. If you stop reading there, you conclude the million-token window is safe to fill.</p>
+    <p>Right panel: the honest fall-off curve for broad recall and reasoning. The shape is illustrative — I do not have exact public numbers for frontier-model recall across the full 0-1M range — but the direction is not in doubt. Anthropic's own docs state accuracy and recall degrade as tokens grow. Near-flat through 200K, gentle decline out to 500K, steeper drop by 1M. The yellow band marks the danger zone.</p>
+    <p>The quote below is the authoritative citation: "As token count grows, accuracy and recall degrade, a phenomenon known as context rot." Their words, not mine.</p>
     <p>Reconcile them. The flat line is a narrow coding benchmark that plateaus early. Context rot applies to broader recall and reasoning — the stuff that matters in a long session with scattered files, prior decisions, half-remembered constraints. The 1M window is a ceiling, not a target. Use the word "context rot" with the team so everyone names the same thing.</p>
   </aside>
 </section>

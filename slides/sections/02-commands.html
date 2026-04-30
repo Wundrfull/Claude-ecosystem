@@ -83,6 +83,124 @@
   .ctx-pair .ctx-real { max-width: 100%; }
   .ctx-pair .term { max-width: 100%; }
 
+  /* --- /clear and /compact grid LOOPS (slides 8 & 9) ---
+     kit.css ships one-shot versions of these animations (ctx-cell-to-free,
+     ctx-cell-to-summary). Here we override them inside .ctx-pair with
+     looping keyframes so the action repeats for the audience. A full cycle
+     is ~5.8s: fill (before) → morph (middle) → pause on empty (after) → reset. */
+
+  /* /clear: every fillable cell cycles filled → outlined-empty → filled.
+     We bake a small positional offset (--i) into the delay so the "clearing"
+     reads as a wave across the grid, but keep the stagger window tight so
+     the end-state pause still reads as one collective beat. */
+  .ctx-pair .ctx-real.ctx-clear .ctx-real__grid .cell:not(.free):not(.autocompact) {
+    animation: cmd-clear-cycle 5.8s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.004s);
+  }
+  @keyframes cmd-clear-cycle {
+    0%,  22% {
+      background-color: var(--fill-color, var(--ctx-messages));
+      border: 1px solid transparent;
+      transform: scale(1);
+      opacity: 1;
+    }
+    32% {
+      background-color: var(--fill-color, var(--ctx-messages));
+      transform: scale(0.7);
+      opacity: 0.5;
+      border: 1px solid transparent;
+    }
+    42%, 78% {
+      background-color: transparent;
+      border: 1px solid rgba(255,255,255,0.22);
+      transform: scale(1);
+      opacity: 1;
+    }
+    92%, 100% {
+      background-color: var(--fill-color, var(--ctx-messages));
+      border: 1px solid transparent;
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* /compact: the tail (non-summary messages) cycles filled → outlined → filled.
+     The summary band pulses its ring at the same cadence so the reveal reads
+     as "these survive, those get freed." Both keyframes share the 5.8s cycle
+     and align their phases so the pause lands on the "after" state together. */
+  .ctx-pair .ctx-real.ctx-compact-real .ctx-real__grid .cell.messages:not(.is-summary) {
+    --fill-color: var(--ctx-messages);
+    animation: cmd-compact-cycle-tail 5.8s ease-in-out infinite;
+    animation-delay: calc(var(--mi, 0) * 0.005s);
+  }
+  .ctx-pair .ctx-real.ctx-compact-real .ctx-real__grid .cell.messages.is-summary {
+    animation: cmd-compact-cycle-summary 5.8s ease-in-out infinite;
+  }
+  @keyframes cmd-compact-cycle-tail {
+    0%,  22% {
+      background-color: var(--ctx-messages);
+      border: 1px solid transparent;
+      transform: scale(1);
+      opacity: 1;
+    }
+    32% {
+      background-color: var(--ctx-messages);
+      transform: scale(0.7);
+      opacity: 0.5;
+      border: 1px solid transparent;
+    }
+    42%, 78% {
+      background-color: transparent;
+      border: 1px solid rgba(255,255,255,0.22);
+      transform: scale(1);
+      opacity: 1;
+    }
+    92%, 100% {
+      background-color: var(--ctx-messages);
+      border: 1px solid transparent;
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes cmd-compact-cycle-summary {
+    0%,  22% {
+      box-shadow: none;
+      transform: scale(1);
+      filter: brightness(1);
+    }
+    38% {
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5), 0 0 6px rgba(147,51,234,0.55);
+      transform: scale(1.12);
+      filter: brightness(1.2);
+    }
+    50%, 78% {
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
+      transform: scale(1);
+      filter: brightness(1.05);
+    }
+    92%, 100% {
+      box-shadow: none;
+      transform: scale(1);
+      filter: brightness(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ctx-pair .ctx-real.ctx-clear .ctx-real__grid .cell:not(.free):not(.autocompact),
+    .ctx-pair .ctx-real.ctx-compact-real .ctx-real__grid .cell.messages:not(.is-summary),
+    .ctx-pair .ctx-real.ctx-compact-real .ctx-real__grid .cell.messages.is-summary {
+      animation: none;
+    }
+    .ctx-pair .ctx-real.ctx-clear .ctx-real__grid .cell:not(.free):not(.autocompact),
+    .ctx-pair .ctx-real.ctx-compact-real .ctx-real__grid .cell.messages:not(.is-summary) {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+    .ctx-pair .ctx-real.ctx-compact-real .ctx-real__grid .cell.messages.is-summary {
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35);
+    }
+  }
+
   /* Slide 11 — /rewind menu. Prompt list + action menu in two columns. */
   .rewind-pair {
     display: grid;
