@@ -193,11 +193,29 @@
   </div>
   <p class="caption ch-rot-citation">Left: anthropic.com/news/claude-sonnet-4-5 &middot; Right: shape is illustrative, claim cited below</p>
   <aside class="notes">
-    <p>75 seconds. Two facts on one slide, because in isolation each one misleads.</p>
-    <p>Left panel: Sonnet 4.5 on SWE-bench Verified. 77.2% at 200K, 78.2% at 1M. Essentially flat. If you stop reading there, you conclude the million-token window is safe to fill.</p>
-    <p>Right panel: the honest fall-off curve for broad recall and reasoning. The shape is illustrative — I do not have exact public numbers for frontier-model recall across the full 0-1M range — but the direction is not in doubt. Anthropic's own docs state accuracy and recall degrade as tokens grow. Near-flat through 200K, gentle decline out to 500K, steeper drop by 1M. The yellow band marks the danger zone.</p>
-    <p>The quote below is the authoritative citation: "As token count grows, accuracy and recall degrade, a phenomenon known as context rot." Their words, not mine.</p>
-    <p>Reconcile them. The flat line is a narrow coding benchmark that plateaus early. Context rot applies to broader recall and reasoning — the stuff that matters in a long session with scattered files, prior decisions, half-remembered constraints. The 1M window is a ceiling, not a target. Use the word "context rot" with the team so everyone names the same thing.</p>
+    <ul>
+      <li><strong>75 seconds.</strong></li>
+      <li>Two facts on one slide, because in isolation each one misleads.</li>
+      <li><strong>Left panel:</strong> Sonnet 4.5 on SWE-bench Verified.
+        <ul>
+          <li>77.2% at 200K, 78.2% at 1M. Essentially flat.</li>
+          <li>If you stop reading there, you conclude the million-token window is safe to fill.</li>
+        </ul>
+      </li>
+      <li><strong>Right panel:</strong> the honest fall-off curve for broad recall and reasoning.
+        <ul>
+          <li>Shape is illustrative &mdash; I do not have exact public numbers for frontier-model recall across the full 0-1M range &mdash; but the direction is not in doubt.</li>
+          <li>Anthropic's own docs state accuracy and recall degrade as tokens grow.</li>
+          <li>Near-flat through 200K, gentle decline out to 500K, steeper drop by 1M.</li>
+          <li>The yellow band marks the danger zone.</li>
+        </ul>
+      </li>
+      <li>The quote below is the authoritative citation: "As token count grows, accuracy and recall degrade, a phenomenon known as context rot." Their words, not mine.</li>
+      <li>Reconcile them: the flat line is a narrow coding benchmark that plateaus early.</li>
+      <li>Context rot applies to broader recall and reasoning &mdash; the stuff that matters in a long session with scattered files, prior decisions, half-remembered constraints.</li>
+      <li>The 1M window is a ceiling, not a target.</li>
+      <li>Use the word "context rot" with the team so everyone names the same thing.</li>
+    </ul>
   </aside>
 </section>
 
@@ -234,8 +252,18 @@
   </div>
   <p class="caption mt-sm">Quit and re-launch only when the session picked up a bad assumption. <code>/compact</code> will bake a wrong turn into the summary.</p>
   <aside class="notes">
-    <p>75 seconds. Walk the three panels left to right. Unrelated &rarr; /clear. Related &rarr; /compact. Not sure &rarr; /context, then decide.</p>
-    <p>The quit-and-relaunch caveat is the one people skip. If Claude is down a wrong path, /compact will fossilize the wrong turn into the summary and you are stuck with it.</p>
+    <ul>
+      <li><strong>75 seconds.</strong></li>
+      <li>Walk the three panels left to right.
+        <ul>
+          <li>Unrelated &rarr; <code>/clear</code>.</li>
+          <li>Related &rarr; <code>/compact</code>.</li>
+          <li>Not sure &rarr; <code>/context</code>, then decide.</li>
+        </ul>
+      </li>
+      <li>The quit-and-relaunch caveat is the one people skip.</li>
+      <li>If Claude is down a wrong path, <code>/compact</code> will fossilize the wrong turn into the summary and you are stuck with it.</li>
+    </ul>
   </aside>
 </section>
 
@@ -273,10 +301,25 @@
   </div>
   <p class="caption mt-sm">Auto-compaction fires near 95%. Trigger earlier with <code>CLAUDE_CODE_AUTOCOMPACT_PCT_OVERRIDE=80</code>.</p>
   <aside class="notes">
-    <p>60 seconds. Start at the top. The command is <code>/compact Focus on the auth work</code> — you can pass a focus hint so the summary keeps the thread you care about. Runs once, then the grid below shows the result.</p>
-    <p>The pulsing purple cells with rings are the summaries that replaced the chat history. Watch the tail dim out — that is everything below the summary line getting cleared. It loops so the team sees the "what stays, what goes" shape without you having to point at it.</p>
-    <p>Bullets are the part people miss. After /compact, Claude re-reads skill bodies from disk. Each skill is capped at 5K. Total budget 25K across all skills. Long tail on a skill? Tail is gone post-compact. Write them short.</p>
-    <p>Override at the bottom: 80% is a sensible setting for long sessions. Summarize before the wall, not at it.</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>Start at the top. Command is <code>/compact Focus on the auth work</code>.</li>
+      <li>You can pass a focus hint so the summary keeps the thread you care about.</li>
+      <li>Runs once, then the grid below shows the result.</li>
+      <li>The pulsing purple cells with rings are the summaries that replaced the chat history.</li>
+      <li>Watch the tail dim out &mdash; that is everything below the summary line getting cleared.</li>
+      <li>It loops so the team sees the "what stays, what goes" shape without you having to point at it.</li>
+      <li>Bullets are the part people miss.
+        <ul>
+          <li>After <code>/compact</code>, Claude re-reads skill bodies from disk.</li>
+          <li>Each skill is capped at 5K.</li>
+          <li>Total budget 25K across all skills.</li>
+          <li>Long tail on a skill? Tail is gone post-compact. Write them short.</li>
+        </ul>
+      </li>
+      <li>Override at the bottom: 80% is a sensible setting for long sessions.</li>
+      <li>Summarize before the wall, not at it.</li>
+    </ul>
   </aside>
 </section>
 
@@ -312,11 +355,32 @@
   </div>
   <p class="caption mt-md" style="max-width: 780px; margin-left: auto; margin-right: auto;">The new tokenizer is chunkier. Same prompt, same files, bigger footprint. If your bill jumped the week you moved to 4.7, this is why.</p>
   <aside class="notes">
-    <p>60 seconds. Top of the slide is the fact: Opus 4.7 ships a new tokenizer that turns roughly 100 characters of English into 135 tokens where 4.6 would have given you 100. Up to 35% more. Same text, bigger footprint.</p>
-    <p>The "what this costs you" band is the why. Three consequences.</p>
-    <p>One: daily spend is up about 35% by default. Nobody changed anything on your end. Budget for it.</p>
-    <p>Two: you hit the context wall sooner. If your CLAUDE.md was 4K on 4.6, assume it is around 5K now on 4.7. Same for skills, memory files, pasted snippets. The window did not move — your files grew.</p>
-    <p>Three: Plan Mode and the thinking passes use the same tokenizer. On a large codebase those reasoning passes translate to meaningfully higher bills. Keep Plan Mode on short, focused asks.</p>
-    <p>That is why this slide lives in context hygiene, not pricing. Last hygiene slide. Next section is responsible use.</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>Top of the slide is the fact: Opus 4.7 ships a new tokenizer.</li>
+      <li>Turns roughly 100 characters of English into 135 tokens where 4.6 would have given you 100.</li>
+      <li>Up to 35% more. Same text, bigger footprint.</li>
+      <li>The "what this costs you" band is the why. Three consequences.</li>
+      <li><strong>One:</strong> daily spend is up about 35% by default.
+        <ul>
+          <li>Nobody changed anything on your end. Budget for it.</li>
+        </ul>
+      </li>
+      <li><strong>Two:</strong> you hit the context wall sooner.
+        <ul>
+          <li>If your CLAUDE.md was 4K on 4.6, assume it is around 5K now on 4.7.</li>
+          <li>Same for skills, memory files, pasted snippets.</li>
+          <li>The window did not move &mdash; your files grew.</li>
+        </ul>
+      </li>
+      <li><strong>Three:</strong> Plan Mode and the thinking passes use the same tokenizer.
+        <ul>
+          <li>On a large codebase those reasoning passes translate to meaningfully higher bills.</li>
+          <li>Keep Plan Mode on short, focused asks.</li>
+        </ul>
+      </li>
+      <li>That is why this slide lives in context hygiene, not pricing.</li>
+      <li>Last hygiene slide. Next section is responsible use.</li>
+    </ul>
   </aside>
 </section>

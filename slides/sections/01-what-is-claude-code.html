@@ -254,10 +254,27 @@
   </div>
 
   <aside class="notes">
-    <p>90 seconds. Head off the obvious objection first: modern Copilot runs Claude and GPT-class models too, and can draft whole PRs. The difference here is not the model underneath &mdash; it is the interaction loop around it.</p>
-    <p>Left: Copilot lives inside the editor, in one file at a time. It suggests; you accept or reject each step. You stay in the driver's seat at every keystroke.</p>
-    <p>Right: Claude Code lives in the terminal. You give it a goal. It plans, touches many files, runs the shell, runs tests, and reports back. You gate the task, not every line.</p>
-    <p>Land on the caption: accept / reject becomes plan / act / verify. Exit: "The shape of that right-hand loop is the next slide."</p>
+    <ul>
+      <li><strong>90 seconds.</strong></li>
+      <li>Head off the obvious objection first: modern Copilot runs Claude and GPT-class models too, and can draft whole PRs.</li>
+      <li>The difference here is not the model underneath &mdash; it is the interaction loop around it.</li>
+      <li><strong>Left (Copilot):</strong>
+        <ul>
+          <li>Lives inside the editor, in one file at a time.</li>
+          <li>It suggests; you accept or reject each step.</li>
+          <li>You stay in the driver's seat at every keystroke.</li>
+        </ul>
+      </li>
+      <li><strong>Right (Claude Code):</strong>
+        <ul>
+          <li>Lives in the terminal. You give it a goal.</li>
+          <li>It plans, touches many files, runs the shell, runs tests, and reports back.</li>
+          <li>You gate the task, not every line.</li>
+        </ul>
+      </li>
+      <li>Land on the caption: accept / reject becomes plan / act / verify.</li>
+      <li><strong>Exit:</strong> "The shape of that right-hand loop is the next slide."</li>
+    </ul>
   </aside>
 </section>
 
@@ -305,9 +322,14 @@
     Claude iterates until done. Your job is to shape what it sees, what it can do, and how it checks itself.
   </p>
   <aside class="notes">
-    <p>45 seconds. Let the loop land. Walk across the four steps with your hand if you can.</p>
-    <p>The dotted arc matters: this is what people miss about agents. It is not a one-shot &mdash; Claude observes, then replans and tries again until it declares done.</p>
-    <p>Caption is the bridge to the deep dive: what it sees (context), what it can do (capability), how it checks itself (verification). Next slide unpacks each.</p>
+    <ul>
+      <li><strong>45 seconds.</strong></li>
+      <li>Let the loop land. Walk across the four steps with your hand if you can.</li>
+      <li>The dotted arc matters: this is what people miss about agents.</li>
+      <li>It is not a one-shot &mdash; Claude observes, then replans and tries again until it declares done.</li>
+      <li>Caption is the bridge to the deep dive: what it sees (context), what it can do (capability), how it checks itself (verification).</li>
+      <li>Next slide unpacks each.</li>
+    </ul>
   </aside>
 </section>
 
@@ -338,9 +360,16 @@
   <p class="caption mt-lg" style="font-size: 1rem;">Everything else in the next 25 minutes is a variation on these three.</p>
 
   <aside class="notes">
-    <p>60 seconds. You already named the three levers on the thesis slide. This is the unpack: point at each column and give the one-line definition underneath the name.</p>
-    <p>Context: what you put in front of it &mdash; files, CLAUDE.md, memory, skills. Capability: what you let it do &mdash; permissions, hooks, tools, subagents. Verification: how you check its work &mdash; tests, review, cite the line.</p>
-    <p>Two-environment note you can drop here if time allows: on the CapTech sandbox you experiment with all three levers freely; on the client side every lever tightens. Same mental model, different settings.</p>
-    <p>This layout reappears at slide 33 (wrap) as a callback. Exit: "Start with the lever you touch most &mdash; context &mdash; and the commands that decide what Claude sees."</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>You already named the three levers on the thesis slide.</li>
+      <li>This is the unpack: point at each column and give the one-line definition underneath the name.</li>
+      <li><strong>Context:</strong> what you put in front of it &mdash; files, CLAUDE.md, memory, skills.</li>
+      <li><strong>Capability:</strong> what you let it do &mdash; permissions, hooks, tools, subagents.</li>
+      <li><strong>Verification:</strong> how you check its work &mdash; tests, review, cite the line.</li>
+      <li><strong>Two-environment note</strong> (if time allows): on the CapTech sandbox you experiment with all three levers freely; on the client side every lever tightens. Same mental model, different settings.</li>
+      <li>This layout reappears at slide 33 (wrap) as a callback.</li>
+      <li><strong>Exit:</strong> "Start with the lever you touch most &mdash; context &mdash; and the commands that decide what Claude sees."</li>
+    </ul>
   </aside>
 </section>

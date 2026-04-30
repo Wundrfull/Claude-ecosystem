@@ -387,8 +387,13 @@ conventional commits. Reference the diff; do not restate it.</pre>
   <p class="footnote">The folder name becomes the slash-command. Drop it in, type <code>/commit-message</code>, done.</p>
 
   <aside class="notes">
-    <p>60 seconds. Lean on what the team already knows: no plugin, no manifest, no registry. A folder with a markdown file, and you have shipped a skill.</p>
-    <p>Save the file and it is live on the next turn. No restart, no reload.</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>Lean on what the team already knows: no plugin, no manifest, no registry.</li>
+      <li>A folder with a markdown file, and you have shipped a skill.</li>
+      <li>Save the file and it is live on the next turn.</li>
+      <li>No restart, no reload.</li>
+    </ul>
   </aside>
 </section>
 
@@ -442,8 +447,20 @@ conventional commits. Reference the diff; do not restate it.</pre>
   </div>
 
   <aside class="notes">
-    <p>120 seconds. This is the do-it-tonight slide. Walk the five steps down the right column as a checklist, then point at the tree on the left and say "that is the whole folder structure," then point at the terminal below it and say "that is the whole invocation."</p>
-    <p>Project-scope vs personal-scope: <code>.claude/skills/</code> in the repo ships with the team; <code>~/.claude/skills/</code> is just for you. Mention the CapTech-side vs client-side split here.</p>
+    <ul>
+      <li><strong>120 seconds.</strong></li>
+      <li>This is the do-it-tonight slide.</li>
+      <li>Walk the five steps down the right column as a checklist.</li>
+      <li>Point at the tree on the left: "that is the whole folder structure."</li>
+      <li>Point at the terminal below it: "that is the whole invocation."</li>
+      <li>Project-scope vs personal-scope:
+        <ul>
+          <li><code>.claude/skills/</code> in the repo ships with the team.</li>
+          <li><code>~/.claude/skills/</code> is just for you.</li>
+        </ul>
+      </li>
+      <li>Mention the CapTech-side vs client-side split here.</li>
+    </ul>
   </aside>
 </section>
 
@@ -489,8 +506,14 @@ conventional commits. Reference the diff; do not restate it.</pre>
   </div>
 
   <aside class="notes">
-    <p>90 seconds. Define progressive disclosure explicitly now that the team has built one. You can install 30 skills and not pay a context tax, because only the names plus a 1,536-character description sit in context. The body comes in on invoke.</p>
-    <p>Corollary for the next slide: the description is the activation lever. Vague description, Claude skips the skill.</p>
+    <ul>
+      <li><strong>90 seconds.</strong></li>
+      <li>Define progressive disclosure explicitly now that the team has built one.</li>
+      <li>Install 30 skills and pay no context tax &mdash; only names plus a 1,536-character description sit in context.</li>
+      <li>The body comes in on invoke.</li>
+      <li>Corollary for the next slide: the description is the activation lever.</li>
+      <li>Vague description, Claude skips the skill.</li>
+    </ul>
   </aside>
 </section>
 
@@ -514,8 +537,12 @@ conventional commits. Reference the diff; do not restate it.</pre>
   </div>
 
   <aside class="notes">
-    <p>60 seconds. Read the quote twice — once fast, once slow. Then land the failure mode: if your description says "do X then Y," Claude may do just X and never open the body.</p>
-    <p>Third-person triggers. Symptoms. "Use when the user asks..." That is the pattern.</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>Read the quote twice &mdash; once fast, once slow.</li>
+      <li>Land the failure mode: if description says "do X then Y," Claude may do just X and never open the body.</li>
+      <li>Pattern: third-person triggers, symptoms, "use when the user asks..."</li>
+    </ul>
   </aside>
 </section>
 
@@ -549,8 +576,17 @@ conventional commits. Reference the diff; do not restate it.</pre>
   <p class="footnote" style="text-align: center;"><code>description</code> lives in every SKILL.md — see the previous slide for how to write it.</p>
 
   <aside class="notes">
-    <p>90 seconds. These are the other knobs beyond <code>description</code>. For this team today, the two that matter most: <code>disable-model-invocation</code> on anything with side effects, and <code>allowed-tools</code> to stop the approval-prompt spam mid-demo.</p>
-    <p><code>context: fork</code> and <code>agent:</code> are the bridge into the next slide on subagents.</p>
+    <ul>
+      <li><strong>90 seconds.</strong></li>
+      <li>These are the other knobs beyond <code>description</code>.</li>
+      <li>For this team today, two matter most:
+        <ul>
+          <li><code>disable-model-invocation</code> on anything with side effects.</li>
+          <li><code>allowed-tools</code> to stop approval-prompt spam mid-demo.</li>
+        </ul>
+      </li>
+      <li><code>context: fork</code> and <code>agent:</code> are the bridge into the next slide on subagents.</li>
+    </ul>
   </aside>
 </section>
 
@@ -597,8 +633,12 @@ conventional commits. Reference the diff; do not restate it.</pre>
   </div>
 
   <aside class="notes">
-    <p>60 seconds flat. No deep dive. The job is name-recognition so "subagent" and "hook" land as familiar words when they come up on the job next week.</p>
-    <p>Mental model to say out loud: skills are the playbook, subagents are where it can run, hooks are the guarantee.</p>
+    <ul>
+      <li><strong>60 seconds flat.</strong></li>
+      <li>No deep dive.</li>
+      <li>Job is name-recognition so "subagent" and "hook" land as familiar words when they come up on the job next week.</li>
+      <li>Mental model to say out loud: skills are the playbook, subagents are where it can run, hooks are the guarantee.</li>
+    </ul>
   </aside>
 </section>
 
@@ -619,9 +659,23 @@ conventional commits. Reference the diff; do not restate it.</pre>
   <p class="footnote" style="text-align: center; margin-top: 1rem;">Steps 02&ndash;05 repeat until done. Every command in this deck lives somewhere on this loop.</p>
 
   <aside class="notes">
-    <p>60 seconds. This is the "where does everything we just covered fit" slide. Walk the loop once.</p>
-    <p>Point at 02&ndash;05: this is where most of the tension lives. Plan Mode on 02. /rewind on 05. /clear and /compact on 05 and 06. Hooks and permissions gate 03. Skills join the playbook at launch (01) and re-attach after compact (06).</p>
-    <p>Do not read all seven out loud. Name 02&ndash;05 as the core loop. Close with: "that is the shape. Next section: how you shape what it sees."</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>This is the "where does everything we just covered fit" slide.</li>
+      <li>Walk the loop once.</li>
+      <li>Point at 02&ndash;05: this is where most of the tension lives.
+        <ul>
+          <li>Plan Mode on 02.</li>
+          <li>/rewind on 05.</li>
+          <li>/clear and /compact on 05 and 06.</li>
+          <li>Hooks and permissions gate 03.</li>
+          <li>Skills join the playbook at launch (01) and re-attach after compact (06).</li>
+        </ul>
+      </li>
+      <li>Do not read all seven out loud.</li>
+      <li>Name 02&ndash;05 as the core loop.</li>
+      <li>Close with: "that is the shape. Next section: how you shape what it sees."</li>
+    </ul>
   </aside>
 </section>
 

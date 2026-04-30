@@ -162,8 +162,14 @@
     <div class="cell"></div><div class="cell"></div><div class="cell redact"></div><div class="cell"></div><div class="cell"></div><div class="cell redact"></div><div class="cell"></div><div class="cell"></div>
   </div>
   <aside class="notes">
-    <p>20 seconds. Name the three rules and the habit as you point at the divider: data path, cite the claim, gate the tools, audit the memory. Everything in this section is a drill-down on one of those four.</p>
-    <p>Tell them: this is the section that matters most on a client engagement. The rest of the talk is how to move fast; this is how to not create an incident.</p>
+    <ul>
+      <li><strong>20 seconds.</strong></li>
+      <li>Name the three rules and the habit as you point at the divider.</li>
+      <li>Data path. Cite the claim. Gate the tools. Audit the memory.</li>
+      <li>Everything in this section is a drill-down on one of those four.</li>
+      <li>Tell them: this is the section that matters most on a client engagement.</li>
+      <li>The rest of the talk is how to move fast; this is how to not create an incident.</li>
+    </ul>
   </aside>
 </section>
 
@@ -192,8 +198,17 @@
   </div>
   <p class="caption mt-lg">CapTech sandbox: anything goes. Client repos: the three columns above are the checklist.</p>
   <aside class="notes">
-    <p>75 seconds. Walk the three columns left to right. The client imposes constraints (column 1); Bedrock gives you a real privacy boundary (column 2); your team still has to verify, because the boundary does not defend against you pasting a credential into chat (column 3).</p>
-    <p>Call out the thumbs-feedback exception. One admin click, org-wide, before the kickoff call. That is the only action that has to happen before you open the client repo.</p>
+    <ul>
+      <li><strong>75 seconds.</strong></li>
+      <li>Walk the three columns left to right.</li>
+      <li>Column 1: the client imposes constraints.</li>
+      <li>Column 2: Bedrock gives you a real privacy boundary.</li>
+      <li>Column 3: your team still has to verify.</li>
+      <li>The boundary does not defend against you pasting a credential into chat.</li>
+      <li>Call out the thumbs-feedback exception.</li>
+      <li>One admin click, org-wide, before the kickoff call.</li>
+      <li>That is the only action that has to happen before you open the client repo.</li>
+    </ul>
   </aside>
 </section>
 
@@ -217,8 +232,16 @@
 
   <p class="caption mt-lg">Same pattern for <code>/review</code>, <code>/security-review</code>, and any grep-heavy task. No citation, no trust.</p>
   <aside class="notes">
-    <p>60 seconds. Lead with the accuracy claim, not the process. "Cite the line" is the highest-ROI habit on this slide because it forces Claude to grep before answering, and grep-then-cite is measurably more accurate than guess-then-write.</p>
-    <p>Walk the terminal: question, file read, symbol explanation, line citation. That is the shape of a correct answer. When the team sees a claim with no path:line, they reject the diff and ask for the citation.</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>Lead with the accuracy claim, not the process.</li>
+      <li>"Cite the line" is the highest-ROI habit on this slide.</li>
+      <li>It forces Claude to grep before answering.</li>
+      <li>Grep-then-cite is measurably more accurate than guess-then-write.</li>
+      <li>Walk the terminal: question, file read, symbol explanation, line citation.</li>
+      <li>That is the shape of a correct answer.</li>
+      <li>When the team sees a claim with no <code>path:line</code>, they reject the diff and ask for the citation.</li>
+    </ul>
   </aside>
 </section>
 
@@ -242,8 +265,16 @@
   </div>
   <p class="caption mt-lg">CapTech sandbox: permissive. Client repos: strict &mdash; read CLAUDE.md, confirm <code>/permissions</code>, then verify the hook fired.</p>
   <aside class="notes">
-    <p>60 seconds. Stack the three layers as you walk them. <code>/permissions</code> is the everyday lever; allowed-tools in frontmatter is the per-skill scope; hooks are the floor the model cannot cross.</p>
-    <p>Emphasis: CLAUDE.md can <em>request</em> a behavior but cannot <em>enforce</em> it. Hooks enforce. If a rule matters for compliance, it belongs in <code>.claude/settings.json</code>, not CLAUDE.md.</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>Stack the three layers as you walk them.</li>
+      <li><code>/permissions</code> is the everyday lever.</li>
+      <li>allowed-tools in frontmatter is the per-skill scope.</li>
+      <li>Hooks are the floor the model cannot cross.</li>
+      <li>Emphasis: CLAUDE.md can <em>request</em> a behavior but cannot <em>enforce</em> it.</li>
+      <li>Hooks enforce.</li>
+      <li>If a rule matters for compliance, it belongs in <code>.claude/settings.json</code>, not CLAUDE.md.</li>
+    </ul>
   </aside>
 </section>
 
@@ -294,7 +325,19 @@
   </div>
   <p class="caption mt-lg">Five minutes a week. Prevents the ninety-minute incident.</p>
   <aside class="notes">
-    <p>75 seconds. Frame this as the weekly habit, not a one-time setup. Read each row; the connective tissue is &ldquo;all five take under a minute and none of them require you to open a ticket.&rdquo;</p>
-    <p>Numbers two and three are the biggest accuracy levers on a long engagement: <code>/clear</code> before unrelated tasks, and skim MEMORY.md so the auto-memory does not drift into stale assumptions. Four and five are the security floor; one is the daily hygiene check.</p>
+    <ul>
+      <li><strong>75 seconds.</strong></li>
+      <li>Frame this as the weekly habit, not a one-time setup.</li>
+      <li>Read each row.</li>
+      <li>Connective tissue: &ldquo;all five take under a minute and none of them require you to open a ticket.&rdquo;</li>
+      <li>Numbers two and three are the biggest accuracy levers on a long engagement.
+        <ul>
+          <li><code>/clear</code> before unrelated tasks.</li>
+          <li>Skim MEMORY.md so the auto-memory does not drift into stale assumptions.</li>
+        </ul>
+      </li>
+      <li>Four and five are the security floor.</li>
+      <li>One is the daily hygiene check.</li>
+    </ul>
   </aside>
 </section>

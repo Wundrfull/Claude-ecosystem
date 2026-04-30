@@ -468,8 +468,13 @@
   <p class="caption mt-md">Toggle with Shift+Tab. Open the plan in your editor with Ctrl+G before you run it.</p>
 
   <aside class="notes">
-    <p>45 seconds. This is the recommended default for anything that touches more than one file. You get to see the plan before Claude edits anything.</p>
-    <p>Skip plan mode for one-line fixes. Use it when the scope is fuzzy, the blast radius is unclear, or you are somewhere sensitive on the client side.</p>
+    <ul>
+      <li><strong>45 seconds.</strong></li>
+      <li>Recommended default for anything touching more than one file.</li>
+      <li>You get to see the plan before Claude edits anything.</li>
+      <li>Skip plan mode for one-line fixes.</li>
+      <li>Use it when scope is fuzzy, blast radius is unclear, or you are somewhere sensitive on the client side.</li>
+    </ul>
   </aside>
 </section>
 
@@ -517,8 +522,14 @@
   </div>
 
   <aside class="notes">
-    <p>60 seconds. Every file Claude reads, every command output, every turn piles up in the context window. Performance degrades as it fills. <code>/clear</code> gets you a fresh session without relaunching.</p>
-    <p>Rule of thumb: after two failed corrections on the same issue, clear and rewrite the prompt with what you just learned. Clean context beats a stack of corrections.</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>Every file Claude reads, every command output, every turn piles up in the context window.</li>
+      <li>Performance degrades as it fills.</li>
+      <li><code>/clear</code> gets you a fresh session without relaunching.</li>
+      <li>Rule of thumb: after two failed corrections on the same issue, clear and rewrite the prompt with what you just learned.</li>
+      <li>Clean context beats a stack of corrections.</li>
+    </ul>
   </aside>
 </section>
 
@@ -569,8 +580,14 @@
   </div>
 
   <aside class="notes">
-    <p>45 seconds. Key distinction: <code>/clear</code> wipes everything; <code>/compact</code> preserves a summary. Use <code>/compact</code> when the work is related and you need continuity. Use <code>/clear</code> when it is not.</p>
-    <p>The optional instructions argument is underused. If you just spent 20 turns on auth but want to pivot to billing, <code>/compact Focus on billing-related decisions</code> lets you keep the useful context and lose the rest.</p>
+    <ul>
+      <li><strong>45 seconds.</strong></li>
+      <li>Key distinction: <code>/clear</code> wipes everything; <code>/compact</code> preserves a summary.</li>
+      <li>Use <code>/compact</code> when the work is related and you need continuity.</li>
+      <li>Use <code>/clear</code> when it is not.</li>
+      <li>The optional instructions argument is underused.</li>
+      <li>Example: after 20 turns on auth, pivot to billing with <code>/compact Focus on billing-related decisions</code> &mdash; keep the useful context, lose the rest.</li>
+    </ul>
   </aside>
 </section>
 
@@ -642,11 +659,27 @@
   <p class="rewind-caveat"><strong>Caveat:</strong>&nbsp;tracks Claude's file edits only. Bash side effects and manual edits outside Claude are not rewound. Auto-cleaned after 30 days.</p>
 
   <aside class="notes">
-    <p>~60 seconds. The chord is double-Esc, or type <code>/rewind</code> &mdash; same menu either way. It is the single fastest way to undo a wrong turn without restarting.</p>
-    <p>The menu is a scrollable list of every user prompt in this session, most recent on top. You pick the prompt you want to go back to &mdash; not a named stage, the actual thing you typed.</p>
-    <p>Then four actions: restore code and conversation together, restore just the conversation while keeping your current code, restore just the code while keeping the conversation, or summarize forward from that point &mdash; basically a compact anchored to the prompt you picked.</p>
-    <p>Big caveat, call it out: it only tracks Claude's file edits. If Claude ran <code>git reset</code>, or a migration, or dropped a table via bash &mdash; that is not rewound. Same for anything you edited yourself outside the session. Not a replacement for git.</p>
-    <p>Checkpoints persist across sessions and auto-clean after 30 days. This is the one to reach for when you are twenty turns down a wrong path &mdash; you do not have to be careful when you can go back.</p>
+    <ul>
+      <li><strong>~60 seconds.</strong></li>
+      <li>Chord is double-Esc, or type <code>/rewind</code> &mdash; same menu either way.</li>
+      <li>Single fastest way to undo a wrong turn without restarting.</li>
+      <li>Menu is a scrollable list of every user prompt in this session, most recent on top.</li>
+      <li>You pick the prompt you want to go back to &mdash; not a named stage, the actual thing you typed.</li>
+      <li>Four actions:
+        <ul>
+          <li>Restore code and conversation together.</li>
+          <li>Restore just the conversation, keeping your current code.</li>
+          <li>Restore just the code, keeping the conversation.</li>
+          <li>Summarize forward from that point &mdash; a compact anchored to the prompt you picked.</li>
+        </ul>
+      </li>
+      <li>Big caveat, call it out: only tracks Claude's file edits.</li>
+      <li>If Claude ran <code>git reset</code>, a migration, or dropped a table via bash &mdash; not rewound.</li>
+      <li>Same for anything you edited yourself outside the session.</li>
+      <li>Not a replacement for git.</li>
+      <li>Checkpoints persist across sessions and auto-clean after 30 days.</li>
+      <li>Reach for this when you are twenty turns down a wrong path &mdash; you do not have to be careful when you can go back.</li>
+    </ul>
   </aside>
 </section>
 
@@ -700,7 +733,14 @@
   <p class="caption mt-md">Tell Claude "remember that we use pnpm" &mdash; it saves to auto memory. Open <code>/memory</code> to audit or edit anytime.</p>
 
   <aside class="notes">
-    <p>45 seconds. Two files doing two jobs. CLAUDE.md is what you hand-wrote in the repo: rules, conventions, build commands. MEMORY.md is what Claude keeps at <code>~/.claude/projects/&lt;project&gt;/memory/</code> as it learns your preferences.</p>
-    <p>Auto memory is new (v2.1.59+). It is plain markdown, editable anytime. If Claude starts remembering something wrong, open the file and fix the line.</p>
+    <ul>
+      <li><strong>45 seconds.</strong></li>
+      <li>Two files doing two jobs.</li>
+      <li>CLAUDE.md is what you hand-wrote in the repo: rules, conventions, build commands.</li>
+      <li>MEMORY.md is what Claude keeps at <code>~/.claude/projects/&lt;project&gt;/memory/</code> as it learns your preferences.</li>
+      <li>Auto memory is new (v2.1.59+).</li>
+      <li>Plain markdown, editable anytime.</li>
+      <li>If Claude starts remembering something wrong, open the file and fix the line.</li>
+    </ul>
   </aside>
 </section>

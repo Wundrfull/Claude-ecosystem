@@ -91,8 +91,14 @@
     </div>
   </div>
   <aside class="notes">
-    <p>60 seconds. Read the five lines. Pause. These show up in nearly every public CLAUDE.md I sampled (anthropics/claude-code, cloudflare/agents, obra/superpowers, langchain).</p>
-    <p>Frame it as a behavior contract. Forbidden phrases, precedence rules, escalation triggers. The terminal panel shows rule 2 in action: Claude catches a destructive command before it runs.</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>Read the five lines. Pause.</li>
+      <li>These show up in nearly every public CLAUDE.md I sampled (anthropics/claude-code, cloudflare/agents, obra/superpowers, langchain).</li>
+      <li>Frame it as a behavior contract.</li>
+      <li>Forbidden phrases, precedence rules, escalation triggers.</li>
+      <li>The terminal panel shows rule 2 in action: Claude catches a destructive command before it runs.</li>
+    </ul>
   </aside>
 </section>
 
@@ -133,8 +139,19 @@
   </div>
   <p class="mem-caption">Claude decides what is worth keeping. You decide when it got that wrong. Skim MEMORY.md so bad assumptions do not harden into permanent context.</p>
   <aside class="notes">
-    <p>60 seconds. This is the feature most of the team has not seen. Show the two paths side by side: CLAUDE.md in the repo (you own it), MEMORY.md in ~/.claude (Claude owns it).</p>
-    <p>Demo the "remember that..." phrasing. Then name the tradeoff: you are not writing notes by hand anymore, but you should still audit the file occasionally. A bad assumption that gets promoted into permanent context is the new version of a stale comment.</p>
+    <ul>
+      <li><strong>60 seconds.</strong></li>
+      <li>This is the feature most of the team has not seen.</li>
+      <li>Show the two paths side by side:
+        <ul>
+          <li>CLAUDE.md in the repo (you own it).</li>
+          <li>MEMORY.md in ~/.claude (Claude owns it).</li>
+        </ul>
+      </li>
+      <li>Demo the "remember that..." phrasing.</li>
+      <li>Name the tradeoff: you are not writing notes by hand anymore, but you should still audit the file occasionally.</li>
+      <li>A bad assumption that gets promoted into permanent context is the new version of a stale comment.</li>
+    </ul>
   </aside>
 </section>
 
@@ -181,9 +198,22 @@
     </div>
   </div>
   <aside class="notes">
-    <p>45 seconds. Three beats.</p>
-    <p>One: gqlgen is the GraphQL codegen tool this client uses. Every schema change, you run <code>go run github.com/99designs/gqlgen generate</code> and it rewrites generated.go and models_gen.go from schema.graphql.</p>
-    <p>Two: if Claude or a human hand-edits those files, the edit gets clobbered silently on the next regen. The symptom surfaces later as a bug three files away &mdash; expensive to chase.</p>
-    <p>Three: this one line &mdash; "never edit generated files by hand" plus the regen command &mdash; goes in every engagement CLAUDE.md before anything else. Same rule travels to any gqlgen, protobuf, or OpenAPI codegen project. Say <code>go run github.com/99designs/gqlgen generate</code> twice out loud so the team hears it.</p>
+    <ul>
+      <li><strong>45 seconds.</strong> Three beats.</li>
+      <li><strong>One:</strong> gqlgen is the GraphQL codegen tool this client uses.
+        <ul>
+          <li>Every schema change, run <code>go run github.com/99designs/gqlgen generate</code>.</li>
+          <li>It rewrites generated.go and models_gen.go from schema.graphql.</li>
+        </ul>
+      </li>
+      <li><strong>Two:</strong> if Claude or a human hand-edits those files, the edit gets clobbered silently on the next regen.
+        <ul>
+          <li>Symptom surfaces later as a bug three files away &mdash; expensive to chase.</li>
+        </ul>
+      </li>
+      <li><strong>Three:</strong> this one line &mdash; "never edit generated files by hand" plus the regen command &mdash; goes in every engagement CLAUDE.md before anything else.</li>
+      <li>Same rule travels to any gqlgen, protobuf, or OpenAPI codegen project.</li>
+      <li>Say <code>go run github.com/99designs/gqlgen generate</code> twice out loud so the team hears it.</li>
+    </ul>
   </aside>
 </section>
