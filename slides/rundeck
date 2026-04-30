@@ -39,15 +39,84 @@ import http.server, socketserver, sys, json, re, textwrap, shutil
 PORT = int(sys.argv[1])
 TAG = re.compile(r'<[^>]+>')
 WS  = re.compile(r'[ \t]+')
+ENTITIES = [
+    ('&amp;', '&'), ('&lt;', '<'), ('&gt;', '>'),
+    ('&mdash;', '---'), ('&ndash;', '--'), ('&rarr;', '->'), ('&larr;', '<-'),
+    ('&ldquo;', '\"'), ('&rdquo;', '\"'),
+    ('&lsquo;', \"'\"), ('&rsquo;', \"'\"),
+    ('&nbsp;', ' '), ('&middot;', '-'), ('&hellip;', '...'),
+    ('&check;', 'v'), ('&Delta;', 'delta'),
+]
 
-def strip_html(s):
-    s = s.replace('</p>', '\n\n').replace('<br>', '\n').replace('<br/>', '\n')
-    s = s.replace('<li>', '  - ').replace('</li>', '\n')
-    s = TAG.sub('', s)
-    s = s.replace('&amp;', '&').replace('&lt;', '<').replace('&gt;', '>')
-    s = s.replace('&mdash;', '---').replace('&rarr;', '->').replace('&ldquo;', '\"').replace('&rdquo;', '\"').replace('&rsquo;', \"'\").replace('&nbsp;', ' ')
-    s = WS.sub(' ', s)
-    return '\n'.join(line.strip() for line in s.splitlines() if line.strip())
+def html_to_bullets(html):
+    '''Walk the notes HTML once, emit a list of (depth, text) tuples.
+    Each <li> becomes one bullet at its nesting depth. Non-list prose
+    appears at depth -1 (no marker).'''
+    if not html:
+        return [(-1, '(no speaker notes for this slide)')]
+    # Track which tokens are list/item opens so we know depth.
+    # Three branches: known structural tag | any other tag (ignored) | text.
+    token_re = re.compile(r'<(/?)(ul|ol|li|p|br)\b[^>]*>|<[^>]+>|([^<]+)', re.IGNORECASE)
+    lines = []
+    current = []  # accumulates text for the current bullet
+    depth = 0     # nesting depth of current <li>; >=0 means inside an <li>
+    list_stack = []  # stack of list types opened
+
+    def flush(d):
+        if not current:
+            return
+        text = ''.join(current).strip()
+        if text:
+            lines.append((d, text))
+        current.clear()
+
+    for m in token_re.finditer(html):
+        slash, tag, text = m.group(1), (m.group(2) or '').lower(), m.group(3)
+        if text is not None:
+            current.append(text)
+            continue
+        if not tag:
+            # Unknown tag (<strong>, <code>, <em>, <span>, etc.) — skip it.
+            continue
+        if tag == 'p':
+            if slash:
+                flush(-1)
+                lines.append((-2, ''))  # blank separator between paragraphs
+            else:
+                flush(depth if list_stack else -1)
+        elif tag == 'br':
+            flush(depth if list_stack else -1)
+        elif tag in ('ul', 'ol'):
+            if slash:
+                flush(depth)
+                if list_stack:
+                    list_stack.pop()
+                depth = max(0, depth - 1)
+            else:
+                flush(depth if list_stack else -1)
+                list_stack.append(tag)
+                # depth stays; it's bumped when <li> opens
+        elif tag == 'li':
+            if slash:
+                flush(depth)
+            else:
+                flush(depth)
+                depth = len(list_stack)
+    flush(depth if list_stack else -1)
+
+    # Expand inline tags + entities, strip any tags we didn't handle.
+    out = []
+    for d, raw in lines:
+        if d == -2:
+            out.append((-2, ''))
+            continue
+        txt = TAG.sub('', raw)
+        for e, r in ENTITIES:
+            txt = txt.replace(e, r)
+        txt = WS.sub(' ', txt).strip()
+        if txt or d == -2:
+            out.append((d, txt))
+    return out
 
 BOLD = '\033[1m'
 DIM  = '\033[2m'
@@ -77,15 +146,34 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         idx = data.get('index', 0) + 1
         total = data.get('total', 0)
         section = data.get('section', '')
-        notes = strip_html(data.get('notes', '') or '(no speaker notes for this slide)')
+        bullets = html_to_bullets(data.get('notes', ''))
         width = shutil.get_terminal_size((100, 20)).columns
+        wrap_width = min(width, 96)
         bar = '-' * min(width, 80)
         hdr = f'{BOLD}{CYAN}slide {idx} / {total}{RST}  {YEL}{section}{RST}'
         sys.stdout.write(f'\n{bar}\n{hdr}\n{bar}\n')
-        for para in notes.split('\n\n'):
-            for line in textwrap.wrap(para, width=min(width, 96)) or ['']:
+        for depth, text in bullets:
+            if depth == -2:
+                sys.stdout.write('\n')
+                continue
+            if depth < 0:
+                # plain prose paragraph — wrap cleanly.
+                for line in textwrap.wrap(text, width=wrap_width) or ['']:
+                    sys.stdout.write(line + '\n')
+                continue
+            # Bulleted line. depth 1 = top-level, deeper = nested.
+            indent_cols = max(0, depth - 1) * 4
+            marker = '-' if depth <= 1 else ('*' if depth == 2 else 'o')
+            prefix = f'{\" \" * indent_cols}{marker} '
+            cont_indent = ' ' * len(prefix)
+            for line in textwrap.wrap(
+                text,
+                width=wrap_width,
+                initial_indent=prefix,
+                subsequent_indent=cont_indent,
+            ) or [prefix]:
                 sys.stdout.write(line + '\n')
-            sys.stdout.write('\n')
+        sys.stdout.write('\n')
         sys.stdout.flush()
         self.send_response(204); self.end_headers()
 
